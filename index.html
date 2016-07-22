@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion">
+<html class="theme-next pisces use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -99,7 +99,7 @@
 <script type="text/javascript" id="hexo.configuration">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Mist',
+    scheme: 'Pisces',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
@@ -233,6 +233,121 @@
             
               
                 
+                <a class="post-title-link" href="/2016/07/20/自定义View/" itemprop="url">
+                  自定义View
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-20T23:56:28+08:00" content="2016-07-20">
+              2016-07-20
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/07/20/自定义View/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/20/自定义View/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/07/20/自定义View/" class="leancloud_visitors" data-flag-title="自定义View">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h2><p>很多时候系统自带的View满足不了设计的要求，就需要自定义View控件。自定义View首先要实现一个继承自View的类。<br>如果自定义的View有自己的属性，需要在values下建立attrs.xml文件，在其中定义属性，同时代码也要做修改。自定义View主要依赖的方法<br>自定义View中，我们主要重写onMeasure，onDraw这两种方法来展现一个View。</p>
+<ul>
+<li>onMeasure：主要工作是对我们要绘制的View进行测量，因为不进行测量的话，系统不知道要绘制的View有多大，无法绘制出我们需要的样子。</li>
+<li>onDraw: 主要工作就是绘制我们需要的图形，这个是自定义View中定制性最强也是最主要的工作。<br>下面我们先了解一下这两个方法具体能做什么，然后我们通过一个实例来学习一下具体的用法。
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/07/20/自定义View/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/05/14/Java基础/" itemprop="url">
                   Java基础
                 </a>
@@ -292,10 +407,13 @@
 
       
         
-          
-            <h2 id="Java的面向对象特性"><a href="#Java的面向对象特性" class="headerlink" title="Java的面向对象特性"></a>Java的面向对象特性</h2><p>Java相对于C++来说是纯面向对象语言。</p>
-
-          
+          <h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h3><p>Java相对于C++来说是纯面向对象语言，入口函数都放在类中。入口函数，也就是main函数所在的类名要与该文件名保持一致。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hello</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args )</span></span><br><span class="line">  </span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"hello world"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>保存该类的的文件名应为<code>Hello.java</code>，在命令行中通过<code>javac Hello.java</code>生成.class文件，再通过<code>java Hello</code>运行。具体原理后面详细讲解。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/14/Java基础/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -344,7 +462,7 @@
               
                 
                 <a class="post-title-link" href="/2016/05/14/hello-world/" itemprop="url">
-                  Hello World
+                  博客搭建总结（Hexo+Next+Github）
                 </a>
               
             
@@ -379,7 +497,7 @@
 
           
           
-             <span id="/2016/05/14/hello-world/" class="leancloud_visitors" data-flag-title="Hello World">
+             <span id="/2016/05/14/hello-world/" class="leancloud_visitors" data-flag-title="博客搭建总结（Hexo+Next+Github）">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -402,12 +520,10 @@
 
       
         
-          <p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+          <h2 id="1-安装Hexo"><a href="#1-安装Hexo" class="headerlink" title="1.安装Hexo"></a>1.安装Hexo</h2><p>nodejs和git安装完成后，打开<code>git bash</code>安装hexo：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure></p>
+<p>然后新建一个文件夹(如E:\Hexo)，在此文件夹中执行命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo init</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure></p>
+<p>本地查看:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo server //hexo s</span><br></pre></td></tr></table></figure></p>
+<p>然后在浏览器中输入 <a href="http://localhost:4000/">http://localhost:4000/</a><br>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/05/14/hello-world/#more" rel="contents">
               阅读全文 &raquo;
@@ -480,7 +596,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-count">3</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -490,7 +606,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -561,7 +677,7 @@
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+    NexT.Pisces
   </a>
 </div>
 
@@ -626,6 +742,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
 
   
 

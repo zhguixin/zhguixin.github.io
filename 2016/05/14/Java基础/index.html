@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion">
+<html class="theme-next pisces use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -84,23 +84,26 @@
 
 
 
-<meta name="description" content="Java的面向对象特性Java相对于C++来说是纯面向对象语言。">
+<meta name="description" content="1.概述Java相对于C++来说是纯面向对象语言，入口函数都放在类中。入口函数，也就是main函数所在的类名要与该文件名保持一致。1234567class Hello&amp;#123;  public static void main(String[] args )  &amp;#123;    System.out.println(&quot;hello world&quot;);  &amp;#125;&amp;#125;
+保存该类的的文件名">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java基础">
 <meta property="og:url" content="http://yoursite.com/2016/05/14/Java基础/index.html">
 <meta property="og:site_name" content="Guixin's Blog">
-<meta property="og:description" content="Java的面向对象特性Java相对于C++来说是纯面向对象语言。">
-<meta property="og:updated_time" content="2016-05-14T07:11:04.529Z">
+<meta property="og:description" content="1.概述Java相对于C++来说是纯面向对象语言，入口函数都放在类中。入口函数，也就是main函数所在的类名要与该文件名保持一致。1234567class Hello&amp;#123;  public static void main(String[] args )  &amp;#123;    System.out.println(&quot;hello world&quot;);  &amp;#125;&amp;#125;
+保存该类的的文件名">
+<meta property="og:updated_time" content="2016-07-21T15:19:35.254Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java基础">
-<meta name="twitter:description" content="Java的面向对象特性Java相对于C++来说是纯面向对象语言。">
+<meta name="twitter:description" content="1.概述Java相对于C++来说是纯面向对象语言，入口函数都放在类中。入口函数，也就是main函数所在的类名要与该文件名保持一致。1234567class Hello&amp;#123;  public static void main(String[] args )  &amp;#123;    System.out.println(&quot;hello world&quot;);  &amp;#125;&amp;#125;
+保存该类的的文件名">
 
 
 
 <script type="text/javascript" id="hexo.configuration">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Mist',
+    scheme: 'Pisces',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
@@ -287,7 +290,12 @@
       
 
       
-        <h2 id="Java的面向对象特性"><a href="#Java的面向对象特性" class="headerlink" title="Java的面向对象特性"></a>Java的面向对象特性</h2><p>Java相对于C++来说是纯面向对象语言。</p>
+        <h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h3><p>Java相对于C++来说是纯面向对象语言，入口函数都放在类中。入口函数，也就是main函数所在的类名要与该文件名保持一致。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hello</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args )</span></span><br><span class="line">  </span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"hello world"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>保存该类的的文件名应为<code>Hello.java</code>，在命令行中通过<code>javac Hello.java</code>生成.class文件，再通过<code>java Hello</code>运行。具体原理后面详细讲解。<br><a id="more"></a></p>
+<h3 id="2-基本数据类型"><a href="#2-基本数据类型" class="headerlink" title="2.基本数据类型"></a>2.基本数据类型</h3><p>java语言中共有八种基本数据类型的大小，每个基本数据类型都有对应的的封装类。<br>八种基本数据类型：<code>int ,double ,long ,float, short,byte,character,boolean</code><br>对应的封装类型是：<code>Integer ,Double ,Long ,Float, Short,Byte,Character,Boolean</code></p>
+<h4 id="Switch能否用string做参数？"><a href="#Switch能否用string做参数？" class="headerlink" title="Switch能否用string做参数？"></a>Switch能否用string做参数？</h4><p>在Java 5以前，switch(expr)中，expr只能是byte、short、char、int。从Java 5开始，Java中引入了枚举类型，expr也可以是enum类型，从Java 7开始，expr还可以是字符串（String），但是长整型（long）在目前所有的版本中都是不可以的。</p>
+<h4 id="比较字符串是否相等要用equals方法"><a href="#比较字符串是否相等要用equals方法" class="headerlink" title="比较字符串是否相等要用equals方法"></a>比较字符串是否相等要用equals方法</h4><p>==与equals的主要区别是：==常用于比较原生类型，而equals()方法用于检查对象的相等性。另一个不同的点是：如果==和equals()用于比较对象，当两个引用地址相同，==返回true。而equals()可以返回true或者false主要取决于重写实现。</p>
+<h4 id="String、StringBuffer与StringBuilder的区别"><a href="#String、StringBuffer与StringBuilder的区别" class="headerlink" title="String、StringBuffer与StringBuilder的区别"></a>String、StringBuffer与StringBuilder的区别</h4><p>Java 平台提供了两种类型的字符串：String和StringBuffer / StringBuilder，它们可以储存和操作字符串。其中String是只读字符串，也就意味着String引用的字符串内容是不能被改变的。而StringBuffer和StringBulder类表示的字符串对象可以直接进行修改。StringBuilder是JDK1.5引入的，它和StringBuffer的方法完全相同，区别在于它是单线程环境下使用的，因为它的所有方面都没有被synchronized修饰，因此它的效率也比StringBuffer略高。</p>
 
       
     </div>
@@ -318,13 +326,17 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/05/14/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2016/05/14/hello-world/" rel="next" title="博客搭建总结（Hexo+Next+Github）">
+                <i class="fa fa-chevron-left"></i> 博客搭建总结（Hexo+Next+Github）
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/20/自定义View/" rel="prev" title="自定义View">
+                自定义View <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -415,7 +427,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-count">3</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -425,7 +437,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -474,7 +486,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java的面向对象特性"><span class="nav-number">1.</span> <span class="nav-text">Java的面向对象特性</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-概述"><span class="nav-number">1.</span> <span class="nav-text">1.概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-基本数据类型"><span class="nav-number">2.</span> <span class="nav-text">2.基本数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Switch能否用string做参数？"><span class="nav-number">2.1.</span> <span class="nav-text">Switch能否用string做参数？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#比较字符串是否相等要用equals方法"><span class="nav-number">2.2.</span> <span class="nav-text">比较字符串是否相等要用equals方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#String、StringBuffer与StringBuilder的区别"><span class="nav-number">2.3.</span> <span class="nav-text">String、StringBuffer与StringBuilder的区别</span></a></li></ol></li></ol></div>
             
           </div>
         </section>
@@ -507,7 +519,7 @@
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+    NexT.Pisces
   </a>
 </div>
 
@@ -572,6 +584,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
 
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
