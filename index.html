@@ -233,6 +233,120 @@
             
               
                 
+                <a class="post-title-link" href="/2016/07/24/Espresso/" itemprop="url">
+                  Expresso自动化测试框架
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-24T22:54:39+08:00" content="2016-07-24">
+              2016-07-24
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/07/24/Espresso/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/24/Espresso/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/07/24/Espresso/" class="leancloud_visitors" data-flag-title="Expresso自动化测试框架">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="1-自动化测试"><a href="#1-自动化测试" class="headerlink" title="1.自动化测试"></a>1.自动化测试</h3><p>Android自动化测试的思想。实际上就是通过测试用例，去模仿人的行为，我们主要关注的是测试用例出现后，运行测试用例是否符合我们的预期，主要是功能性的验证。<br>这主要包含了三个步骤：<br>（1）找到一个元素：找到手机界面中我们需要测试的功能对应的元素；<br>（2）进行操作：进行点击或者输入等操作；<br>（3）检查结果：判定操作结束后是否出现了预期的结果。</p>
+<h3 id="2-Espresso自动化测试流程"><a href="#2-Espresso自动化测试流程" class="headerlink" title="2.Espresso自动化测试流程"></a>2.Espresso自动化测试流程</h3><h4 id="基本流程"><a href="#基本流程" class="headerlink" title="基本流程"></a>基本流程</h4><p>基于Expresso的一个测试demo：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith</span>(AndroidJUnit4.class)       <span class="comment">//JUnit 4风格</span></span><br><span class="line"><span class="meta">@LargeTest</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorldEspressoTest</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Rule</span></span><br><span class="line">    <span class="keyword">public</span> ActivityTestRule&lt;MainActivity&gt; mActivityRule</span><br><span class="line">                    = <span class="keyword">new</span> ActivityTestRule(MainActivity.class);</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">listGoesOverTheFold</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        onView(withText(<span class="string">"Hello world!"</span>)).check(matches(isDisplayed()));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>@Rule</strong> 为固定写法，针对你要测试的Activity即可。<br><strong>@Test</strong> 为测试用例的注解<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/07/24/Espresso/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/07/20/自定义View/" itemprop="url">
                   自定义View
                 </a>
@@ -596,7 +710,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-count">4</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

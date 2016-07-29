@@ -96,7 +96,7 @@
 然后新建一个文件夹(如E:\Hexo)，在此文件夹中执行命令：12hexo initnpm install
 本地查看:1hexo server //hexo s
 然后在浏览器中输入 http://localhost:4000/">
-<meta property="og:updated_time" content="2016-07-21T15:37:32.127Z">
+<meta property="og:updated_time" content="2016-07-29T16:32:11.333Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="博客搭建总结（Hexo+Next+Github）">
 <meta name="twitter:description" content="1.安装Hexonodejs和git安装完成后，打开git bash安装hexo：1npm install -g hexo-cli
@@ -304,7 +304,7 @@
 <p>会新建一个名为’Frist Page’的文章，执行以下命令之后查看。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo generate   //生成静态网页以及css js文件 存放于public文件夹中</span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure></p>
 <p>至此，本地博客搭建完毕。下一步移植到Github</p>
 <h2 id="3-部署到Github"><a href="#3-部署到Github" class="headerlink" title="3.部署到Github"></a>3.部署到Github</h2><p>项目名必须是:<code>name.github.io</code>(name是你的账号名)。<br>我的账号名是<code>zhguixin</code>,新建的项目名也就是<code>zhguixin.github.io</code>，在你的hexo文件夹中有个重要的文件_config.yml,打开编辑,把<code>zhguixin</code>换成你的账号名<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">   type: git</span><br><span class="line">   repository: https://github.com/zhguixin/zhguixin.github.io.git</span><br><span class="line">   branch: master</span><br></pre></td></tr></table></figure></p>
-<p>执行下列命令后部署<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo generate</span><br><span class="line">hexo deploy　　//上传至github相当于git push...</span><br></pre></td></tr></table></figure></p>
+<p>执行下列命令后部署<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br><span class="line">hexo deploy　　//上传至github相当于git push...</span><br></pre></td></tr></table></figure></p>
 <p>至此，个人博客搭建完成。<br>注意: 每次修改后需要 <code>hexo g</code> 命令保存，然后 <code>hexo d</code> 命令上传<br>官网：<a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>    详细配置参考：<a href="https://hexo.io/docs/" target="_blank" rel="external">官方文档</a></p>
 
       
@@ -427,7 +427,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-count">4</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
