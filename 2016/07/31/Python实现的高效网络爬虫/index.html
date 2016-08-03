@@ -1,0 +1,971 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="转载自  500 Lines or Lesstitle: A Web Crawler With asyncio Coroutinesauthor: A. Jesse Jiryu Davis and Guido van Rossum
+A. Jesse Jiryu Davis is a staff engineer at MongoDB in New York. He wrote Motor, the">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python实现的高效网络爬虫">
+<meta property="og:url" content="http://yoursite.com/2016/07/31/Python实现的高效网络爬虫/index.html">
+<meta property="og:site_name" content="Guixin's Blog">
+<meta property="og:description" content="转载自  500 Lines or Lesstitle: A Web Crawler With asyncio Coroutinesauthor: A. Jesse Jiryu Davis and Guido van Rossum
+A. Jesse Jiryu Davis is a staff engineer at MongoDB in New York. He wrote Motor, the">
+<meta property="og:image" content="http://i1.piimg.com/571109/45bb6acacf4f9843.png">
+<meta property="og:image" content="http://i1.piimg.com/571109/d568fe69f596b240.png">
+<meta property="og:image" content="http://i1.piimg.com/571109/280147c59bc7d0ea.png">
+<meta property="og:image" content="http://i1.piimg.com/571109/c40a52385c4bfc19.png">
+<meta property="og:updated_time" content="2016-08-03T14:15:32.283Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python实现的高效网络爬虫">
+<meta name="twitter:description" content="转载自  500 Lines or Lesstitle: A Web Crawler With asyncio Coroutinesauthor: A. Jesse Jiryu Davis and Guido van Rossum
+A. Jesse Jiryu Davis is a staff engineer at MongoDB in New York. He wrote Motor, the">
+<meta name="twitter:image" content="http://i1.piimg.com/571109/45bb6acacf4f9843.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Python实现的高效网络爬虫 | Guixin's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Guixin's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Python实现的高效网络爬虫
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-31T21:51:39+08:00" content="2016-07-31">
+              2016-07-31
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/07/31/Python实现的高效网络爬虫/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/31/Python实现的高效网络爬虫/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/07/31/Python实现的高效网络爬虫/" class="leancloud_visitors" data-flag-title="Python实现的高效网络爬虫">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>转载自  <a href="http://aosabook.org/en/500L/a-web-crawler-with-asyncio-coroutines.html" target="_blank" rel="external">500 Lines or Less</a></strong><br>title: A Web Crawler With asyncio Coroutines<br>author: A. Jesse Jiryu Davis and Guido van Rossum</p>
+<markdown><br><em>A. Jesse Jiryu Davis is a staff engineer at MongoDB in New York. He wrote Motor, the async MongoDB Python driver, and he is the lead developer of the MongoDB C Driver and a member of the PyMongo team. He contributes to asyncio and Tornado. He writes at <a href="http://emptysqua.re" target="_blank" rel="external">http://emptysqua.re</a>.</em><br><br><em>Guido van Rossum is the creator of Python, one of the major programming languages on and off the web. The Python community refers to him as the BDFL (Benevolent Dictator For Life), a title straight from a Monty Python skit.  Guido’s home on the web is <a href="http://www.python.org/~guido/" target="_blank" rel="external">http://www.python.org/~guido/</a>.</em><br></markdown>
+
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Classical computer science emphasizes efficient algorithms that complete computations as quickly as possible. But many networked programs spend their time not computing, but holding open many connections that are slow, or have infrequent events. These programs present a very different challenge: to wait for a huge number of network events efficiently. A contemporary approach to this problem is asynchronous I/O, or “async”.</p>
+<a id="more"></a>
+<p>This chapter presents a simple web crawler. The crawler is an archetypal async application because it waits for many responses, but does little computation. The more pages it can fetch at once, the sooner it completes. If it devotes a thread to each in-flight request, then as the number of concurrent requests rises it will run out of memory or other thread-related resource before it runs out of sockets. It avoids the need for threads by using asynchronous I/O.</p>
+<p>We present the example in three stages. First, we show an async event loop and sketch a crawler that uses the event loop with callbacks: it is very efficient, but extending it to more complex problems would lead to unmanageable spaghetti code. Second, therefore, we show that Python coroutines are both efficient and extensible. We implement simple coroutines in Python using generator functions. In the third stage, we use the full-featured coroutines from Python’s standard “asyncio” library[^16], and coordinate them using an async queue.</p>
+<h2 id="The-Task"><a href="#The-Task" class="headerlink" title="The Task"></a>The Task</h2><p>A web crawler finds and downloads all pages on a website, perhaps to archive or index them. Beginning with a root URL, it fetches each page, parses it for links to unseen pages, and adds these to a queue. It stops when it fetches a page with no unseen links and the queue is empty.</p>
+<p>We can hasten this process by downloading many pages concurrently. As the crawler finds new links, it launches simultaneous fetch operations for the new pages on separate sockets. It parses responses as they arrive, adding new links to the queue. There may come some point of diminishing returns where too much concurrency degrades performance, so we cap the number of concurrent requests, and leave the remaining links in the queue until some in-flight requests complete.</p>
+<h2 id="The-Traditional-Approach"><a href="#The-Traditional-Approach" class="headerlink" title="The Traditional Approach"></a>The Traditional Approach</h2><p>How do we make the crawler concurrent? Traditionally we would create a thread pool. Each thread would be in charge of downloading one page at a time over a socket. For example, to download a page from <code>xkcd.com</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch</span><span class="params">(url)</span>:</span></span><br><span class="line">    sock = socket.socket()</span><br><span class="line">    sock.connect((<span class="string">'xkcd.com'</span>, <span class="number">80</span>))</span><br><span class="line">    request = <span class="string">'GET &#123;&#125; HTTP/1.0\r\nHost: xkcd.com\r\n\r\n'</span>.format(url)</span><br><span class="line">    sock.send(request.encode(<span class="string">'ascii'</span>))</span><br><span class="line">    response = <span class="string">b''</span></span><br><span class="line">    chunk = sock.recv(<span class="number">4096</span>)</span><br><span class="line">    <span class="keyword">while</span> chunk:</span><br><span class="line">        response += chunk</span><br><span class="line">        chunk = sock.recv(<span class="number">4096</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Page is now downloaded.</span></span><br><span class="line">    links = parse_links(response)</span><br><span class="line">    q.add(links)</span><br></pre></td></tr></table></figure>
+<p>By default, socket operations are <em>blocking</em>: when the thread calls a method like <code>connect</code> or <code>recv</code>, it pauses until the operation completes.[^15] Consequently to download many pages at once, we need many threads. A sophisticated application amortizes the cost of thread-creation by keeping idle threads in a thread pool, then checking them out to reuse them for subsequent tasks; it does the same with sockets in a connection pool.</p>
+<p>And yet, threads are expensive, and operating systems enforce a variety of hard caps on the number of threads a process, user, or machine may have. On Jesse’s system, a Python thread costs around 50k of memory, and starting tens of thousands of threads causes failures. If we scale up to tens of thousands of simultaneous operations on concurrent sockets, we run out of threads before we run out of sockets. Per-thread overhead or system limits on threads are the bottleneck.</p>
+<p>In his influential article “The C10K problem”<a href="[http://www.kegel.com/c10k.html](http://www.kegel.com/c10k.html)">^8</a>, Dan Kegel outlines the limitations of multithreading for I/O concurrency. He begins,</p>
+<blockquote>
+<p>It’s time for web servers to handle ten thousand clients simultaneously, don’t you think? After all, the web is a big place now.</p>
+</blockquote>
+<p>Kegel coined the term “C10K” in 1999. Ten thousand connections sounds dainty now, but the problem has changed only in size, not in kind. Back then, using a thread per connection for C10K was impractical. Now the cap is orders of magnitude higher. Indeed, our toy web crawler would work just fine with threads. Yet for very large scale applications, with hundreds of thousands of connections, the cap remains: there is a limit beyond which most systems can still create sockets, but have run out of threads. How can we overcome this?</p>
+<h2 id="Async"><a href="#Async" class="headerlink" title="Async"></a>Async</h2><p>Asynchronous I/O frameworks do concurrent operations on a single thread using<br><em>non-blocking</em> sockets. In our async crawler, we set the socket non-blocking<br>before we begin to connect to the server:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sock = socket.socket()</span><br><span class="line">sock.setblocking(<span class="keyword">False</span>)</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    sock.connect((<span class="string">'xkcd.com'</span>, <span class="number">80</span>))</span><br><span class="line"><span class="keyword">except</span> BlockingIOError:</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>Irritatingly, a non-blocking socket throws an exception from <code>connect</code>, even when it is working normally. This exception replicates the irritating behavior of the underlying C function, which sets <code>errno</code> to <code>EINPROGRESS</code> to tell you it has begun.</p>
+<p>Now our crawler needs a way to know when the connection is established, so it can send the HTTP request. We could simply keep trying in a tight loop:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">request = <span class="string">'GET &#123;&#125; HTTP/1.0\r\nHost: xkcd.com\r\n\r\n'</span>.format(url)</span><br><span class="line">encoded = request.encode(<span class="string">'ascii'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        sock.send(encoded)</span><br><span class="line">        <span class="keyword">break</span>  <span class="comment"># Done.</span></span><br><span class="line">    <span class="keyword">except</span> OSError <span class="keyword">as</span> e:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'sent'</span>)</span><br></pre></td></tr></table></figure>
+<p>This method not only wastes electricity, but it cannot efficiently await events on <em>multiple</em> sockets. In ancient times, BSD Unix’s solution to this problem was <code>select</code>, a C function that waits for an event to occur on a non-blocking socket or a small array of them. Nowadays the demand for Internet applications with huge numbers of connections has led to replacements like <code>poll</code>, then <code>kqueue</code> on BSD and <code>epoll</code> on Linux. These APIs are similar to <code>select</code>, but perform well with very large numbers of connections.</p>
+<p>Python 3.4’s <code>DefaultSelector</code> uses the best <code>select</code>-like function available on your system. To register for notifications about network I/O, we create a non-blocking socket and register it with the default selector:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> selectors <span class="keyword">import</span> DefaultSelector, EVENT_WRITE</span><br><span class="line"></span><br><span class="line">selector = DefaultSelector()</span><br><span class="line"></span><br><span class="line">sock = socket.socket()</span><br><span class="line">sock.setblocking(<span class="keyword">False</span>)</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    sock.connect((<span class="string">'xkcd.com'</span>, <span class="number">80</span>))</span><br><span class="line"><span class="keyword">except</span> BlockingIOError:</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">connected</span><span class="params">()</span>:</span></span><br><span class="line">    selector.unregister(sock.fileno())</span><br><span class="line">    print(<span class="string">'connected!'</span>)</span><br><span class="line"></span><br><span class="line">selector.register(sock.fileno(), EVENT_WRITE, connected)</span><br></pre></td></tr></table></figure>
+<p>We disregard the spurious error and call <code>selector.register</code>, passing in the socket’s file descriptor and a constant that expresses what event we are waiting for. To be notified when the connection is established, we pass <code>EVENT_WRITE</code>: that is, we want to know when the socket is “writable”. We also pass a Python function, <code>connected</code>, to run when that event occurs. Such a function is known as a <em>callback</em>.</p>
+<p>We process I/O notifications as the selector receives them, in a loop:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">loop</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        events = selector.select()</span><br><span class="line">        <span class="keyword">for</span> event_key, event_mask <span class="keyword">in</span> events:</span><br><span class="line">            callback = event_key.data</span><br><span class="line">            callback()</span><br></pre></td></tr></table></figure>
+<p>The <code>connected</code> callback is stored as <code>event_key.data</code>, which we retrieve and execute once the non-blocking socket is connected.</p>
+<p>Unlike in our fast-spinning loop above, the call to <code>select</code> here pauses, awaiting the next I/O events. Then the loop runs callbacks that are waiting for these events. Operations that have not completed remain pending until some future tick of the event loop.</p>
+<p>What have we demonstrated already? We showed how to begin an operation and execute a callback when the operation is ready. An async <em>framework</em> builds on the two features we have shown&mdash;non-blocking sockets and the event loop&mdash;to run concurrent operations on a single thread.</p>
+<p>We have achieved “concurrency” here, but not what is traditionally called “parallelism”. That is, we built a tiny system that does overlapping I/O. It is capable of beginning new operations while others are in flight. It does not actually utilize multiple cores to execute computation in parallel. But then, this system is designed for I/O-bound problems, not CPU-bound ones.[^14]</p>
+<p>So our event loop is efficient at concurrent I/O because it does not devote thread resources to each connection. But before we proceed, it is important to correct a common misapprehension that async is <em>faster</em> than multithreading. Often it is not&mdash;indeed, in Python, an event loop like ours is moderately slower than multithreading at serving a small number of very active connections. In a runtime without a global interpreter lock, threads would perform even better on such a workload. What asynchronous I/O is right for, is applications with many slow or sleepy connections with infrequent events.[^11]<latex>[^bayer]</latex></p>
+<h2 id="Programming-With-Callbacks"><a href="#Programming-With-Callbacks" class="headerlink" title="Programming With Callbacks"></a>Programming With Callbacks</h2><p>With the runty async framework we have built so far, how can we build a web crawler? Even a simple URL-fetcher is painful to write.</p>
+<p>We begin with global sets of the URLs we have yet to fetch, and the URLs we have seen:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">urls_todo = set([<span class="string">'/'</span>])</span><br><span class="line">seen_urls = set([<span class="string">'/'</span>])</span><br></pre></td></tr></table></figure>
+<p>The <code>seen_urls</code> set includes <code>urls_todo</code> plus completed URLs. The two sets are initialized with the root URL “/“.</p>
+<p>Fetching a page will require a series of callbacks. The <code>connected</code> callback fires when a socket is connected, and sends a GET request to the server. But then it must await a response, so it registers another callback. If, when that callback fires, it cannot read the full response yet, it registers again, and so on.</p>
+<p>Let us collect these callbacks into a <code>Fetcher</code> object. It needs a URL, a socket object, and a place to accumulate the response bytes:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fetcher</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, url)</span>:</span></span><br><span class="line">        self.response = <span class="string">b''</span>  <span class="comment"># Empty array of bytes.</span></span><br><span class="line">        self.url = url</span><br><span class="line">        self.sock = <span class="keyword">None</span></span><br></pre></td></tr></table></figure>
+<p>We begin by calling <code>Fetcher.fetch</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Method on Fetcher class.</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch</span><span class="params">(self)</span>:</span></span><br><span class="line">    self.sock = socket.socket()</span><br><span class="line">    self.sock.setblocking(<span class="keyword">False</span>)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        self.sock.connect((<span class="string">'xkcd.com'</span>, <span class="number">80</span>))</span><br><span class="line">    <span class="keyword">except</span> BlockingIOError:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">        </span><br><span class="line">    <span class="comment"># Register next callback.</span></span><br><span class="line">    selector.register(self.sock.fileno(),</span><br><span class="line">                      EVENT_WRITE,</span><br><span class="line">                      self.connected)</span><br></pre></td></tr></table></figure>
+<p>The <code>fetch</code> method begins connecting a socket. But notice the method returns before the connection is established. It must return control to the event loop to wait for the connection. To understand why, imagine our whole application was structured so:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Begin fetching http://xkcd.com/353/</span></span><br><span class="line">fetcher = Fetcher(<span class="string">'/353/'</span>)</span><br><span class="line">fetcher.fetch()</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    events = selector.select()</span><br><span class="line">    <span class="keyword">for</span> event_key, event_mask <span class="keyword">in</span> events:</span><br><span class="line">        callback = event_key.data</span><br><span class="line">        callback(event_key, event_mask)</span><br></pre></td></tr></table></figure>
+<p>All event notifications are processed in the event loop when it calls <code>select</code>. Hence <code>fetch</code> must hand control to the event loop, so that the program knows when the socket has connected. Only then does the loop run the <code>connected</code> callback, which was registered at the end of <code>fetch</code> above.</p>
+<p>Here is the implementation of <code>connected</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Method on Fetcher class.</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">connected</span><span class="params">(self, key, mask)</span>:</span></span><br><span class="line">    print(<span class="string">'connected!'</span>)</span><br><span class="line">    selector.unregister(key.fd)</span><br><span class="line">    request = <span class="string">'GET &#123;&#125; HTTP/1.0\r\nHost: xkcd.com\r\n\r\n'</span>.format(self.url)</span><br><span class="line">    self.sock.send(request.encode(<span class="string">'ascii'</span>))</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Register the next callback.</span></span><br><span class="line">    selector.register(key.fd,</span><br><span class="line">                      EVENT_READ,</span><br><span class="line">                      self.read_response)</span><br></pre></td></tr></table></figure>
+<p>The method sends a GET request. A real application would check the return value of <code>send</code> in case the whole message cannot be sent at once. But our request is small and our application unsophisticated. It blithely calls <code>send</code>, then waits for a response. Of course, it must register yet another callback and relinquish control to the event loop. The next and final callback, <code>read_response</code>, processes the server’s reply:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Method on Fetcher class.</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_response</span><span class="params">(self, key, mask)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> stopped</span><br><span class="line"></span><br><span class="line">    chunk = self.sock.recv(<span class="number">4096</span>)  <span class="comment"># 4k chunk size.</span></span><br><span class="line">    <span class="keyword">if</span> chunk:</span><br><span class="line">        self.response += chunk</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        selector.unregister(key.fd)  <span class="comment"># Done reading.</span></span><br><span class="line">        links = self.parse_links()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Python set-logic:</span></span><br><span class="line">        <span class="keyword">for</span> link <span class="keyword">in</span> links.difference(seen_urls):</span><br><span class="line">            urls_todo.add(link)</span><br><span class="line">            Fetcher(link).fetch()  <span class="comment"># &lt;- New Fetcher.</span></span><br><span class="line"></span><br><span class="line">        seen_urls.update(links)</span><br><span class="line">        urls_todo.remove(self.url)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> urls_todo:</span><br><span class="line">            stopped = <span class="keyword">True</span></span><br></pre></td></tr></table></figure>
+<p>The callback is executed each time the selector sees that the socket is “readable”, which could mean two things: the socket has data or it is closed.</p>
+<p>The callback asks for up to four kilobytes of data from the socket. If less is ready, <code>chunk</code> contains whatever data is available. If there is more, <code>chunk</code> is four kilobytes long and the socket remains readable, so the event loop runs this callback again on the next tick. When the response is complete, the server has closed the socket and <code>chunk</code> is empty.</p>
+<p>The <code>parse_links</code> method, not shown, returns a set of URLs. We start a new fetcher for each new URL, with no concurrency cap. Note a nice feature of async programming with callbacks: we need no mutex around changes to shared data, such as when we add links to <code>seen_urls</code>. There is no preemptive multitasking, so we cannot be interrupted at arbitrary points in our code.</p>
+<p>We add a global <code>stopped</code> variable and use it to control the loop:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">stopped = <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">loop</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">not</span> stopped:</span><br><span class="line">        events = selector.select()</span><br><span class="line">        <span class="keyword">for</span> event_key, event_mask <span class="keyword">in</span> events:</span><br><span class="line">            callback = event_key.data</span><br><span class="line">            callback()</span><br></pre></td></tr></table></figure>
+<p>Once all pages are downloaded the fetcher stops the global event loop and the program exits.</p>
+<p>This example makes async’s problem plain: spaghetti code. We need some way to express a series of computations and I/O operations, and schedule multiple such series of operations to run concurrently. But without threads, a series of operations cannot be collected into a single function: whenever a function begins an I/O operation, it explicitly saves whatever state will be needed in the future, then returns. You are responsible for thinking about and writing this state-saving code.</p>
+<p>Let us explain what we mean by that. Consider how simply we fetched a URL on a thread with a conventional blocking socket:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Blocking version.</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch</span><span class="params">(url)</span>:</span></span><br><span class="line">    sock = socket.socket()</span><br><span class="line">    sock.connect((<span class="string">'xkcd.com'</span>, <span class="number">80</span>))</span><br><span class="line">    request = <span class="string">'GET &#123;&#125; HTTP/1.0\r\nHost: xkcd.com\r\n\r\n'</span>.format(url)</span><br><span class="line">    sock.send(request.encode(<span class="string">'ascii'</span>))</span><br><span class="line">    response = <span class="string">b''</span></span><br><span class="line">    chunk = sock.recv(<span class="number">4096</span>)</span><br><span class="line">    <span class="keyword">while</span> chunk:</span><br><span class="line">        response += chunk</span><br><span class="line">        chunk = sock.recv(<span class="number">4096</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Page is now downloaded.</span></span><br><span class="line">    links = parse_links(response)</span><br><span class="line">    q.add(links)</span><br></pre></td></tr></table></figure>
+<p>What state does this function remember between one socket operation and the next? It has the socket, a URL, and the accumulating <code>response</code>.  A function that runs on a thread uses basic features of the programming language to store this temporary state in local variables, on its stack. The function also has a “continuation”&mdash;that is, the code it plans to execute after I/O completes. The runtime remembers the continuation by storing the thread’s instruction pointer. You need not think about restoring these local variables and the continuation after I/O. It is built in to the language.</p>
+<p>But with a callback-based async framework, these language features are no help. While waiting for I/O, a function must save its state explicitly, because the function returns and loses its stack frame before I/O completes. In lieu of local variables, our callback-based example stores <code>sock</code> and <code>response</code> as attributes of <code>self</code>, the Fetcher instance. In lieu of the instruction pointer, it stores its continuation by registering the callbacks <code>connected</code> and <code>read_response</code>. As the application’s features grow, so does the complexity of the state we manually save across callbacks. Such onerous bookkeeping makes the coder prone to migraines.</p>
+<p>Even worse, what happens if a callback throws an exception, before it schedules the next callback in the chain? Say we did a poor job on the <code>parse_links</code> method and it throws an exception parsing some HTML:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;loop-with-callbacks.py&quot;, line 111, in &lt;module&gt;</span><br><span class="line">    loop()</span><br><span class="line">  File &quot;loop-with-callbacks.py&quot;, line 106, in loop</span><br><span class="line">    callback(event_key, event_mask)</span><br><span class="line">  File &quot;loop-with-callbacks.py&quot;, line 51, in read_response</span><br><span class="line">    links = self.parse_links()</span><br><span class="line">  File &quot;loop-with-callbacks.py&quot;, line 67, in parse_links</span><br><span class="line">    raise Exception(&apos;parse error&apos;)</span><br><span class="line">Exception: parse error</span><br></pre></td></tr></table></figure>
+<p>The stack trace shows only that the event loop was running a callback. We do not remember what led to the error. The chain is broken on both ends: we forgot where we were going and whence we came. This loss of context is called “stack ripping”, and in many cases it confounds the investigator. Stack ripping also prevents us from installing an exception handler for a chain of callbacks, the way a “try / except” block wraps a function call and its tree of descendents.[^7]</p>
+<p>So, even apart from the long debate about the relative efficiencies of multithreading and async, there is this other debate regarding which is more error-prone: threads are susceptible to data races if you make a mistake synchronizing them, but callbacks are stubborn to debug due to stack ripping. </p>
+<h2 id="Coroutines"><a href="#Coroutines" class="headerlink" title="Coroutines"></a>Coroutines</h2><p>We entice you with a promise. It is possible to write asynchronous code that combines the efficiency of callbacks with the classic good looks of multithreaded programming. This combination is achieved with a pattern called “coroutines”. Using Python 3.4’s standard asyncio library, and a package called “aiohttp”, fetching a URL in a coroutine is very direct[^10]:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@asyncio.coroutine</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch</span><span class="params">(self, url)</span>:</span></span><br><span class="line">    response = <span class="keyword">yield</span> <span class="keyword">from</span> self.session.get(url)</span><br><span class="line">    body = <span class="keyword">yield</span> <span class="keyword">from</span> response.read()</span><br></pre></td></tr></table></figure>
+<p>It is also scalable. Compared to the 50k of memory per thread and the operating system’s hard limits on threads, a Python coroutine takes barely 3k of memory on Jesse’s system. Python can easily start hundreds of thousands of coroutines.</p>
+<p>The concept of a coroutine, dating to the elder days of computer science, is simple: it is a subroutine that can be paused and resumed. Whereas threads are preemptively multitasked by the operating system, coroutines multitask cooperatively: they choose when to pause, and which coroutine to run next.</p>
+<p>There are many implementations of coroutines; even in Python there are several. The coroutines in the standard “asyncio” library in Python 3.4 are built upon generators, a Future class, and the “yield from” statement. Starting in Python 3.5, coroutines are a native feature of the language itself[^17]; however, understanding coroutines as they were first implemented in Python 3.4, using pre-existing language facilities, is the foundation to tackle Python 3.5’s native coroutines.</p>
+<p>To explain Python 3.4’s generator-based coroutines, we will engage in an exposition of generators and how they are used as coroutines in asyncio, and trust you will enjoy reading it as much as we enjoyed writing it. Once we have explained generator-based coroutines, we shall use them in our async web crawler.</p>
+<h2 id="How-Python-Generators-Work"><a href="#How-Python-Generators-Work" class="headerlink" title="How Python Generators Work"></a>How Python Generators Work</h2><p>Before you grasp Python generators, you have to understand how regular Python functions work. Normally, when a Python function calls a subroutine, the subroutine retains control until it returns, or throws an exception. Then control returns to the caller:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></span><br><span class="line"><span class="meta">... </span>    bar()</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">bar</span><span class="params">()</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>The standard Python interpreter is written in C. The C function that executes a Python function is called, mellifluously, <code>PyEval_EvalFrameEx</code>. It takes a Python stack frame object and evaluates Python bytecode in the context of the frame. Here is the bytecode for <code>foo</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> dis</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dis.dis(foo)</span><br><span class="line">  <span class="number">2</span>           <span class="number">0</span> LOAD_GLOBAL              <span class="number">0</span> (bar)</span><br><span class="line">              <span class="number">3</span> CALL_FUNCTION            <span class="number">0</span> (<span class="number">0</span> positional, <span class="number">0</span> keyword pair)</span><br><span class="line">              <span class="number">6</span> POP_TOP</span><br><span class="line">              <span class="number">7</span> LOAD_CONST               <span class="number">0</span> (<span class="keyword">None</span>)</span><br><span class="line">             <span class="number">10</span> RETURN_VALUE</span><br></pre></td></tr></table></figure>
+<p>The <code>foo</code> function loads <code>bar</code> onto its stack and calls it, then pops its return value from the stack, loads <code>None</code> onto the stack, and returns <code>None</code>.</p>
+<p>When <code>PyEval_EvalFrameEx</code> encounters the <code>CALL_FUNCTION</code> bytecode, it creates a new Python stack frame and recurses: that is, it calls <code>PyEval_EvalFrameEx</code> recursively with the new frame, which is used to execute <code>bar</code>.</p>
+<p>It is crucial to understand that Python stack frames are allocated in heap memory! The Python interpreter is a normal C program, so its stack frames are normal stack frames. But the <em>Python</em> stack frames it manipulates are on the heap. Among other surprises, this means a Python stack frame can outlive its function call. To see this interactively, save the current frame from within <code>bar</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> inspect</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>frame = <span class="keyword">None</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></span><br><span class="line"><span class="meta">... </span>    bar()</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">bar</span><span class="params">()</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">global</span> frame</span><br><span class="line"><span class="meta">... </span>    frame = inspect.currentframe()</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>foo()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># The frame was executing the code for 'bar'.</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>frame.f_code.co_name</span><br><span class="line"><span class="string">'bar'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># Its back pointer refers to the frame for 'foo'.</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>caller_frame = frame.f_back</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>caller_frame.f_code.co_name</span><br><span class="line"><span class="string">'foo'</span></span><br></pre></td></tr></table></figure>
+<p><img src="http://i1.piimg.com/571109/45bb6acacf4f9843.png" alt="functioncalls"></p>
+<p>The stage is now set for Python generators, which use the same building blocks&mdash;code objects and stack frames&mdash;to marvelous effect.</p>
+<p>This is a generator function:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">gen_fn</span><span class="params">()</span>:</span></span><br><span class="line"><span class="meta">... </span>    result = <span class="keyword">yield</span> <span class="number">1</span></span><br><span class="line"><span class="meta">... </span>    print(<span class="string">'result of yield: &#123;&#125;'</span>.format(result))</span><br><span class="line"><span class="meta">... </span>    result2 = <span class="keyword">yield</span> <span class="number">2</span></span><br><span class="line"><span class="meta">... </span>    print(<span class="string">'result of 2nd yield: &#123;&#125;'</span>.format(result2))</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">return</span> <span class="string">'done'</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>When Python compiles <code>gen_fn</code> to bytecode, it sees the <code>yield</code> statement and knows that <code>gen_fn</code> is a generator function, not a regular one. It sets a flag to remember this fact:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># The generator flag is bit position 5.</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>generator_bit = <span class="number">1</span> &lt;&lt; <span class="number">5</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>bool(gen_fn.__code__.co_flags &amp; generator_bit)</span><br><span class="line"><span class="keyword">True</span></span><br></pre></td></tr></table></figure>
+<p>When you call a generator function, Python sees the generator flag, and it does not actually run the function. Instead, it creates a generator:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>gen = gen_fn()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(gen)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">generator</span>'&gt;</span></span><br></pre></td></tr></table></figure>
+<p>A Python generator encapsulates a stack frame plus a reference to some code, the body of <code>gen_fn</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>gen.gi_code.co_name</span><br><span class="line"><span class="string">'gen_fn'</span></span><br></pre></td></tr></table></figure>
+<p>All generators from calls to <code>gen_fn</code> point to this same code. But each has its own stack frame. This stack frame is not on any actual stack, it sits in heap memory waiting to be used:</p>
+<p><img src="http://i1.piimg.com/571109/d568fe69f596b240.png" alt="generators"></p>
+<p>The frame has a “last instruction” pointer, the instruction it executed most recently. In the beginning, the last instruction pointer is -1, meaning the generator has not begun:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>gen.gi_frame.f_lasti</span><br><span class="line"><span class="number">-1</span></span><br></pre></td></tr></table></figure>
+<p>When we call <code>send</code>, the generator reaches its first <code>yield</code>, and pauses. The return value of <code>send</code> is 1, since that is what <code>gen</code> passes to the <code>yield</code> expression:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>gen.send(<span class="keyword">None</span>)</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>The generator’s instruction pointer is now 3 bytecodes from the start, part way through the 56 bytes of compiled Python:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>gen.gi_frame.f_lasti</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(gen.gi_code.co_code)</span><br><span class="line"><span class="number">56</span></span><br></pre></td></tr></table></figure>
+<p>The generator can be resumed at any time, from any function, because its stack frame is not actually on the stack: it is on the heap. Its position in the call hierarchy is not fixed, and it need not obey the first-in, last-out order of execution that regular functions do. It is liberated, floating free like a cloud.</p>
+<p>We can send the value “hello” into the generator and it becomes the result of the <code>yield</code> expression, and the generator continues until it yields 2:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>gen.send(<span class="string">'hello'</span>)</span><br><span class="line">result of <span class="keyword">yield</span>: hello</span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p>Its stack frame now contains the local variable <code>result</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>gen.gi_frame.f_locals</span><br><span class="line">&#123;<span class="string">'result'</span>: <span class="string">'hello'</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>Other generators created from <code>gen_fn</code> will have their own stack frames and local variables.</p>
+<p>When we call <code>send</code> again, the generator continues from its second <code>yield</code>, and finishes by raising the special <code>StopIteration</code> exception:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>gen.send(<span class="string">'goodbye'</span>)</span><br><span class="line">result of <span class="number">2</span>nd <span class="keyword">yield</span>: goodbye</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;input&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">StopIteration: done</span><br></pre></td></tr></table></figure>
+<p>The exception has a value, which is the return value of the generator: the string <code>&quot;done&quot;</code>.</p>
+<h2 id="Building-Coroutines-With-Generators"><a href="#Building-Coroutines-With-Generators" class="headerlink" title="Building Coroutines With Generators"></a>Building Coroutines With Generators</h2><p>So a generator can pause, and it can be resumed with a value, and it has a return value. Sounds like a good primitive upon which to build an async programming model, without spaghetti callbacks! We want to build a “coroutine”: a routine that is cooperatively scheduled with other routines in the program. Our coroutines will be a simplified version of those in Python’s standard “asyncio” library. As in asyncio, we will use generators, futures, and the “yield from” statement.</p>
+<p>First we need a way to represent some future result that a coroutine is waiting for. A stripped-down version:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Future</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.result = <span class="keyword">None</span></span><br><span class="line">        self._callbacks = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_done_callback</span><span class="params">(self, fn)</span>:</span></span><br><span class="line">        self._callbacks.append(fn)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">set_result</span><span class="params">(self, result)</span>:</span></span><br><span class="line">        self.result = result</span><br><span class="line">        <span class="keyword">for</span> fn <span class="keyword">in</span> self._callbacks:</span><br><span class="line">            fn(self)</span><br></pre></td></tr></table></figure>
+<p>A future is initially “pending”. It is “resolved” by a call to <code>set_result</code>.[^12]</p>
+<p>Let us adapt our fetcher to use futures and coroutines. We wrote <code>fetch</code> with a callback:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fetcher</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fetch</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.sock = socket.socket()</span><br><span class="line">        self.sock.setblocking(<span class="keyword">False</span>)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            self.sock.connect((<span class="string">'xkcd.com'</span>, <span class="number">80</span>))</span><br><span class="line">        <span class="keyword">except</span> BlockingIOError:</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line">        selector.register(self.sock.fileno(),</span><br><span class="line">                          EVENT_WRITE,</span><br><span class="line">                          self.connected)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">connected</span><span class="params">(self, key, mask)</span>:</span></span><br><span class="line">        print(<span class="string">'connected!'</span>)</span><br><span class="line">        <span class="comment"># And so on....</span></span><br></pre></td></tr></table></figure>
+<p>The <code>fetch</code> method begins connecting a socket, then registers the callback, <code>connected</code>, to be executed when the socket is ready. Now we can combine these two steps into one coroutine:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch</span><span class="params">(self)</span>:</span></span><br><span class="line">    sock = socket.socket()</span><br><span class="line">    sock.setblocking(<span class="keyword">False</span>)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        sock.connect((<span class="string">'xkcd.com'</span>, <span class="number">80</span>))</span><br><span class="line">    <span class="keyword">except</span> BlockingIOError:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    f = Future()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_connected</span><span class="params">()</span>:</span></span><br><span class="line">        f.set_result(<span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line">    selector.register(sock.fileno(),</span><br><span class="line">                      EVENT_WRITE,</span><br><span class="line">                      on_connected)</span><br><span class="line">    <span class="keyword">yield</span> f</span><br><span class="line">    selector.unregister(sock.fileno())</span><br><span class="line">    print(<span class="string">'connected!'</span>)</span><br></pre></td></tr></table></figure>
+<p>Now <code>fetch</code> is a generator function, rather than a regular one, because it contains a <code>yield</code> statement. We create a pending future, then yield it to pause <code>fetch</code> until the socket is ready. The inner function <code>on_connected</code> resolves the future.</p>
+<p>But when the future resolves, what resumes the generator? We need a coroutine <em>driver</em>. Let us call it “task”:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Task</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, coro)</span>:</span></span><br><span class="line">        self.coro = coro</span><br><span class="line">        f = Future()</span><br><span class="line">        f.set_result(<span class="keyword">None</span>)</span><br><span class="line">        self.step(f)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">step</span><span class="params">(self, future)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            next_future = self.coro.send(future.result)</span><br><span class="line">        <span class="keyword">except</span> StopIteration:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">        next_future.add_done_callback(self.step)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Begin fetching http://xkcd.com/353/</span></span><br><span class="line">fetcher = Fetcher(<span class="string">'/353/'</span>)</span><br><span class="line">Task(fetcher.fetch())</span><br><span class="line"></span><br><span class="line">loop()</span><br></pre></td></tr></table></figure>
+<p>The task starts the <code>fetch</code> generator by sending <code>None</code> into it. Then <code>fetch</code> runs until it yields a future, which the task captures as <code>next_future</code>. When the socket is connected, the event loop runs the callback <code>on_connected</code>, which resolves the future, which calls <code>step</code>, which resumes <code>fetch</code>.</p>
+<h2 id="Factoring-Coroutines-With-yield-from"><a href="#Factoring-Coroutines-With-yield-from" class="headerlink" title="Factoring Coroutines With yield from"></a>Factoring Coroutines With <code>yield from</code></h2><p>Once the socket is connected, we send the HTTP GET request and read the server response. These steps need no longer be scattered among callbacks; we gather them into the same generator function:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="comment"># ... connection logic from above, then:</span></span><br><span class="line">    sock.send(request.encode(<span class="string">'ascii'</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        f = Future()</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">on_readable</span><span class="params">()</span>:</span></span><br><span class="line">            f.set_result(sock.recv(<span class="number">4096</span>))</span><br><span class="line"></span><br><span class="line">        selector.register(sock.fileno(),</span><br><span class="line">                          EVENT_READ,</span><br><span class="line">                          on_readable)</span><br><span class="line">        chunk = <span class="keyword">yield</span> f</span><br><span class="line">        selector.unregister(sock.fileno())</span><br><span class="line">        <span class="keyword">if</span> chunk:</span><br><span class="line">            self.response += chunk</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># Done reading.</span></span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<p>This code, which reads a whole message from a socket, seems generally useful. How can we factor it from <code>fetch</code> into a subroutine? Now Python 3’s celebrated <code>yield from</code> takes the stage. It lets one generator <em>delegate</em> to another.</p>
+<p>To see how, let us return to our simple generator example:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">gen_fn</span><span class="params">()</span>:</span></span><br><span class="line"><span class="meta">... </span>    result = <span class="keyword">yield</span> <span class="number">1</span></span><br><span class="line"><span class="meta">... </span>    print(<span class="string">'result of yield: &#123;&#125;'</span>.format(result))</span><br><span class="line"><span class="meta">... </span>    result2 = <span class="keyword">yield</span> <span class="number">2</span></span><br><span class="line"><span class="meta">... </span>    print(<span class="string">'result of 2nd yield: &#123;&#125;'</span>.format(result2))</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">return</span> <span class="string">'done'</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>To call this generator from another generator, delegate to it with <code>yield from</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># Generator function:</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">caller_fn</span><span class="params">()</span>:</span></span><br><span class="line"><span class="meta">... </span>    gen = gen_fn()</span><br><span class="line"><span class="meta">... </span>    rv = <span class="keyword">yield</span> <span class="keyword">from</span> gen</span><br><span class="line"><span class="meta">... </span>    print(<span class="string">'return value of yield-from: &#123;&#125;'</span></span><br><span class="line"><span class="meta">... </span>          .format(rv))</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># Make a generator from the</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># generator function.</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>caller = caller_fn()</span><br></pre></td></tr></table></figure>
+<p>The <code>caller</code> generator acts as if it were <code>gen</code>, the generator it is delegating to:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>caller.send(<span class="keyword">None</span>)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>caller.gi_frame.f_lasti</span><br><span class="line"><span class="number">15</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>caller.send(<span class="string">'hello'</span>)</span><br><span class="line">result of <span class="keyword">yield</span>: hello</span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>caller.gi_frame.f_lasti  <span class="comment"># Hasn't advanced.</span></span><br><span class="line"><span class="number">15</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>caller.send(<span class="string">'goodbye'</span>)</span><br><span class="line">result of <span class="number">2</span>nd <span class="keyword">yield</span>: goodbye</span><br><span class="line"><span class="keyword">return</span> value of <span class="keyword">yield</span>-<span class="keyword">from</span>: done</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;input&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">StopIteration</span><br></pre></td></tr></table></figure>
+<p>While <code>caller</code> yields from <code>gen</code>, <code>caller</code> does not advance. Notice that its instruction pointer remains at 15, the site of its <code>yield from</code> statement, even while the inner generator <code>gen</code> advances from one <code>yield</code> statement to the next.[^13] From our perspective outside <code>caller</code>, we cannot tell if the values it yields are from <code>caller</code> or from the generator it delegates to. And from inside <code>gen</code>, we cannot tell if values are sent in from <code>caller</code> or from outside it. The <code>yield from</code> statement is a frictionless channel, through which values flow in and out of <code>gen</code> until <code>gen</code> completes.</p>
+<p>A coroutine can delegate work to a sub-coroutine with <code>yield from</code> and receive the result of the work. Notice, above, that <code>caller</code> printed “return value of yield-from: done”. When <code>gen</code> completed, its return value became the value of the <code>yield from</code> statement in <code>caller</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rv = <span class="keyword">yield</span> <span class="keyword">from</span> gen</span><br></pre></td></tr></table></figure>
+<p>Earlier, when we criticized callback-based async programming, our most strident complaint was about “stack ripping”: when a callback throws an exception, the stack trace is typically useless. It only shows that the event loop was running the callback, not <em>why</em>. How do coroutines fare?</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">gen_fn</span><span class="params">()</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">raise</span> Exception(<span class="string">'my error'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>caller = caller_fn()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>caller.send(<span class="keyword">None</span>)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;input&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">  File <span class="string">"&lt;input&gt;"</span>, line <span class="number">3</span>, <span class="keyword">in</span> caller_fn</span><br><span class="line">  File <span class="string">"&lt;input&gt;"</span>, line <span class="number">2</span>, <span class="keyword">in</span> gen_fn</span><br><span class="line">Exception: my error</span><br></pre></td></tr></table></figure>
+<p>This is much more useful! The stack trace shows <code>caller_fn</code> was delegating to <code>gen_fn</code> when it threw the error. Even more comforting, we can wrap the call to a sub-coroutine in an exception handler, the same is with normal subroutines:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">gen_fn</span><span class="params">()</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">yield</span> <span class="number">1</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">raise</span> Exception(<span class="string">'uh oh'</span>)</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">caller_fn</span><span class="params">()</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">try</span>:</span><br><span class="line"><span class="meta">... </span>        <span class="keyword">yield</span> <span class="keyword">from</span> gen_fn()</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">except</span> Exception <span class="keyword">as</span> exc:</span><br><span class="line"><span class="meta">... </span>        print(<span class="string">'caught &#123;&#125;'</span>.format(exc))</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>caller = caller_fn()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>caller.send(<span class="keyword">None</span>)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>caller.send(<span class="string">'hello'</span>)</span><br><span class="line">caught uh oh</span><br></pre></td></tr></table></figure>
+<p>So we factor logic with sub-coroutines just like with regular subroutines. Let us factor some useful sub-coroutines from our fetcher. We write a <code>read</code> coroutine to receive one chunk:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read</span><span class="params">(sock)</span>:</span></span><br><span class="line">    f = Future()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_readable</span><span class="params">()</span>:</span></span><br><span class="line">        f.set_result(sock.recv(<span class="number">4096</span>))</span><br><span class="line"></span><br><span class="line">    selector.register(sock.fileno(), EVENT_READ, on_readable)</span><br><span class="line">    chunk = <span class="keyword">yield</span> f  <span class="comment"># Read one chunk.</span></span><br><span class="line">    selector.unregister(sock.fileno())</span><br><span class="line">    <span class="keyword">return</span> chunk</span><br></pre></td></tr></table></figure>
+<p>We build on <code>read</code> with a <code>read_all</code> coroutine that receives a whole message:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_all</span><span class="params">(sock)</span>:</span></span><br><span class="line">    response = []</span><br><span class="line">    <span class="comment"># Read whole response.</span></span><br><span class="line">    chunk = <span class="keyword">yield</span> <span class="keyword">from</span> read(sock)</span><br><span class="line">    <span class="keyword">while</span> chunk:</span><br><span class="line">        response.append(chunk)</span><br><span class="line">        chunk = <span class="keyword">yield</span> <span class="keyword">from</span> read(sock)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="string">b''</span>.join(response)</span><br></pre></td></tr></table></figure>
+<p>If you squint the right way, the <code>yield from</code> statements disappear and these look like conventional functions doing blocking I/O. But in fact, <code>read</code> and <code>read_all</code> are coroutines. Yielding from <code>read</code> pauses <code>read_all</code> until the I/O completes. While <code>read_all</code> is paused, asyncio’s event loop does other work and awaits other I/O events; <code>read_all</code> is resumed with the result of <code>read</code> on the next loop tick once its event is ready.</p>
+<p>At the stack’s root, <code>fetch</code> calls <code>read_all</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fetcher</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fetch</span><span class="params">(self)</span>:</span></span><br><span class="line">		 <span class="comment"># ... connection logic from above, then:</span></span><br><span class="line">        sock.send(request.encode(<span class="string">'ascii'</span>))</span><br><span class="line">        self.response = <span class="keyword">yield</span> <span class="keyword">from</span> read_all(sock)</span><br></pre></td></tr></table></figure>
+<p>Miraculously, the Task class needs no modification. It drives the outer <code>fetch</code> coroutine just the same as before:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Task(fetcher.fetch())</span><br><span class="line">loop()</span><br></pre></td></tr></table></figure>
+<p>When <code>read</code> yields a future, the task receives it through the channel of <code>yield from</code> statements, precisely as if the future were yielded directly from <code>fetch</code>. When the loop resolves a future, the task sends its result into <code>fetch</code>, and the value is received by <code>read</code>, exactly as if the task were driving <code>read</code> directly:<br><img src="http://i1.piimg.com/571109/280147c59bc7d0ea.png" alt="yieldfrom"></p>
+<p>To perfect our coroutine implementation, we polish out one mar: our code uses <code>yield</code> when it waits for a future, but <code>yield from</code> when it delegates to a sub-coroutine. It would be more refined if we used <code>yield from</code> whenever a coroutine pauses. Then a coroutine need not concern itself with what type of thing it awaits.</p>
+<p>We take advantage of the deep correspondence in Python between generators and iterators. Advancing a generator is, to the caller, the same as advancing an iterator. So we make our Future class iterable by implementing a special method:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Method on Future class.</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="comment"># Tell Task to resume me here.</span></span><br><span class="line">    <span class="keyword">yield</span> self</span><br><span class="line">    <span class="keyword">return</span> self.result</span><br></pre></td></tr></table></figure>
+<p>The future’s <code>__iter__</code> method is a coroutine that yields the future itself. Now when we replace code like this:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># f is a Future.</span></span><br><span class="line"><span class="keyword">yield</span> f</span><br></pre></td></tr></table></figure>
+<p>…with this:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># f is a Future.</span></span><br><span class="line"><span class="keyword">yield</span> <span class="keyword">from</span> f</span><br></pre></td></tr></table></figure>
+<p>…the outcome is the same! The driving Task receives the future from its call to <code>send</code>, and when the future is resolved it sends the new result back into the coroutine.</p>
+<p>What is the advantage of using <code>yield from</code> everywhere? Why is that better than waiting for futures with <code>yield</code> and delegating to sub-coroutines with <code>yield from</code>? It is better because now, a method can freely change its implementation without affecting the caller: it might be a normal method that returns a future that will <em>resolve</em> to a value, or it might be a coroutine that contains <code>yield from</code> statements and <em>returns</em> a value. In either case, the caller need only <code>yield from</code> the method in order to wait for the result.</p>
+<p>Gentle reader, we have reached the end of our enjoyable exposition of coroutines in asyncio. We peered into the machinery of generators, and sketched an implementation of futures and tasks. We outlined how asyncio attains the best of both worlds: concurrent I/O that is more efficient than threads and more legible than callbacks. Of course, the real asyncio is much more sophisticated than our sketch. The real framework addresses zero-copy I/O, fair scheduling, exception handling, and an abundance of other features.</p>
+<p>To an asyncio user, coding with coroutines is much simpler than you saw here. In the code above we implemented coroutines from first principles, so you saw callbacks, tasks, and futures. You even saw non-blocking sockets and the call to <code>select</code>. But when it comes time to build an application with asyncio, none of this appears in your code. As we promised, you can now sleekly fetch a URL:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@asyncio.coroutine</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch</span><span class="params">(self, url)</span>:</span></span><br><span class="line">    response = <span class="keyword">yield</span> <span class="keyword">from</span> self.session.get(url)</span><br><span class="line">    body = <span class="keyword">yield</span> <span class="keyword">from</span> response.read()</span><br></pre></td></tr></table></figure>
+<p>Satisfied with this exposition, we return to our original assignment: to write an async web crawler, using asyncio.</p>
+<h2 id="Coordinating-Coroutines"><a href="#Coordinating-Coroutines" class="headerlink" title="Coordinating Coroutines"></a>Coordinating Coroutines</h2><p>We began by describing how we want our crawler to work. Now it is time to implement it with asyncio coroutines.</p>
+<p>Our crawler will fetch the first page, parse its links, and add them to a queue. After this it fans out across the website, fetching pages concurrently. But to limit load on the client and server, we want some maximum number of workers to run, and no more. Whenever a worker finishes fetching a page, it should immediately pull the next link from the queue. We will pass through periods when there is not enough work to go around, so some workers must pause. But when a worker hits a page rich with new links, then the queue suddenly grows and any paused workers should wake and get cracking. Finally, our program must quit once its work is done.</p>
+<p>Imagine if the workers were threads. How would we express the crawler’s algorithm? We could use a synchronized queue<a href="[https://docs.python.org/3/library/queue.html](https://docs.python.org/3/library/queue.html)">^5</a> from the Python standard library. Each time an item is put in the queue, the queue increments its count of “tasks”. Worker threads call <code>task_done</code> after completing work on an item. The main thread blocks on <code>Queue.join</code> until each item put in the queue is matched by a <code>task_done</code> call, then it exits.</p>
+<p>Coroutines use the exact same pattern with an asyncio queue! First we import it<a href="[https://docs.python.org/3/library/asyncio-sync.html](https://docs.python.org/3/library/asyncio-sync.html)">^6</a>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">from</span> asyncio <span class="keyword">import</span> JoinableQueue <span class="keyword">as</span> Queue</span><br><span class="line"><span class="keyword">except</span> ImportError:</span><br><span class="line">    <span class="comment"># In Python 3.5, asyncio.JoinableQueue is</span></span><br><span class="line">    <span class="comment"># merged into Queue.</span></span><br><span class="line">    <span class="keyword">from</span> asyncio <span class="keyword">import</span> Queue</span><br></pre></td></tr></table></figure>
+<p>We collect the workers’ shared state in a crawler class, and write the main logic in its <code>crawl</code> method. We start <code>crawl</code> on a coroutine and run asyncio’s event loop until <code>crawl</code> finishes:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">loop = asyncio.get_event_loop()</span><br><span class="line"></span><br><span class="line">crawler = crawling.Crawler(<span class="string">'http://xkcd.com'</span>,</span><br><span class="line">                           max_redirect=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">loop.run_until_complete(crawler.crawl())</span><br></pre></td></tr></table></figure>
+<p>The crawler begins with a root URL and <code>max_redirect</code>, the number of redirects it is willing to follow to fetch any one URL. It puts the pair <code>(URL, max_redirect)</code> in the queue. (For the reason why, stay tuned.)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Crawler</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, root_url, max_redirect)</span>:</span></span><br><span class="line">        self.max_tasks = <span class="number">10</span></span><br><span class="line">        self.max_redirect = max_redirect</span><br><span class="line">        self.q = Queue()</span><br><span class="line">        self.seen_urls = set()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># aiohttp's ClientSession does connection pooling and</span></span><br><span class="line">        <span class="comment"># HTTP keep-alives for us.</span></span><br><span class="line">        self.session = aiohttp.ClientSession(loop=loop)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Put (URL, max_redirect) in the queue.</span></span><br><span class="line">        self.q.put((root_url, self.max_redirect))</span><br></pre></td></tr></table></figure>
+<p>The number of unfinished tasks in the queue is now one. Back in our main script, we launch the event loop and the <code>crawl</code> method:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">loop.run_until_complete(crawler.crawl())</span><br></pre></td></tr></table></figure>
+<p>The <code>crawl</code> coroutine kicks off the workers. It is like a main thread: it blocks on <code>join</code> until all tasks are finished, while the workers run in the background.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@asyncio.coroutine</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crawl</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""Run the crawler until all work is done."""</span></span><br><span class="line">    workers = [asyncio.Task(self.work())</span><br><span class="line">               <span class="keyword">for</span> _ <span class="keyword">in</span> range(self.max_tasks)]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># When all work is done, exit.</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">from</span> self.q.join()</span><br><span class="line">    <span class="keyword">for</span> w <span class="keyword">in</span> workers:</span><br><span class="line">        w.cancel()</span><br></pre></td></tr></table></figure>
+<p>If the workers were threads we might not wish to start them all at once. To avoid creating expensive threads until it is certain they are necessary, a thread pool typically grows on demand. But coroutines are cheap, so we simply start the maximum number allowed.</p>
+<p>It is interesting to note how we shut down the crawler. When the <code>join</code> future resolves, the worker tasks are alive but suspended: they wait for more URLs but none come. So, the main coroutine cancels them before exiting. Otherwise, as the Python interpreter shuts down and calls all objects’ destructors, living tasks cry out:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ERROR:asyncio:Task was destroyed but it is pending!</span><br></pre></td></tr></table></figure>
+<p>And how does <code>cancel</code> work? Generators have a feature we have not yet shown you. You can throw an exception into a generator from outside:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>gen = gen_fn()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>gen.send(<span class="keyword">None</span>)  <span class="comment"># Start the generator as usual.</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>gen.throw(Exception(<span class="string">'error'</span>))</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;input&gt;"</span>, line <span class="number">3</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">  File <span class="string">"&lt;input&gt;"</span>, line <span class="number">2</span>, <span class="keyword">in</span> gen_fn</span><br><span class="line">Exception: error</span><br></pre></td></tr></table></figure>
+<p>The generator is resumed by <code>throw</code>, but it is now raising an exception. If no code in the generator’s call stack catches it, the exception bubbles back up to the top. So to cancel a task’s coroutine:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Method of Task class.</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cancel</span><span class="params">(self)</span>:</span></span><br><span class="line">    self.coro.throw(CancelledError)</span><br></pre></td></tr></table></figure>
+<p>Wherever the generator is paused, at some <code>yield from</code> statement, it resumes and throws an exception. We handle cancellation in the task’s <code>step</code> method:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Method of Task class.</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">step</span><span class="params">(self, future)</span>:</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        next_future = self.coro.send(future.result)</span><br><span class="line">    <span class="keyword">except</span> CancelledError:</span><br><span class="line">        self.cancelled = <span class="keyword">True</span></span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">except</span> StopIteration:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    next_future.add_done_callback(self.step)</span><br></pre></td></tr></table></figure>
+<p>Now the task knows it is cancelled, so when it is destroyed it does not rage against the dying of the light.</p>
+<p>Once <code>crawl</code> has canceled the workers, it exits. The event loop sees that the coroutine is complete (we shall see how later), and it too exits:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">loop.run_until_complete(crawler.crawl())</span><br></pre></td></tr></table></figure>
+<p>The <code>crawl</code> method comprises all that our main coroutine must do. It is the worker coroutines that get URLs from the queue, fetch them, and parse them for new links. Each worker runs the <code>work</code> coroutine independently:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@asyncio.coroutine</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">work</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        url, max_redirect = <span class="keyword">yield</span> <span class="keyword">from</span> self.q.get()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Download page and add new links to self.q.</span></span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">from</span> self.fetch(url, max_redirect)</span><br><span class="line">        self.q.task_done()</span><br></pre></td></tr></table></figure>
+<p>Python sees that this code contains <code>yield from</code> statements, and compiles it into a generator function. So in <code>crawl</code>, when the main coroutine calls <code>self.work</code> ten times, it does not actually execute this method: it only creates ten generator objects with references to this code. It wraps each in a Task. The Task receives each future the generator yields, and drives the generator by calling <code>send</code> with each future’s result when the future resolves. Because the generators have their own stack frames, they run independently, with separate local variables and instruction pointers.</p>
+<p>The worker coordinates with its fellows via the queue. It waits for new URLs with:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url, max_redirect = <span class="keyword">yield</span> <span class="keyword">from</span> self.q.get()</span><br></pre></td></tr></table></figure>
+<p>The queue’s <code>get</code> method is itself a coroutine: it pauses until someone puts an item in the queue, then resumes and returns the item.</p>
+<p>Incidentally, this is where the worker will be paused at the end of the crawl, when the main coroutine cancels it. From the coroutine’s perspective, its last trip around the loop ends when <code>yield from</code> raises a <code>CancelledError</code>.</p>
+<p>When a worker fetches a page it parses the links and puts new ones in the queue, then calls <code>task_done</code> to decrement the counter. Eventually, a worker fetches a page whose URLs have all been fetched already, and there is also no work left in the queue. Thus this worker’s call to <code>task_done</code> decrements the counter to zero. Then <code>crawl</code>, which is waiting for the queue’s <code>join</code> method, is unpaused and finishes.</p>
+<p>We promised to explain why the items in the queue are pairs, like:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># URL to fetch, and the number of redirects left.</span></span><br><span class="line">(<span class="string">'http://xkcd.com/353'</span>, <span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+<p>New URLs have ten redirects remaining. Fetching this particular URL results in a redirect to a new location with a trailing slash. We decrement the number of redirects remaining, and put the next location in the queue:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># URL with a trailing slash. Nine redirects left.</span></span><br><span class="line">(<span class="string">'http://xkcd.com/353/'</span>, <span class="number">9</span>)</span><br></pre></td></tr></table></figure>
+<p>The <code>aiohttp</code> package we use would follow redirects by default and give us the final response. We tell it not to, however, and handle redirects in the crawler, so it can coalesce redirect paths that lead to the same destination: if we have already seen this URL, it is in <code>self.seen_urls</code> and we have already started on this path from a different entry point:<br><img src="http://i1.piimg.com/571109/c40a52385c4bfc19.png" alt="redirects"></p>
+<p>The crawler fetches “foo” and sees it redirects to “baz”, so it adds “baz” to<br>the queue and to <code>seen_urls</code>. If the next page it fetches is “bar”, which<br>also redirects to “baz”, the fetcher does not enqueue “baz” again. If the<br>response is a page, rather than a redirect, <code>fetch</code> parses it for links and<br>puts new ones in the queue.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@asyncio.coroutine</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch</span><span class="params">(self, url, max_redirect)</span>:</span></span><br><span class="line">    <span class="comment"># Handle redirects ourselves.</span></span><br><span class="line">    response = <span class="keyword">yield</span> <span class="keyword">from</span> self.session.get(</span><br><span class="line">        url, allow_redirects=<span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">if</span> is_redirect(response):</span><br><span class="line">            <span class="keyword">if</span> max_redirect &gt; <span class="number">0</span>:</span><br><span class="line">                next_url = response.headers[<span class="string">'location'</span>]</span><br><span class="line">                <span class="keyword">if</span> next_url <span class="keyword">in</span> self.seen_urls:</span><br><span class="line">                    <span class="comment"># We have been down this path before.</span></span><br><span class="line">                    <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">                <span class="comment"># Remember we have seen this URL.</span></span><br><span class="line">                self.seen_urls.add(next_url)</span><br><span class="line">                </span><br><span class="line">                <span class="comment"># Follow the redirect. One less redirect remains.</span></span><br><span class="line">                self.q.put_nowait((next_url, max_redirect - <span class="number">1</span>))</span><br><span class="line">	     <span class="keyword">else</span>:</span><br><span class="line">	         links = <span class="keyword">yield</span> <span class="keyword">from</span> self.parse_links(response)</span><br><span class="line">	         <span class="comment"># Python set-logic:</span></span><br><span class="line">	         <span class="keyword">for</span> link <span class="keyword">in</span> links.difference(self.seen_urls):</span><br><span class="line">                self.q.put_nowait((link, self.max_redirect))</span><br><span class="line">            self.seen_urls.update(links)</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        <span class="comment"># Return connection to pool.</span></span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">from</span> response.release()</span><br></pre></td></tr></table></figure>
+<p>If this were multithreaded code, it would be lousy with race conditions. For example, the worker checks if a link is in <code>seen_urls</code>, and if not the worker puts it in the queue and adds it to <code>seen_urls</code>. If it were interrupted between the two operations, then another worker might parse the same link from a different page, also observe that it is not in <code>seen_urls</code>, and also add it to the queue. Now that same link is in the queue twice, leading (at best) to duplicated work and wrong statistics.</p>
+<p>However, a coroutine is only vulnerable to interruption at <code>yield from</code> statements. This is a key difference that makes coroutine code far less prone to races than multithreaded code: multithreaded code must enter a critical section explicitly, by grabbing a lock, otherwise it is interruptible. A Python coroutine is uninterruptible by default, and only cedes control when it explicitly yields.</p>
+<p>We no longer need a fetcher class like we had in the callback-based program. That class was a workaround for a deficiency of callbacks: they need some place to store state while waiting for I/O, since their local variables are not preserved across calls. But the <code>fetch</code> coroutine can store its state in local variables like a regular function does, so there is no more need for a class.</p>
+<p>When <code>fetch</code> finishes processing the server response it returns to the caller, <code>work</code>. The <code>work</code> method calls <code>task_done</code> on the queue and then gets the next URL from the queue to be fetched.</p>
+<p>When <code>fetch</code> puts new links in the queue it increments the count of unfinished tasks and keeps the main coroutine, which is waiting for <code>q.join</code>, paused. If, however, there are no unseen links and this was the last URL in the queue, then when <code>work</code> calls <code>task_done</code> the count of unfinished tasks falls to zero. That event unpauses <code>join</code> and the main coroutine completes.</p>
+<p>The queue code that coordinates the workers and the main coroutine is like this[^9]:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Queue</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self._join_future = Future()</span><br><span class="line">        self._unfinished_tasks = <span class="number">0</span></span><br><span class="line">        <span class="comment"># ... other initialization ...</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">put_nowait</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        self._unfinished_tasks += <span class="number">1</span></span><br><span class="line">        <span class="comment"># ... store the item ...</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">task_done</span><span class="params">(self)</span>:</span></span><br><span class="line">        self._unfinished_tasks -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> self._unfinished_tasks == <span class="number">0</span>:</span><br><span class="line">            self._join_future.set_result(<span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @asyncio.coroutine</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">join</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self._unfinished_tasks &gt; <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">yield</span> <span class="keyword">from</span> self._join_future</span><br></pre></td></tr></table></figure>
+<p>The main coroutine, <code>crawl</code>, yields from <code>join</code>. So when the last worker decrements the count of unfinished tasks to zero, it signals <code>crawl</code> to resume, and finish.</p>
+<p>The ride is almost over. Our program began with the call to <code>crawl</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">loop.run_until_complete(self.crawler.crawl())</span><br></pre></td></tr></table></figure>
+<p>How does the program end? Since <code>crawl</code> is a generator function, calling it returns a generator. To drive the generator, asyncio wraps it in a task:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">EventLoop</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run_until_complete</span><span class="params">(self, coro)</span>:</span></span><br><span class="line">        <span class="string">"""Run until the coroutine is done."""</span></span><br><span class="line">        task = Task(coro)</span><br><span class="line">        task.add_done_callback(stop_callback)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            self.run_forever()</span><br><span class="line">        <span class="keyword">except</span> StopError:</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StopError</span><span class="params">(BaseException)</span>:</span></span><br><span class="line">    <span class="string">"""Raised to stop the event loop."""</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">stop_callback</span><span class="params">(future)</span>:</span></span><br><span class="line">    <span class="keyword">raise</span> StopError</span><br></pre></td></tr></table></figure>
+<p>When the task completes, it raises <code>StopError</code>, which the loop uses as a signal that it has arrived at normal completion.</p>
+<p>But what’s this? The task has methods called <code>add_done_callback</code> and <code>result</code>? You might think that a task resembles a future. Your instinct is correct. We must admit a detail about the Task class we hid from you: a task is a future.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Task</span><span class="params">(Future)</span>:</span></span><br><span class="line">    <span class="string">"""A coroutine wrapped in a Future."""</span></span><br></pre></td></tr></table></figure>
+<p>Normally a future is resolved by someone else calling <code>set_result</code> on it. But a task resolves <em>itself</em> when its coroutine stops. Remember from our earlier exploration of Python generators that when a generator returns, it throws the special <code>StopIteration</code> exception:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Method of class Task.</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">step</span><span class="params">(self, future)</span>:</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        next_future = self.coro.send(future.result)</span><br><span class="line">    <span class="keyword">except</span> CancelledError:</span><br><span class="line">        self.cancelled = <span class="keyword">True</span></span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">except</span> StopIteration <span class="keyword">as</span> exc:</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Task resolves itself with coro's return</span></span><br><span class="line">        <span class="comment"># value.</span></span><br><span class="line">        self.set_result(exc.value)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    next_future.add_done_callback(self.step)</span><br></pre></td></tr></table></figure>
+<p>So when the event loop calls <code>task.add_done_callback(stop_callback)</code>, it prepares to be stopped by the task. Here is <code>run_until_complete</code> again:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Method of event loop.</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run_until_complete</span><span class="params">(self, coro)</span>:</span></span><br><span class="line">    task = Task(coro)</span><br><span class="line">    task.add_done_callback(stop_callback)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        self.run_forever()</span><br><span class="line">    <span class="keyword">except</span> StopError:</span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>When the task catches <code>StopIteration</code> and resolves itself, the callback raises <code>StopError</code> from within the loop. The loop stops and the call stack is unwound to <code>run_until_complete</code>. Our program is finished.</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>Increasingly often, modern programs are I/O-bound instead of CPU-bound. For such programs, Python threads are the worst of both worlds: the global interpreter lock prevents them from actually executing computations in parallel, and preemptive switching makes them prone to races. Async is often the right pattern. But as callback-based async code grows, it tends to become a dishevelled mess. Coroutines are a tidy alternative. They factor naturally into subroutines, with sane exception handling and stack traces.</p>
+<p>If we squint so that the <code>yield from</code> statements blur, a coroutine looks like a thread doing traditional blocking I/O. We can even coordinate coroutines with classic patterns from multi-threaded programming. There is no need for reinvention. Thus, compared to callbacks, coroutines are an inviting idiom to the coder experienced with multithreading.</p>
+<p>But when we open our eyes and focus on the <code>yield from</code> statements, we see they mark points when the coroutine cedes control and allows others to run. Unlike threads, coroutines display where our code can be interrupted and where it cannot. In his illuminating essay “Unyielding”<a href="[https://glyph.twistedmatrix.com/2014/02/unyielding.html](https://glyph.twistedmatrix.com/2014/02/unyielding.html)">^4</a>, Glyph Lefkowitz writes, “Threads make local reasoning difficult, and local reasoning is perhaps the most important thing in software development.” Explicitly yielding, however, makes it possible to “understand the behavior (and thereby, the correctness) of a routine by examining the routine itself rather than examining the entire system.”</p>
+<p>This chapter was written during a renaissance in the history of Python and async. Generator-based coroutines, whose devising you have just learned, were released in the “asyncio” module with Python 3.4 in March 2014. In September 2015, Python 3.5 was released with coroutines built in to the language itself. These native coroutinesare declared with the new syntax “async def”, and instead of “yield from”, they use the new “await” keyword to delegate to a coroutine or wait for a Future.</p>
+<p>Despite these advances, the core ideas remain. Python’s new native coroutines will be syntactically distinct from generators but work very similarly; indeed, they will share an implementation within the Python interpreter. Task, Future, and the event loop will continue to play their roles in asyncio.</p>
+<p>Now that you know how asyncio coroutines work, you can largely forget the details. The machinery is tucked behind a dapper interface. But your grasp of the fundamentals empowers you to code correctly and efficiently in modern async environments.</p>
+<p>[^7]: For a complex solution to this problem, see <a href="http://www.tornadoweb.org/en/stable/stack_context.html" target="_blank" rel="external">http://www.tornadoweb.org/en/stable/stack_context.html</a></p>
+<p>[^9]: The actual <code>asyncio.Queue</code> implementation uses an <code>asyncio.Event</code> in place of the Future shown here. The difference is an Event can be reset, whereas a Future cannot transition from resolved back to pending.</p>
+<p>[^10]: The <code>@asyncio.coroutine</code> decorator is not magical. In fact, if it decorates a generator function and the <code>PYTHONASYNCIODEBUG</code> environment variable is not set, the decorator does practically nothing. It just sets an attribute, <code>_is_coroutine</code>, for the convenience of other parts of the framework. It is possible to use asyncio with bare generators not decorated with <code>@asyncio.coroutine</code> at all.</p>
+<latex><br>[^11]: Jesse listed indications and contraindications for using async in “What Is Async, How Does It Work, And When Should I Use It?”, available at pyvideo.org.<br>[^bayer]: Mike Bayer compared the throughput of asyncio and multithreading for different workloads in his “Asynchronous Python and Databases”: <a href="http://techspot.zzzeek.org/2015/02/15/asynchronous-python-and-databases/" target="_blank" rel="external">http://techspot.zzzeek.org/2015/02/15/asynchronous-python-and-databases/</a><br></latex><br><markdown><br>[^11]: Jesse listed indications and contraindications for using async in <a href="http://pyvideo.org/video/2565/what-is-async-how-does-it-work-and-when-should" target="_blank" rel="external">“What Is Async, How Does It Work, And When Should I Use It?”:</a>. Mike Bayer compared the throughput of asyncio and multithreading for different workloads in <a href="http://techspot.zzzeek.org/2015/02/15/asynchronous-python-and-databases/" target="_blank" rel="external">“Asynchronous Python and Databases”:</a><br></markdown><br><br>[^12]: This future has many deficiencies. For example, once this future is resolved, a coroutine that yields it should resume immediately instead of pausing, but with our code it does not. See asyncio’s Future class for a complete implementation.<br><br>[^13]: In fact, this is exactly how “yield from” works in CPython. A function increments its instruction pointer before executing each statement. But after the outer generator executes “yield from”, it subtracts 1 from its instruction pointer to keep itself pinned at the “yield from” statement. Then it yields to <em>its</em> caller. The cycle repeats until the inner generator throws <code>StopIteration</code>, at which point the outer generator finally allows itself to advance to the next instruction.<br><br>[^14]: Python’s global interpreter lock prohibits running Python code in parallel in one process anyway. Parallelizing CPU-bound algorithms in Python requires multiple processes, or writing the parallel portions of the code in C. But that is a topic for another day.<br><br>[^15]: Even calls to <code>send</code> can block, if the recipient is slow to acknowledge outstanding messages and the system’s buffer of outgoing data is full.<br><br><markdown><br>[^16]: Guido introduced the standard asyncio library, called “Tulip” then, at <a href="http://pyvideo.org/video/1667/keynote" target="_blank" rel="external">PyCon 2013</a>.<br></markdown><br><latex><br>[^16]: Guido introduced the standard asyncio library, called “Tulip” then, at PyCon 2013.<br></latex>
+
+<p>[^17]: Python 3.5’s built-in coroutines are described in <a href="https://www.python.org/dev/peps/pep-0492/" target="_blank" rel="external">PEP 492</a>, “Coroutines with async and await syntax.”</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag">#Python</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/29/Java的回调机制/" rel="next" title="Java的回调机制">
+                <i class="fa fa-chevron-left"></i> Java的回调机制
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/01/Eclipse中使用FindBugs检查代码/" rel="prev" title="FindBugs在Eclipse中安装与使用">
+                FindBugs在Eclipse中安装与使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/07/31/Python实现的高效网络爬虫/"
+     data-title="Python实现的高效网络爬虫"
+     data-content=""
+     data-url="http://yoursite.com/2016/07/31/Python实现的高效网络爬虫/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/07/31/Python实现的高效网络爬虫/"
+           data-title="Python实现的高效网络爬虫" data-url="http://yoursite.com/2016/07/31/Python实现的高效网络爬虫/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Zhguixin" />
+          <p class="site-author-name" itemprop="name">Zhguixin</p>
+          <p class="site-description motion-element" itemprop="description">Good Good Study <br> Day Day Up ^-^</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">9</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhguixin" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/zhguixin/" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Task"><span class="nav-number">2.</span> <span class="nav-text">The Task</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Traditional-Approach"><span class="nav-number">3.</span> <span class="nav-text">The Traditional Approach</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Async"><span class="nav-number">4.</span> <span class="nav-text">Async</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Programming-With-Callbacks"><span class="nav-number">5.</span> <span class="nav-text">Programming With Callbacks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Coroutines"><span class="nav-number">6.</span> <span class="nav-text">Coroutines</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How-Python-Generators-Work"><span class="nav-number">7.</span> <span class="nav-text">How Python Generators Work</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Building-Coroutines-With-Generators"><span class="nav-number">8.</span> <span class="nav-text">Building Coroutines With Generators</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Factoring-Coroutines-With-yield-from"><span class="nav-number">9.</span> <span class="nav-text">Factoring Coroutines With yield from</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Coordinating-Coroutines"><span class="nav-number">10.</span> <span class="nav-text">Coordinating Coroutines</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion"><span class="nav-number">11.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhguixin</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 构建支持
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhguixin-blog"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("69Ro09mbaEwrIlFFQUB6Tdlp-gzGzoHsz", "eYLM3rTFxC8jOw3E9tKfcGgf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

@@ -87,7 +87,7 @@
 <meta name="description" content="Good Good Study  Day Day Up ^-^">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Guixin's Blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="http://yoursite.com/page/2/index.html">
 <meta property="og:site_name" content="Guixin's Blog">
 <meta property="og:description" content="Good Good Study  Day Day Up ^-^">
 <meta name="twitter:card" content="summary">
@@ -233,8 +233,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/08/01/Eclipse中使用FindBugs检查代码/" itemprop="url">
-                  FindBugs在Eclipse中安装与使用
+                <a class="post-title-link" href="/2016/07/24/Espresso/" itemprop="url">
+                  Expresso自动化测试框架
                 </a>
               
             
@@ -247,8 +247,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-01T23:11:44+08:00" content="2016-08-01">
-              2016-08-01
+            <time itemprop="dateCreated" datetime="2016-07-24T22:54:39+08:00" content="2016-07-24">
+              2016-07-24
             </time>
           </span>
 
@@ -258,8 +258,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/08/01/Eclipse中使用FindBugs检查代码/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/01/Eclipse中使用FindBugs检查代码/" itemprop="commentsCount"></span>
+                <a href="/2016/07/24/Espresso/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/24/Espresso/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -269,7 +269,7 @@
 
           
           
-             <span id="/2016/08/01/Eclipse中使用FindBugs检查代码/" class="leancloud_visitors" data-flag-title="FindBugs在Eclipse中安装与使用">
+             <span id="/2016/07/24/Espresso/" class="leancloud_visitors" data-flag-title="Expresso自动化测试框架">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -292,10 +292,11 @@
 
       
         
-          <h3 id="1-什么是FindBugs"><a href="#1-什么是FindBugs" class="headerlink" title="1.什么是FindBugs"></a>1.什么是FindBugs</h3><p>FindBugs 是一个静态分析工具，它检查类或者 JAR 文件，将字节码与一组缺陷模式进行对比以发现可能的问题。有了静态分析工具，就可以在不实际运行程序的情况对软件进行分析。</p>
-<h3 id="2-如何安装FindBugs"><a href="#2-如何安装FindBugs" class="headerlink" title="2.如何安装FindBugs"></a>2.如何安装FindBugs</h3><p>FindBugs在Eclipse中的安装同其它形式的插件的安装一样，主要有两种：<br>
+          <h3 id="1-自动化测试"><a href="#1-自动化测试" class="headerlink" title="1.自动化测试"></a>1.自动化测试</h3><p>Android自动化测试的思想。实际上就是通过测试用例，去模仿人的行为，我们主要关注的是测试用例出现后，运行测试用例是否符合我们的预期，主要是功能性的验证。<br>这主要包含了三个步骤：<br>（1）找到一个元素：找到手机界面中我们需要测试的功能对应的元素；<br>（2）进行操作：进行点击或者输入等操作；<br>（3）检查结果：判定操作结束后是否出现了预期的结果。</p>
+<h3 id="2-Espresso自动化测试流程"><a href="#2-Espresso自动化测试流程" class="headerlink" title="2.Espresso自动化测试流程"></a>2.Espresso自动化测试流程</h3><h4 id="基本流程"><a href="#基本流程" class="headerlink" title="基本流程"></a>基本流程</h4><p>基于Expresso的一个测试demo：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith</span>(AndroidJUnit4.class)       <span class="comment">//JUnit 4风格</span></span><br><span class="line"><span class="meta">@LargeTest</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorldEspressoTest</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Rule</span></span><br><span class="line">    <span class="keyword">public</span> ActivityTestRule&lt;MainActivity&gt; mActivityRule</span><br><span class="line">                    = <span class="keyword">new</span> ActivityTestRule(MainActivity.class);</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">listGoesOverTheFold</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        onView(withText(<span class="string">"Hello world!"</span>)).check(matches(isDisplayed()));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>@Rule</strong> 为固定写法，针对你要测试的Activity即可。<br><strong>@Test</strong> 为测试用例的注解<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/01/Eclipse中使用FindBugs检查代码/#more" rel="contents">
+            <a class="btn" href="/2016/07/24/Espresso/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -346,8 +347,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/07/31/Python实现的高效网络爬虫/" itemprop="url">
-                  Python实现的高效网络爬虫
+                <a class="post-title-link" href="/2016/07/22/Android通知栏消息/" itemprop="url">
+                  Android通知栏消息
                 </a>
               
             
@@ -360,8 +361,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-31T21:51:39+08:00" content="2016-07-31">
-              2016-07-31
+            <time itemprop="dateCreated" datetime="2016-07-22T00:00:00+08:00" content="2016-07-22">
+              2016-07-22
             </time>
           </span>
 
@@ -371,8 +372,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/07/31/Python实现的高效网络爬虫/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/31/Python实现的高效网络爬虫/" itemprop="commentsCount"></span>
+                <a href="/2016/07/22/Android通知栏消息/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/22/Android通知栏消息/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -382,7 +383,7 @@
 
           
           
-             <span id="/2016/07/31/Python实现的高效网络爬虫/" class="leancloud_visitors" data-flag-title="Python实现的高效网络爬虫">
+             <span id="/2016/07/22/Android通知栏消息/" class="leancloud_visitors" data-flag-title="Android通知栏消息">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -405,12 +406,17 @@
 
       
         
-          <p><strong>转载自  <a href="http://aosabook.org/en/500L/a-web-crawler-with-asyncio-coroutines.html">500 Lines or Less</a></strong><br>title: A Web Crawler With asyncio Coroutines<br>author: A. Jesse Jiryu Davis and Guido van Rossum</p>
-<markdown><br><em>A. Jesse Jiryu Davis is a staff engineer at MongoDB in New York. He wrote Motor, the async MongoDB Python driver, and he is the lead developer of the MongoDB C Driver and a member of the PyMongo team. He contributes to asyncio and Tornado. He writes at <a href="http://emptysqua.re">http://emptysqua.re</a>.</em><br><br><em>Guido van Rossum is the creator of Python, one of the major programming languages on and off the web. The Python community refers to him as the BDFL (Benevolent Dictator For Life), a title straight from a Monty Python skit.  Guido’s home on the web is <a href="http://www.python.org/~guido/">http://www.python.org/~guido/</a>.</em><br></markdown>
-
-<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Classical computer science emphasizes efficient algorithms that complete computations as quickly as possible. But many networked programs spend their time not computing, but holding open many connections that are slow, or have infrequent events. These programs present a very different challenge: to wait for a huge number of network events efficiently. A contemporary approach to this problem is asynchronous I/O, or “async”.</p>
+          <p>状态栏通知Notification是看不见的程序组件（Broadcast Receiver、Service和不活跃的Activity）警示用户需要注意事情发生的最好途径。</p>
+<h3 id="1-创建通知栏消息的步骤"><a href="#1-创建通知栏消息的步骤" class="headerlink" title="1.创建通知栏消息的步骤"></a>1.创建通知栏消息的步骤</h3><ul>
+<li>通过getSystemService()方法得到NotificationManager对象；</li>
+<li>创建Notificationt.Builder的实例，通过builer的一些方法设置通知的一些属性，如内容、图标、标题，对相应的Notification的动作进行处理等；</li>
+<li>通过NotificationManager对象的notify()方法执行Notification的通知；</li>
+<li>通过NotificationManager对象的cancel()方法取消Notification的通知。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mNotiManger=(NotificationManager)getSystemService(NOTIFICATION_SERVICE);</span><br><span class="line">Notificationt.Builder builder = <span class="keyword">new</span> Notificationt.Builder(MainActivity.<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">builder.setSmallIcon(R.drawable.ic_launcher);</span><br><span class="line">builder.setContentTitle(<span class="string">"examle"</span>);</span><br><span class="line">builder.setContentText(<span class="string">"Hello There"</span>);</span><br><span class="line">builder.setTicker(<span class="string">"Hello There"</span>);</span><br><span class="line"><span class="comment">//builder.setOngoing(true);//使通知不可被删除</span></span><br><span class="line">mNotiManger.notify(NOTIFICATION_FLAG,builder.build());</span><br></pre></td></tr></table></figure>
+<p>其中<code>NOTIFICATION_FLAG</code>唯一标识了这个通知。以上就简单创建了一个通知消息。<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/07/31/Python实现的高效网络爬虫/#more" rel="contents">
+            <a class="btn" href="/2016/07/22/Android通知栏消息/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -461,8 +467,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/07/29/Java的回调机制/" itemprop="url">
-                  Java的回调机制
+                <a class="post-title-link" href="/2016/07/20/自定义View/" itemprop="url">
+                  自定义View
                 </a>
               
             
@@ -475,8 +481,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-29T14:54:39+08:00" content="2016-07-29">
-              2016-07-29
+            <time itemprop="dateCreated" datetime="2016-07-20T23:56:28+08:00" content="2016-07-20">
+              2016-07-20
             </time>
           </span>
 
@@ -486,8 +492,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/07/29/Java的回调机制/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/29/Java的回调机制/" itemprop="commentsCount"></span>
+                <a href="/2016/07/20/自定义View/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/20/自定义View/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -497,7 +503,7 @@
 
           
           
-             <span id="/2016/07/29/Java的回调机制/" class="leancloud_visitors" data-flag-title="Java的回调机制">
+             <span id="/2016/07/20/自定义View/" class="leancloud_visitors" data-flag-title="自定义View">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -520,11 +526,12 @@
 
       
         
-          <p>Java的回调机制可以使得在执行一个任务完毕的时候，能执行一个callback函数。<br>现在模拟实现如下一个场景：定义三个类。分别是主函数Main、业务处理类BusinessPro以及回调接口BusinessCallback。使得在业务处理类中，处理完业务后，执行一个callback函数。</p>
-<p>Main.java<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> zh</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">		<span class="keyword">new</span> BusinessProc().compute(<span class="number">100</span>,<span class="keyword">new</span> BusinessCallback()&#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onBusinessProcEnd</span><span class="params">()</span></span>&#123;</span><br><span class="line">				System.out.println(<span class="string">"this is end"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>主函数中新建了一个BusinessPro的实例，入参为一整型和一个匿名的内部接口类并实现了其方法<code>onBusinessProcEnd()</code>。<br>
+          <h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h2><p>很多时候系统自带的View满足不了设计的要求，就需要自定义View控件。自定义View首先要实现一个继承自View的类。<br>如果自定义的View有自己的属性，需要在values下建立attrs.xml文件，在其中定义属性，同时代码也要做修改。自定义View主要依赖的方法<br>自定义View中，我们主要重写onMeasure，onDraw这两种方法来展现一个View。</p>
+<ul>
+<li>onMeasure：主要工作是对我们要绘制的View进行测量，因为不进行测量的话，系统不知道要绘制的View有多大，无法绘制出我们需要的样子。</li>
+<li>onDraw: 主要工作就是绘制我们需要的图形，这个是自定义View中定制性最强也是最主要的工作。<br>下面我们先了解一下这两个方法具体能做什么，然后我们通过一个实例来学习一下具体的用法。
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/07/29/Java的回调机制/#more" rel="contents">
+            <a class="btn" href="/2016/07/20/自定义View/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -575,8 +582,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/07/26/Android进程间通信/" itemprop="url">
-                  Android进程间通信
+                <a class="post-title-link" href="/2016/05/14/Java基础/" itemprop="url">
+                  Java基础
                 </a>
               
             
@@ -589,8 +596,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-26T00:00:00+08:00" content="2016-07-26">
-              2016-07-26
+            <time itemprop="dateCreated" datetime="2016-05-14T14:54:39+08:00" content="2016-05-14">
+              2016-05-14
             </time>
           </span>
 
@@ -600,8 +607,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/07/26/Android进程间通信/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/26/Android进程间通信/" itemprop="commentsCount"></span>
+                <a href="/2016/05/14/Java基础/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/14/Java基础/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -611,7 +618,7 @@
 
           
           
-             <span id="/2016/07/26/Android进程间通信/" class="leancloud_visitors" data-flag-title="Android进程间通信">
+             <span id="/2016/05/14/Java基础/" class="leancloud_visitors" data-flag-title="Java基础">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -634,11 +641,13 @@
 
       
         
-          
-            <p>在Android中所有的进程运行在独立的空间，要想实现进程间相互通信可以借助于<strong>AIDL</strong>。<br>AIDL是<code>Android Interface definition language</code>的缩写，它是一种Android内部进程通信接口的描述语言，通过它我们可以定义进程间的通信接口,</p>
-<p>这里使用Android Studio实现一个远程Service，并且建立AIDL进行通信。</p>
-
-          
+          <h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h3><p>Java相对于C++来说是纯面向对象语言，入口函数都放在类中。入口函数，也就是main函数所在的类名要与该文件名保持一致。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hello</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args )</span></span><br><span class="line">  </span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"hello world"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>保存该类的的文件名应为<code>Hello.java</code>，在命令行中通过<code>javac Hello.java</code>生成.class文件，再通过<code>java Hello</code>运行。具体原理后面详细讲解。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/14/Java基础/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -669,7 +678,7 @@
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
