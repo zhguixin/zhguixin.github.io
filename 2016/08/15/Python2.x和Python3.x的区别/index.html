@@ -1,0 +1,838 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="资料整理自网上，在此记录一下，以备以后查找方便。
+1.性能Py3.0运行 pystone benchmark的速度比Py2.5慢30%。Guido认为Py3.0有极大的优化空间，在字符串和整形操作上可以取得很好的优化结果。Py3.1性能比Py2.5慢15%，还有很大的提升空间。 
+2.编码Py3.X源码文件默认使用utf-8编码，这就使得以下代码是合法的：123&amp;gt;&amp;gt;&amp;gt; 中国 =">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python2.x和Python3.x的区别">
+<meta property="og:url" content="http://yoursite.com/2016/08/15/Python2.x和Python3.x的区别/index.html">
+<meta property="og:site_name" content="Guixin's Blog">
+<meta property="og:description" content="资料整理自网上，在此记录一下，以备以后查找方便。
+1.性能Py3.0运行 pystone benchmark的速度比Py2.5慢30%。Guido认为Py3.0有极大的优化空间，在字符串和整形操作上可以取得很好的优化结果。Py3.1性能比Py2.5慢15%，还有很大的提升空间。 
+2.编码Py3.X源码文件默认使用utf-8编码，这就使得以下代码是合法的：123&amp;gt;&amp;gt;&amp;gt; 中国 =">
+<meta property="og:updated_time" content="2016-08-21T14:48:19.948Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python2.x和Python3.x的区别">
+<meta name="twitter:description" content="资料整理自网上，在此记录一下，以备以后查找方便。
+1.性能Py3.0运行 pystone benchmark的速度比Py2.5慢30%。Guido认为Py3.0有极大的优化空间，在字符串和整形操作上可以取得很好的优化结果。Py3.1性能比Py2.5慢15%，还有很大的提升空间。 
+2.编码Py3.X源码文件默认使用utf-8编码，这就使得以下代码是合法的：123&amp;gt;&amp;gt;&amp;gt; 中国 =">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Python2.x和Python3.x的区别 | Guixin's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Guixin's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Python2.x和Python3.x的区别
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-15T00:00:00+08:00" content="2016-08-15">
+              2016-08-15
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/15/Python2.x和Python3.x的区别/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/15/Python2.x和Python3.x的区别/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/08/15/Python2.x和Python3.x的区别/" class="leancloud_visitors" data-flag-title="Python2.x和Python3.x的区别">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>资料整理自网上，在此记录一下，以备以后查找方便。</strong></p>
+<h3 id="1-性能"><a href="#1-性能" class="headerlink" title="1.性能"></a>1.性能</h3><p>Py3.0运行 pystone benchmark的速度比Py2.5慢30%。Guido认为Py3.0有极大的优化空间，在字符串和整形操作上可以取得很好的优化结果。<br>Py3.1性能比Py2.5慢15%，还有很大的提升空间。 </p>
+<h3 id="2-编码"><a href="#2-编码" class="headerlink" title="2.编码"></a>2.编码</h3><p>Py3.X源码文件默认使用utf-8编码，这就使得以下代码是合法的：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>中国 = <span class="string">'china'</span> </span><br><span class="line">&gt;&gt;&gt;print(中国) </span><br><span class="line">china</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-语法"><a href="#3-语法" class="headerlink" title="3. 语法"></a>3. 语法</h3><ul>
+<li>1）去除了&lt;&gt;，全部改用!= </li>
+<li>2）去除``，全部改用repr() </li>
+<li>3）关键词加入as 和with，还有True,False,None </li>
+<li>4）整型除法返回浮点数，要得到整型结果，请使用// </li>
+<li>5）加入nonlocal语句。使用noclocal x可以直接指派外围（非全局）变量 </li>
+<li>6）去除print语句，加入print()函数实现相同的功能。同样的还有 exec语句，已经改为exec()函数 </li>
+</ul>
+<a id="more"></a>
+<p>   例如：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2.</span>X: <span class="keyword">print</span> <span class="string">"The answer is"</span>, <span class="number">2</span>*<span class="number">2</span> </span><br><span class="line"><span class="number">3.</span>X: print(<span class="string">"The answer is"</span>, <span class="number">2</span>*<span class="number">2</span>) </span><br><span class="line"><span class="number">2.</span>X: <span class="keyword">print</span> x,                              <span class="comment"># 使用逗号结尾禁止换行 </span></span><br><span class="line"><span class="number">3.</span>X: print(x, end=<span class="string">" "</span>)                     <span class="comment"># 使用空格代替换行 </span></span><br><span class="line"><span class="number">2.</span>X: <span class="keyword">print</span>                                 <span class="comment"># 输出新行 </span></span><br><span class="line"><span class="number">3.</span>X: print()                               <span class="comment"># 输出新行 </span></span><br><span class="line"><span class="number">2.</span>X: <span class="keyword">print</span> &gt;&gt;sys.stderr, <span class="string">"fatal error"</span> </span><br><span class="line"><span class="number">3.</span>X: print(<span class="string">"fatal error"</span>, file=sys.stderr) </span><br><span class="line"><span class="number">2.</span>X: <span class="keyword">print</span> (x, y)                          <span class="comment"># 输出repr((x, y)) </span></span><br><span class="line"><span class="number">3.</span>X: print((x, y))                         <span class="comment"># 不同于print(x, y)!</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>7）改变了顺序操作符的行为，例如x&lt;y，当x和y类型不匹配时抛出TypeError而不是返回随即的 bool值  </li>
+<li><p>8）输入函数改变了，删除了raw_input，用input代替：<br> 2.X:guess = int(raw_input(‘Enter an integer : ‘)) # 读取键盘输入的方法<br> 3.X:guess = int(input(‘Enter an integer : ‘))</p>
+</li>
+<li><p>9）去除元组参数解包。不能def(a, (b, c)):pass这样定义函数了 </p>
+</li>
+<li><p>10）新式的8进制字变量，相应地修改了oct()函数。<br> 2.X的方式如下： </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">0666</span> </span><br><span class="line"><span class="number">438</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>oct(<span class="number">438</span>) </span><br><span class="line"><span class="string">'0666'</span></span><br></pre></td></tr></table></figure>
+<p> 3.X这样： </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">0666</span> </span><br><span class="line">SyntaxError: invalid token (&lt;pyshell<span class="comment">#63&gt;, line 1) </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">0o666</span> </span><br><span class="line"><span class="number">438</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>oct(<span class="number">438</span>) </span><br><span class="line"><span class="string">'0o666'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>11）增加了2进制字面量和<code>bin()</code>函数 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>bin(<span class="number">438</span>) </span><br><span class="line"><span class="string">'0b110110110'</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>_438 = <span class="string">'0b110110110'</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>_438 </span><br><span class="line"><span class="string">'0b110110110'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>12）扩展的可迭代解包。在Py3.X 里，a, b, <em>rest = seq和 </em>rest, a = seq都是合法的，只要求两点：rest是list<br>对象和seq是可迭代的。 </p>
+</li>
+<li><p>13）新的super()，可以不再给super()传参数， </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(object)</span>:</span> </span><br><span class="line">      <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, a)</span>:</span> </span><br><span class="line">         print(<span class="string">'C'</span>, a) </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">D</span><span class="params">(C)</span>:</span> </span><br><span class="line">      <span class="function"><span class="keyword">def</span> <span class="title">__init</span><span class="params">(self, a)</span>:</span> </span><br><span class="line">         super().__init__(a) <span class="comment"># 无参数调用super() </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>D(<span class="number">8</span>) </span><br><span class="line">C <span class="number">8</span> </span><br><span class="line">&lt;__main__.D object at <span class="number">0x00D7ED90</span>&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>14）新的metaclass语法： </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span><span class="params">(*bases, **kwds)</span>:</span> </span><br><span class="line">  <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>15）支持class decorator。用法与函数decorator一样： </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">(cls_a)</span>:</span> </span><br><span class="line">      <span class="function"><span class="keyword">def</span> <span class="title">print_func</span><span class="params">(self)</span>:</span> </span><br><span class="line">         print(<span class="string">'Hello, world!'</span>) </span><br><span class="line">      cls_a.<span class="keyword">print</span> = print_func </span><br><span class="line">      <span class="keyword">return</span> cls_a </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>@foo </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(object)</span>:</span> </span><br><span class="line">  <span class="keyword">pass</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>C().print() </span><br><span class="line">Hello, world!</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>class decorator可以用来玩玩狸猫换太子的大把戏。更多请参阅PEP 3129 </p>
+<h3 id="4-字符串和字节串"><a href="#4-字符串和字节串" class="headerlink" title="4. 字符串和字节串"></a>4. 字符串和字节串</h3><ul>
+<li>1）现在字符串只有str一种类型，但它跟2.x版本的unicode几乎一样。</li>
+<li>2）关于字节串，请参阅“数据类型”的第2条目 <h3 id="5-数据类型"><a href="#5-数据类型" class="headerlink" title="5.数据类型"></a>5.数据类型</h3></li>
+<li>1）Py3.X去除了long类型，现在只有一种整型——int，但它的行为就像2.X版本的long </li>
+<li>2）新增了bytes类型，对应于2.X版本的八位串，定义一个bytes字面量的方法如下： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = <span class="string">b'china'</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(b) </span><br><span class="line">&lt;type <span class="string">'bytes'</span>&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>str对象和bytes对象可以使用.encode() (str -&gt; bytes) or .decode() (bytes -&gt; str)方法相互转化。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = b.decode() </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s </span><br><span class="line"><span class="string">'china'</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b1 = s.encode() </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b1 </span><br><span class="line"><span class="string">b'china'</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>3）dict的.keys()、.items 和.values()方法返回迭代器，而之前的iterkeys()等函数都被废弃。同时去掉的还有<br>dict.has_key()，用 in替代它吧 </li>
+</ul>
+<h3 id="6-面向对象"><a href="#6-面向对象" class="headerlink" title="6.面向对象"></a>6.面向对象</h3><ul>
+<li>1）引入抽象基类（Abstraact Base Classes，ABCs）。 </li>
+<li>2）容器类和迭代器类被ABCs化，所以cellections模块里的类型比Py2.5多了很多。 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> collections </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">'\n'</span>.join(dir(collections))) </span><br><span class="line">Callable </span><br><span class="line">Container </span><br><span class="line">Hashable </span><br><span class="line">ItemsView </span><br><span class="line">Iterable </span><br><span class="line">Iterator </span><br><span class="line">KeysView </span><br><span class="line">Mapping </span><br><span class="line">MappingView </span><br><span class="line">MutableMapping </span><br><span class="line">MutableSequence </span><br><span class="line">MutableSet </span><br><span class="line">NamedTuple </span><br><span class="line">Sequence </span><br><span class="line">Set </span><br><span class="line">Sized </span><br><span class="line">ValuesView </span><br><span class="line">__all__ </span><br><span class="line">__builtins__ </span><br><span class="line">__doc__ </span><br><span class="line">__file__ </span><br><span class="line">__name__ </span><br><span class="line">_abcoll </span><br><span class="line">_itemgetter </span><br><span class="line">_sys </span><br><span class="line">defaultdict </span><br><span class="line">deque</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>另外，数值类型也被ABCs化。关于这两点，请参阅 PEP 3119和PEP 3141。 </p>
+<ul>
+<li>3）迭代器的next()方法改名为<code>__next__()</code>，并增加内置函数next()，用以调用迭代器的<code>__next__()</code>方法 </li>
+<li>4）增加了@abstractmethod和 @abstractproperty两个 decorator，编写抽象方法（属性）更加方便。 </li>
+</ul>
+<h3 id="7-异常"><a href="#7-异常" class="headerlink" title="7.异常"></a>7.异常</h3><ul>
+<li>1）所以异常都从 BaseException继承，并删除了StardardError </li>
+<li>2）去除了异常类的序列行为和.message属性 </li>
+<li>3）用 raise Exception(args)代替 raise Exception, args语法 </li>
+<li>4）捕获异常的语法改变，引入了as关键字来标识异常实例，在Py2.5中： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">try</span>: </span><br><span class="line"><span class="meta">... </span>   <span class="keyword">raise</span> NotImplementedError(<span class="string">'Error'</span>) </span><br><span class="line"><span class="meta">... </span><span class="keyword">except</span> NotImplementedError, error:</span><br><span class="line"></span><br><span class="line"><span class="meta">... </span>   <span class="keyword">print</span> error.message </span><br><span class="line"><span class="meta">... </span></span><br><span class="line">Error</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>在Py3.0中：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">try</span>: </span><br><span class="line">      <span class="keyword">raise</span> NotImplementedError(<span class="string">'Error'</span>) </span><br><span class="line">    <span class="keyword">except</span> NotImplementedError <span class="keyword">as</span> error: <span class="comment">#注意这个 as </span></span><br><span class="line">      print(str(error)) </span><br><span class="line">Error</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>5）异常链，因为<code>__context__</code>在3.0a1版本中没有实现 </li>
+</ul>
+<h3 id="8-模块变动"><a href="#8-模块变动" class="headerlink" title="8.模块变动"></a>8.模块变动</h3><ul>
+<li>1）移除了cPickle模块，可以使用pickle模块代替。最终我们将会有一个透明高效的模块。 </li>
+<li>2）移除了imageop模块 </li>
+<li>3）移除了 audiodev, Bastion, bsddb185, exceptions, linuxaudiodev, md5, MimeWriter, mimify, popen2,<br>rexec, sets, sha, stringold, strop, sunaudiodev, timing和xmllib模块 </li>
+<li>4）移除了bsddb模块(单独发布，可以从<a href="http://www.jcea.es/programacion/pybsddb.htm获取" target="_blank" rel="external">http://www.jcea.es/programacion/pybsddb.htm获取</a>) </li>
+<li>5）移除了new模块 </li>
+<li>6）os.tmpnam()和os.tmpfile()函数被移动到tmpfile模块下 </li>
+<li>7）tokenize模块现在使用bytes工作。主要的入口点不再是generate_tokens，而是 tokenize.tokenize() </li>
+</ul>
+<h3 id="9-其它"><a href="#9-其它" class="headerlink" title="9.其它"></a>9.其它</h3><ul>
+<li><p>1）xrange() 改名为range()，要想使用range()获得一个list，必须显式调用： </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(range(<span class="number">10</span>)) </span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>2）bytes对象不能hash，也不支持 b.lower()、b.strip()和b.split()方法，但对于后两者可以使用 <code>b.strip(b’\n\t\r\f’)</code>和<code>b.split(b’ ‘)</code>来达到相同目的 </p>
+</li>
+<li>3）zip()、map()和filter()都返回迭代器。而apply()、 callable()、coerce()、 execfile()、reduce()和reload()函数都被去除了</li>
+</ul>
+<p>现在可以使用hasattr()来替换 callable(). hasattr()的语法如：<code>hasattr(string, &#39;__name__&#39;)</code></p>
+<ul>
+<li>4）string.letters和相关的.lowercase和.uppercase被去除，请改用string.ascii_letters 等 </li>
+<li>5）如果x &lt; y的不能比较，抛出TypeError异常。2.x版本是返回伪随机布尔值的 </li>
+<li>6）<code>__getslice__</code>系列成员被废弃。a[i:j]根据上下文转换为<code>a.__getitem__(slice(I, j))</code>或 <code>__setitem__</code>和<br><code>__delitem__</code>调用 </li>
+<li>7）file类被废弃，在Py2.5中： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>file </span><br><span class="line">&lt;type <span class="string">'file'</span>&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>在Py3.X中：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>file </span><br><span class="line">Traceback (most recent call last): </span><br><span class="line">File <span class="string">"&lt;pyshell#120&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt; </span><br><span class="line">   file </span><br><span class="line">NameError: name <span class="string">'file'</span> <span class="keyword">is</span> <span class="keyword">not</span> defined</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag">#Python</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/05/git常用操作指令/" rel="next" title="Git常用的操作指令（一）">
+                <i class="fa fa-chevron-left"></i> Git常用的操作指令（一）
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/20/git分支管理/" rel="prev" title="Git分支管理">
+                Git分支管理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/08/15/Python2.x和Python3.x的区别/"
+     data-title="Python2.x和Python3.x的区别"
+     data-content=""
+     data-url="http://yoursite.com/2016/08/15/Python2.x和Python3.x的区别/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/15/Python2.x和Python3.x的区别/"
+           data-title="Python2.x和Python3.x的区别" data-url="http://yoursite.com/2016/08/15/Python2.x和Python3.x的区别/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Zhguixin" />
+          <p class="site-author-name" itemprop="name">Zhguixin</p>
+          <p class="site-description motion-element" itemprop="description">Good Good Study <br> Day Day Up ^-^</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhguixin" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/zhguixin/" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-性能"><span class="nav-number">1.</span> <span class="nav-text">1.性能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-编码"><span class="nav-number">2.</span> <span class="nav-text">2.编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-语法"><span class="nav-number">3.</span> <span class="nav-text">3. 语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-字符串和字节串"><span class="nav-number">4.</span> <span class="nav-text">4. 字符串和字节串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-数据类型"><span class="nav-number">5.</span> <span class="nav-text">5.数据类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-面向对象"><span class="nav-number">6.</span> <span class="nav-text">6.面向对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-异常"><span class="nav-number">7.</span> <span class="nav-text">7.异常</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-模块变动"><span class="nav-number">8.</span> <span class="nav-text">8.模块变动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-其它"><span class="nav-number">9.</span> <span class="nav-text">9.其它</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhguixin</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 构建支持
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhguixin-blog"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("69Ro09mbaEwrIlFFQUB6Tdlp-gzGzoHsz", "eYLM3rTFxC8jOw3E9tKfcGgf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>
