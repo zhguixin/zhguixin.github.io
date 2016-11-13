@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Java," />
+  <meta name="keywords" content="Android," />
 
 
 
@@ -84,19 +84,19 @@
 
 
 
-<meta name="description" content="Java的回调机制可以使得在执行一个任务完毕的时候，能执行一个callback函数。现在模拟实现如下一个场景：定义三个类。分别是主函数Main、业务处理类BusinessPro以及回调接口BusinessCallback。使得在业务处理类中，处理完业务后，执行一个callback函数。
-Main.java123456789101112package zhpublic class Main&amp;#123">
+<meta name="description" content="什么是内容提供器内容提供器ContentProvider用于在不同的应用程序之间实现数据的共享功能，允许一个程序访问另一个程序中的数据，同时还能保证被访问数据的安全性。
+Setting里面的一些设置也是通过数据库来保存的，通过数据库来保存就会有Provider了，所以就会有SettingsProvider了。数据库的路径就是：/data/data/com.android.providers.set">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java的回调机制">
-<meta property="og:url" content="http://yoursite.com/2016/07/29/Java的回调机制/index.html">
+<meta property="og:title" content="Android的内容提供器">
+<meta property="og:url" content="http://yoursite.com/2016/08/20/Android内容提供器/index.html">
 <meta property="og:site_name" content="Guixin's Blog">
-<meta property="og:description" content="Java的回调机制可以使得在执行一个任务完毕的时候，能执行一个callback函数。现在模拟实现如下一个场景：定义三个类。分别是主函数Main、业务处理类BusinessPro以及回调接口BusinessCallback。使得在业务处理类中，处理完业务后，执行一个callback函数。
-Main.java123456789101112package zhpublic class Main&amp;#123">
-<meta property="og:updated_time" content="2016-07-31T13:18:33.155Z">
+<meta property="og:description" content="什么是内容提供器内容提供器ContentProvider用于在不同的应用程序之间实现数据的共享功能，允许一个程序访问另一个程序中的数据，同时还能保证被访问数据的安全性。
+Setting里面的一些设置也是通过数据库来保存的，通过数据库来保存就会有Provider了，所以就会有SettingsProvider了。数据库的路径就是：/data/data/com.android.providers.set">
+<meta property="og:updated_time" content="2016-11-13T12:59:48.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java的回调机制">
-<meta name="twitter:description" content="Java的回调机制可以使得在执行一个任务完毕的时候，能执行一个callback函数。现在模拟实现如下一个场景：定义三个类。分别是主函数Main、业务处理类BusinessPro以及回调接口BusinessCallback。使得在业务处理类中，处理完业务后，执行一个callback函数。
-Main.java123456789101112package zhpublic class Main&amp;#123">
+<meta name="twitter:title" content="Android的内容提供器">
+<meta name="twitter:description" content="什么是内容提供器内容提供器ContentProvider用于在不同的应用程序之间实现数据的共享功能，允许一个程序访问另一个程序中的数据，同时还能保证被访问数据的安全性。
+Setting里面的一些设置也是通过数据库来保存的，通过数据库来保存就会有Provider了，所以就会有SettingsProvider了。数据库的路径就是：/data/data/com.android.providers.set">
 
 
 
@@ -114,7 +114,7 @@ Main.java123456789101112package zhpublic class Main&amp;#123">
   };
 </script>
 
-  <title> Java的回调机制 | Guixin's Blog </title>
+  <title> Android的内容提供器 | Guixin's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -234,7 +234,7 @@ Main.java123456789101112package zhpublic class Main&amp;#123">
             
             
               
-                Java的回调机制
+                Android的内容提供器
               
             
           </h1>
@@ -246,8 +246,8 @@ Main.java123456789101112package zhpublic class Main&amp;#123">
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-29T14:54:39+08:00" content="2016-07-29">
-              2016-07-29
+            <time itemprop="dateCreated" datetime="2016-08-20T00:00:00+08:00" content="2016-08-20">
+              2016-08-20
             </time>
           </span>
 
@@ -257,8 +257,8 @@ Main.java123456789101112package zhpublic class Main&amp;#123">
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/07/29/Java的回调机制/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/29/Java的回调机制/" itemprop="commentsCount"></span>
+                <a href="/2016/08/20/Android内容提供器/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/20/Android内容提供器/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -268,7 +268,7 @@ Main.java123456789101112package zhpublic class Main&amp;#123">
 
           
           
-             <span id="/2016/07/29/Java的回调机制/" class="leancloud_visitors" data-flag-title="Java的回调机制">
+             <span id="/2016/08/20/Android内容提供器/" class="leancloud_visitors" data-flag-title="Android的内容提供器">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -290,13 +290,9 @@ Main.java123456789101112package zhpublic class Main&amp;#123">
       
 
       
-        <p>Java的回调机制可以使得在执行一个任务完毕的时候，能执行一个callback函数。<br>现在模拟实现如下一个场景：定义三个类。分别是主函数Main、业务处理类BusinessPro以及回调接口BusinessCallback。使得在业务处理类中，处理完业务后，执行一个callback函数。</p>
-<p>Main.java<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> zh</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">		<span class="keyword">new</span> BusinessProc().compute(<span class="number">100</span>,<span class="keyword">new</span> BusinessCallback()&#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onBusinessProcEnd</span><span class="params">()</span></span>&#123;</span><br><span class="line">				System.out.println(<span class="string">"this is end"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>主函数中新建了一个BusinessPro的实例，入参为一整型和一个匿名的内部接口类并实现了其方法<code>onBusinessProcEnd()</code>。<br><a id="more"></a></p>
-<p>BusinessProc.java<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> zh</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BusinessProc</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">compute</span><span class="params">(<span class="keyword">int</span> n, BusinessCallback callback)</span></span>&#123;</span><br><span class="line">		<span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)</span><br><span class="line">			sum += i;</span><br><span class="line">		System.out.println(sum);</span><br><span class="line">		</span><br><span class="line">		callback.onBusinessProcEnd();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>业务处理类中的<code>compute()</code>方法则实现具体的业务，该实例简单演示1到n的和。实现业务处理完毕后执行回调函数，<code>compute()</code>方法包含两个入参：一个整型和一个接口类。</p>
-<p>BusinessCallback.java<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">BusinessCallback</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onBusinessProcEnd</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>回调接口定义了一些回调方法，以供使用。</p>
+        <h3 id="什么是内容提供器"><a href="#什么是内容提供器" class="headerlink" title="什么是内容提供器"></a>什么是内容提供器</h3><p>内容提供器<strong>ContentProvider</strong>用于在不同的应用程序之间实现数据的共享功能，允许一个程序访问另一个程序中的数据，同时还能保证被访问数据的安全性。</p>
+<p>Setting里面的一些设置也是通过数据库来保存的，通过数据库来保存就会有Provider了，所以就会有SettingsProvider了。数据库的路径就是：/data/data/com.android.providers.settings.<br>但我们平常获取这里面的数据不是直接通过ContentResolve而是android已经封装了一层，通过Settings这个类来获取，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Settings.System.getInt(mContext.getContentResolver(),</span><br><span class="line">                Settings.System.AIRPLANE_MODE_ON, <span class="number">0</span>)</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -318,7 +314,7 @@ Main.java123456789101112package zhpublic class Main&amp;#123">
       
         <div class="post-tags">
           
-            <a href="/tags/Java/" rel="tag">#Java</a>
+            <a href="/tags/Android/" rel="tag">#Android</a>
           
         </div>
       
@@ -327,16 +323,16 @@ Main.java123456789101112package zhpublic class Main&amp;#123">
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/07/26/Sublime快捷键/" rel="next" title="Sublime使用技巧">
-                <i class="fa fa-chevron-left"></i> Sublime使用技巧
+              <a href="/2016/08/15/Python2.x和Python3.x的区别/" rel="next" title="Python2.x和Python3.x的区别">
+                <i class="fa fa-chevron-left"></i> Python2.x和Python3.x的区别
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/07/31/Python实现的高效网络爬虫/" rel="prev" title="Python实现的高效网络爬虫">
-                Python实现的高效网络爬虫 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/08/20/git分支管理/" rel="prev" title="Git分支管理">
+                Git分支管理 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -352,10 +348,10 @@ Main.java123456789101112package zhpublic class Main&amp;#123">
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2016/07/29/Java的回调机制/"
-     data-title="Java的回调机制"
+        <div class="ds-share flat" data-thread-key="2016/08/20/Android内容提供器/"
+     data-title="Android的内容提供器"
      data-content=""
-     data-url="http://yoursite.com/2016/07/29/Java的回调机制/">
+     data-url="http://yoursite.com/2016/08/20/Android内容提供器/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -382,8 +378,8 @@ Main.java123456789101112package zhpublic class Main&amp;#123">
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/07/29/Java的回调机制/"
-           data-title="Java的回调机制" data-url="http://yoursite.com/2016/07/29/Java的回调机制/">
+      <div class="ds-thread" data-thread-key="2016/08/20/Android内容提供器/"
+           data-title="Android的内容提供器" data-url="http://yoursite.com/2016/08/20/Android内容提供器/">
       </div>
     
   </div>
@@ -487,7 +483,7 @@ Main.java123456789101112package zhpublic class Main&amp;#123">
               
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是内容提供器"><span class="nav-number">1.</span> <span class="nav-text">什么是内容提供器</span></a></li></ol></div>
             
           </div>
         </section>

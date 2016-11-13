@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Java," />
+  <meta name="keywords" content="Hexo, zhguixin" />
 
 
 
@@ -84,19 +84,19 @@
 
 
 
-<meta name="description" content="Java的回调机制可以使得在执行一个任务完毕的时候，能执行一个callback函数。现在模拟实现如下一个场景：定义三个类。分别是主函数Main、业务处理类BusinessPro以及回调接口BusinessCallback。使得在业务处理类中，处理完业务后，执行一个callback函数。
-Main.java123456789101112package zhpublic class Main&amp;#123">
+<meta name="description" content="在工作中可以通过命令：1$ git log --author zhguixin
+查看某一作者的提交记录，进一步的话可以通过git diff来比较不同提交记录时各个版本的差异。具体解释如下：git diff --cached 显示索引区与git仓库之间的差异git diff HEAD 显示当前工作目录与git仓库之间的差异git diff HEAD^ 比较上次提交git diff HEAD~2 比较">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java的回调机制">
-<meta property="og:url" content="http://yoursite.com/2016/07/29/Java的回调机制/index.html">
+<meta property="og:title" content="Guixin's Blog">
+<meta property="og:url" content="http://yoursite.com/2016/11/13/git_diff使用/index.html">
 <meta property="og:site_name" content="Guixin's Blog">
-<meta property="og:description" content="Java的回调机制可以使得在执行一个任务完毕的时候，能执行一个callback函数。现在模拟实现如下一个场景：定义三个类。分别是主函数Main、业务处理类BusinessPro以及回调接口BusinessCallback。使得在业务处理类中，处理完业务后，执行一个callback函数。
-Main.java123456789101112package zhpublic class Main&amp;#123">
-<meta property="og:updated_time" content="2016-07-31T13:18:33.155Z">
+<meta property="og:description" content="在工作中可以通过命令：1$ git log --author zhguixin
+查看某一作者的提交记录，进一步的话可以通过git diff来比较不同提交记录时各个版本的差异。具体解释如下：git diff --cached 显示索引区与git仓库之间的差异git diff HEAD 显示当前工作目录与git仓库之间的差异git diff HEAD^ 比较上次提交git diff HEAD~2 比较">
+<meta property="og:updated_time" content="2016-11-13T12:59:48.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java的回调机制">
-<meta name="twitter:description" content="Java的回调机制可以使得在执行一个任务完毕的时候，能执行一个callback函数。现在模拟实现如下一个场景：定义三个类。分别是主函数Main、业务处理类BusinessPro以及回调接口BusinessCallback。使得在业务处理类中，处理完业务后，执行一个callback函数。
-Main.java123456789101112package zhpublic class Main&amp;#123">
+<meta name="twitter:title" content="Guixin's Blog">
+<meta name="twitter:description" content="在工作中可以通过命令：1$ git log --author zhguixin
+查看某一作者的提交记录，进一步的话可以通过git diff来比较不同提交记录时各个版本的差异。具体解释如下：git diff --cached 显示索引区与git仓库之间的差异git diff HEAD 显示当前工作目录与git仓库之间的差异git diff HEAD^ 比较上次提交git diff HEAD~2 比较">
 
 
 
@@ -114,7 +114,7 @@ Main.java123456789101112package zhpublic class Main&amp;#123">
   };
 </script>
 
-  <title> Java的回调机制 | Guixin's Blog </title>
+  <title>  | Guixin's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -234,7 +234,7 @@ Main.java123456789101112package zhpublic class Main&amp;#123">
             
             
               
-                Java的回调机制
+                
               
             
           </h1>
@@ -246,8 +246,8 @@ Main.java123456789101112package zhpublic class Main&amp;#123">
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-29T14:54:39+08:00" content="2016-07-29">
-              2016-07-29
+            <time itemprop="dateCreated" datetime="2016-11-13T21:00:03+08:00" content="2016-11-13">
+              2016-11-13
             </time>
           </span>
 
@@ -257,8 +257,8 @@ Main.java123456789101112package zhpublic class Main&amp;#123">
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/07/29/Java的回调机制/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/29/Java的回调机制/" itemprop="commentsCount"></span>
+                <a href="/2016/11/13/git_diff使用/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/13/git_diff使用/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -268,7 +268,7 @@ Main.java123456789101112package zhpublic class Main&amp;#123">
 
           
           
-             <span id="/2016/07/29/Java的回调机制/" class="leancloud_visitors" data-flag-title="Java的回调机制">
+             <span id="/2016/11/13/git_diff使用/" class="leancloud_visitors" data-flag-title="">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -290,13 +290,14 @@ Main.java123456789101112package zhpublic class Main&amp;#123">
       
 
       
-        <p>Java的回调机制可以使得在执行一个任务完毕的时候，能执行一个callback函数。<br>现在模拟实现如下一个场景：定义三个类。分别是主函数Main、业务处理类BusinessPro以及回调接口BusinessCallback。使得在业务处理类中，处理完业务后，执行一个callback函数。</p>
-<p>Main.java<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> zh</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">		<span class="keyword">new</span> BusinessProc().compute(<span class="number">100</span>,<span class="keyword">new</span> BusinessCallback()&#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onBusinessProcEnd</span><span class="params">()</span></span>&#123;</span><br><span class="line">				System.out.println(<span class="string">"this is end"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>主函数中新建了一个BusinessPro的实例，入参为一整型和一个匿名的内部接口类并实现了其方法<code>onBusinessProcEnd()</code>。<br><a id="more"></a></p>
-<p>BusinessProc.java<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> zh</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BusinessProc</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">compute</span><span class="params">(<span class="keyword">int</span> n, BusinessCallback callback)</span></span>&#123;</span><br><span class="line">		<span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)</span><br><span class="line">			sum += i;</span><br><span class="line">		System.out.println(sum);</span><br><span class="line">		</span><br><span class="line">		callback.onBusinessProcEnd();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>业务处理类中的<code>compute()</code>方法则实现具体的业务，该实例简单演示1到n的和。实现业务处理完毕后执行回调函数，<code>compute()</code>方法包含两个入参：一个整型和一个接口类。</p>
-<p>BusinessCallback.java<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">BusinessCallback</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onBusinessProcEnd</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>回调接口定义了一些回调方法，以供使用。</p>
+        <p>在工作中可以通过命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">log</span> --author zhguixin</span><br></pre></td></tr></table></figure></p>
+<p>查看某一作者的提交记录，进一步的话可以通过<code>git diff</code>来比较不同提交记录时各个版本的差异。具体解释如下：<br><code>git diff --cached</code> 显示索引区与git仓库之间的差异<br><code>git diff HEAD</code> 显示当前工作目录与git仓库之间的差异<br><code>git diff HEAD^</code> 比较上次提交<br><code>git diff HEAD~2</code> 比较上2次提交</p>
+<p><code>--diff-filter=[ACDMRTUXB*]</code><br>        显示指定状态的文件：Added (A), Copied (C), Deleted (D), Modified (M), Renamed (R), changed (T), are Unmerged (U), are Unknown (X)</p>
+<p><code>git diff --stat</code> 列出文件</p>
+<p><code>git diff -- filename</code>    只对比给定的文件</p>
+<p>历史提交对比：<br><code>$ git diff commit</code>       将所指定的某次提交与当前工作目录进行对比。</p>
+<p><code>$ git diff commit1 commit2</code> 将2次提交的内容进行对比<br>等价于<br><code>$ git diff commit1..commit2</code> 如果省略任意一个commit，默认将使用HEAD代替</p>
+<p>commit可以是简写的commit哈希值，也可是是HEAD。其中HEAD代表最后一次提交，HEAD^代表最后一次提交的父提交，HEAD~1等价于HEAD^,HEAD~2为倒数第二次提交，以此类推。</p>
 
       
     </div>
@@ -316,28 +317,18 @@ Main.java123456789101112package zhpublic class Main&amp;#123">
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/Java/" rel="tag">#Java</a>
-          
-        </div>
-      
 
       
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/07/26/Sublime快捷键/" rel="next" title="Sublime使用技巧">
-                <i class="fa fa-chevron-left"></i> Sublime使用技巧
+              <a href="/2016/08/27/git log使用/" rel="next" title="git log查看提交记录">
+                <i class="fa fa-chevron-left"></i> git log查看提交记录
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/07/31/Python实现的高效网络爬虫/" rel="prev" title="Python实现的高效网络爬虫">
-                Python实现的高效网络爬虫 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -352,10 +343,10 @@ Main.java123456789101112package zhpublic class Main&amp;#123">
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2016/07/29/Java的回调机制/"
-     data-title="Java的回调机制"
+        <div class="ds-share flat" data-thread-key="2016/11/13/git_diff使用/"
+     data-title=""
      data-content=""
-     data-url="http://yoursite.com/2016/07/29/Java的回调机制/">
+     data-url="http://yoursite.com/2016/11/13/git_diff使用/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -382,8 +373,8 @@ Main.java123456789101112package zhpublic class Main&amp;#123">
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/07/29/Java的回调机制/"
-           data-title="Java的回调机制" data-url="http://yoursite.com/2016/07/29/Java的回调机制/">
+      <div class="ds-thread" data-thread-key="2016/11/13/git_diff使用/"
+           data-title="" data-url="http://yoursite.com/2016/11/13/git_diff使用/">
       </div>
     
   </div>

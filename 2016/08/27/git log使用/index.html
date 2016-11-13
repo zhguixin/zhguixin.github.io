@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, zhguixin" />
+  <meta name="keywords" content="Git," />
 
 
 
@@ -84,25 +84,19 @@
 
 
 
-<meta name="description" content="1.安装Hexonodejs和git安装完成后，打开git bash安装hexo：1npm install -g hexo-cli
-然后新建一个文件夹(如E:\Hexo)，在此文件夹中执行命令：12hexo initnpm install
-本地查看:1hexo server //hexo s
-然后在浏览器中输入 http://localhost:4000/">
+<meta name="description" content="git log 查看提交记录，参数：-n (n是一个正整数)，查看最近n次的提交信息1git log -2 #查看最近2次的提交历史记录
+查看具体提交信息1234git log file #查看file文件的提交记录git log file1 file2 #查看file1和file2文件的提交记录git log file_dir\ #查看file_dir下所有文件的提交记录git log --au">
 <meta property="og:type" content="article">
-<meta property="og:title" content="博客搭建总结（Hexo+Next+Github）">
-<meta property="og:url" content="http://yoursite.com/2016/05/14/hello-world/index.html">
+<meta property="og:title" content="git log查看提交记录">
+<meta property="og:url" content="http://yoursite.com/2016/08/27/git log使用/index.html">
 <meta property="og:site_name" content="Guixin's Blog">
-<meta property="og:description" content="1.安装Hexonodejs和git安装完成后，打开git bash安装hexo：1npm install -g hexo-cli
-然后新建一个文件夹(如E:\Hexo)，在此文件夹中执行命令：12hexo initnpm install
-本地查看:1hexo server //hexo s
-然后在浏览器中输入 http://localhost:4000/">
-<meta property="og:updated_time" content="2016-07-29T16:32:11.333Z">
+<meta property="og:description" content="git log 查看提交记录，参数：-n (n是一个正整数)，查看最近n次的提交信息1git log -2 #查看最近2次的提交历史记录
+查看具体提交信息1234git log file #查看file文件的提交记录git log file1 file2 #查看file1和file2文件的提交记录git log file_dir\ #查看file_dir下所有文件的提交记录git log --au">
+<meta property="og:updated_time" content="2016-11-13T12:59:48.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="博客搭建总结（Hexo+Next+Github）">
-<meta name="twitter:description" content="1.安装Hexonodejs和git安装完成后，打开git bash安装hexo：1npm install -g hexo-cli
-然后新建一个文件夹(如E:\Hexo)，在此文件夹中执行命令：12hexo initnpm install
-本地查看:1hexo server //hexo s
-然后在浏览器中输入 http://localhost:4000/">
+<meta name="twitter:title" content="git log查看提交记录">
+<meta name="twitter:description" content="git log 查看提交记录，参数：-n (n是一个正整数)，查看最近n次的提交信息1git log -2 #查看最近2次的提交历史记录
+查看具体提交信息1234git log file #查看file文件的提交记录git log file1 file2 #查看file1和file2文件的提交记录git log file_dir\ #查看file_dir下所有文件的提交记录git log --au">
 
 
 
@@ -120,7 +114,7 @@
   };
 </script>
 
-  <title> 博客搭建总结（Hexo+Next+Github） | Guixin's Blog </title>
+  <title> git log查看提交记录 | Guixin's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -240,7 +234,7 @@
             
             
               
-                博客搭建总结（Hexo+Next+Github）
+                git log查看提交记录
               
             
           </h1>
@@ -252,8 +246,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-14T00:40:21+08:00" content="2016-05-14">
-              2016-05-14
+            <time itemprop="dateCreated" datetime="2016-08-27T00:00:00+08:00" content="2016-08-27">
+              2016-08-27
             </time>
           </span>
 
@@ -263,8 +257,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/14/hello-world/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/14/hello-world/" itemprop="commentsCount"></span>
+                <a href="/2016/08/27/git log使用/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/27/git log使用/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -274,7 +268,7 @@
 
           
           
-             <span id="/2016/05/14/hello-world/" class="leancloud_visitors" data-flag-title="博客搭建总结（Hexo+Next+Github）">
+             <span id="/2016/08/27/git log使用/" class="leancloud_visitors" data-flag-title="git log查看提交记录">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -296,16 +290,11 @@
       
 
       
-        <h2 id="1-安装Hexo"><a href="#1-安装Hexo" class="headerlink" title="1.安装Hexo"></a>1.安装Hexo</h2><p>nodejs和git安装完成后，打开<code>git bash</code>安装hexo：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure></p>
-<p>然后新建一个文件夹(如E:\Hexo)，在此文件夹中执行命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo init</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure></p>
-<p>本地查看:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo server //hexo s</span><br></pre></td></tr></table></figure></p>
-<p>然后在浏览器中输入 <a href="http://localhost:4000/" target="_blank" rel="external">http://localhost:4000/</a><br><a id="more"></a><br>此时，会有一篇文章hello world,对应的文件为 E:\Hexo\source_posts\hello-world.md<br>文章用markdown语法写.这里推荐使用<a href="https://maxiang.io/" target="_blank" rel="external">马克飞象</a></p>
-<h2 id="2-新建文章"><a href="#2-新建文章" class="headerlink" title="2.新建文章"></a>2.新建文章</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new <span class="string">"Frist Page"</span></span><br></pre></td></tr></table></figure>
-<p>会新建一个名为’Frist Page’的文章，执行以下命令之后查看。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo generate   //生成静态网页以及css js文件 存放于public文件夹中</span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure></p>
-<p>至此，本地博客搭建完毕。下一步移植到Github</p>
-<h2 id="3-部署到Github"><a href="#3-部署到Github" class="headerlink" title="3.部署到Github"></a>3.部署到Github</h2><p>项目名必须是:<code>name.github.io</code>(name是你的账号名)。<br>我的账号名是<code>zhguixin</code>,新建的项目名也就是<code>zhguixin.github.io</code>，在你的hexo文件夹中有个重要的文件_config.yml,打开编辑,把<code>zhguixin</code>换成你的账号名<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">   type: git</span><br><span class="line">   repository: https://github.com/zhguixin/zhguixin.github.io.git</span><br><span class="line">   branch: master</span><br></pre></td></tr></table></figure></p>
-<p>执行下列命令后部署<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br><span class="line">hexo deploy　　//上传至github相当于git push...</span><br></pre></td></tr></table></figure></p>
-<p>至此，个人博客搭建完成。<br>注意: 每次修改后需要 <code>hexo g</code> 命令保存，然后 <code>hexo d</code> 命令上传<br>官网：<a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>    详细配置参考：<a href="https://hexo.io/docs/" target="_blank" rel="external">官方文档</a></p>
+        <h3 id="git-log-查看提交记录，参数："><a href="#git-log-查看提交记录，参数：" class="headerlink" title="git log 查看提交记录，参数："></a>git log 查看提交记录，参数：</h3><p>-n (n是一个正整数)，查看最近n次的提交信息<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">log</span> -2 <span class="comment">#查看最近2次的提交历史记录</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="查看具体提交信息"><a href="#查看具体提交信息" class="headerlink" title="查看具体提交信息"></a>查看具体提交信息</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">log</span> file <span class="comment">#查看file文件的提交记录</span></span><br><span class="line">git <span class="built_in">log</span> file1 file2 <span class="comment">#查看file1和file2文件的提交记录</span></span><br><span class="line">git <span class="built_in">log</span> file_dir\ <span class="comment">#查看file_dir下所有文件的提交记录</span></span><br><span class="line">git <span class="built_in">log</span> --author=zhguixin <span class="comment">#查看某一作者的提交记录</span></span><br></pre></td></tr></table></figure>
+<h3 id="git-blame"><a href="#git-blame" class="headerlink" title="git blame"></a>git blame</h3><p>如果你要查看文件的每个部分是谁修改的, 那么 git blame 就是不二选择. 只要运行’git blame [filename]’,你就会得到整个文件的每一行的详细修改信息:包括SHA串,日期和作者.</p>
+<h3 id="重命名本地分支"><a href="#重命名本地分支" class="headerlink" title="重命名本地分支"></a>重命名本地分支</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git br -m devel develop</span><br></pre></td></tr></table></figure>
+<p>当前用户的Git配置文件放在用户主目录下的一个隐藏文件<code>.gitconfig</code>中<br>git 配置别名：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global alias.co checkout</span><br><span class="line">$ git config --global alias.ci commit</span><br><span class="line">$ git config --global alias.br branch</span><br><span class="line">$ git config --global alias.lg <span class="string">"log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit"</span></span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -325,17 +314,27 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag">#Git</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/08/20/git分支管理/" rel="next" title="Git分支管理">
+                <i class="fa fa-chevron-left"></i> Git分支管理
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/05/14/Java基础/" rel="prev" title="Java基础">
-                Java基础 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/11/13/git_diff使用/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -351,10 +350,10 @@
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2016/05/14/hello-world/"
-     data-title="博客搭建总结（Hexo+Next+Github）"
+        <div class="ds-share flat" data-thread-key="2016/08/27/git log使用/"
+     data-title="git log查看提交记录"
      data-content=""
-     data-url="http://yoursite.com/2016/05/14/hello-world/">
+     data-url="http://yoursite.com/2016/08/27/git log使用/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -381,8 +380,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/05/14/hello-world/"
-           data-title="博客搭建总结（Hexo+Next+Github）" data-url="http://yoursite.com/2016/05/14/hello-world/">
+      <div class="ds-thread" data-thread-key="2016/08/27/git log使用/"
+           data-title="git log查看提交记录" data-url="http://yoursite.com/2016/08/27/git log使用/">
       </div>
     
   </div>
@@ -427,7 +426,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -437,7 +436,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -486,7 +485,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-安装Hexo"><span class="nav-number">1.</span> <span class="nav-text">1.安装Hexo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-新建文章"><span class="nav-number">2.</span> <span class="nav-text">2.新建文章</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-部署到Github"><span class="nav-number">3.</span> <span class="nav-text">3.部署到Github</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#git-log-查看提交记录，参数："><span class="nav-number">1.</span> <span class="nav-text">git log 查看提交记录，参数：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看具体提交信息"><span class="nav-number">2.</span> <span class="nav-text">查看具体提交信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-blame"><span class="nav-number">3.</span> <span class="nav-text">git blame</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重命名本地分支"><span class="nav-number">4.</span> <span class="nav-text">重命名本地分支</span></a></li></ol></div>
             
           </div>
         </section>
