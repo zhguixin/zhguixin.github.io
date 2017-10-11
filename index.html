@@ -148,29 +148,31 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-Sublime快捷键" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Android自动更新APK" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/26/Sublime快捷键/">Sublime快捷键大全</a>
+      <a class="article-title" href="/2017/10/11/Android自动更新APK/">Android自动更新APK</a>
     </h1>
   
 
         
-        <a href="/2016/09/26/Sublime快捷键/" class="archive-article-date">
-  	<time datetime="2016-09-25T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-09-26</time>
+        <a href="/2017/10/11/Android自动更新APK/" class="archive-article-date">
+  	<time datetime="2017-10-10T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-10-11</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="Sublime-Text-3-快捷键精华版"><a href="#Sublime-Text-3-快捷键精华版" class="headerlink" title="Sublime Text 3 快捷键精华版"></a>Sublime Text 3 快捷键精华版</h3><p>Ctrl+Shift+P：打开命令面板<br>Ctrl+P：搜索项目中的文件<br>Ctrl+G：跳转到第几行<br>Ctrl+W：关闭当前打开文件<br>Ctrl+Shift+W：关闭所有打开文件<br>Ctrl+Shift+V：粘贴并格式化<br>Ctrl+D：选择单词，重复可增加选择下一个相同的单词<br>Ctrl+L：选择行，重复可依次增加选择下一行<br>Ctrl+Shift+L：选择多行<br>Ctrl+Shift+Enter：在当前行前插入新行<br>Ctrl+X：删除当前行<br>Ctrl+M：跳转到对应括号<br>Ctrl+U：软撤销，撤销光标位置<br>Ctrl+J：选择标签内容<br>Ctrl+F：查找内容<br>Ctrl+Shift+F：查找并替换<br>Ctrl+H：替换<br>Ctrl+R：前往 method<br>Ctrl+N：新建窗口<br>Ctrl+K+B：开关侧栏<br>Ctrl+Shift+M：选中当前括号内容，重复可选着括号本身<br>Ctrl+F2：设置/删除标记<br>Ctrl+/：注释当前行<br>Ctrl+Shift+/：当前位置插入注释<br>Ctrl+Alt+/：块注释，并Focus到首行，写注释说明用的<br>Ctrl+Shift+A：选择当前标签前后，修改标签用的<br>F11：全屏<br>Shift+F11：全屏免打扰模式，只编辑当前文件<br>Alt+F3：选择所有相同的词<br>Alt+.：闭合标签<br>Alt+Shift+数字：分屏显示<br>Alt+数字：切换打开第N个文件<br>Shift+右键拖动：光标多不，用来更改或插入列内容<br>鼠标的前进后退键可切换Tab文件<br>按Ctrl，依次点击或选取，可需要编辑的多个位置<br>按Ctrl+Shift+上下键，可替换行</p>
+        <p>通过Service的方式（推荐使用<strong>JobService</strong>），在后台获取服务器的APK信息，然后下载到本地，通过调用系统安装程序，来安装最新的APK。</p>
+<p>其中，调用系统安装程序的主要代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">File apkFil = <span class="keyword">new</span> File(mContext.getExternalCacheDir(),<span class="string">"MFVKeyguard.apk"</span>);<span class="comment">//APK存储路径</span></span><br><span class="line">Intent intent = <span class="keyword">new</span> Intent(Intent.ACTION_VIEW);</span><br><span class="line">Uri apk;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Android N之后的版本通过FileProvider的方式获得Uri</span></span><br><span class="line"><span class="keyword">if</span>(Build.VERSION.SDK_INT&gt;=<span class="number">24</span>) &#123;</span><br><span class="line">  apk= FileProvider.getUriForFile(<span class="keyword">this</span>,<span class="string">"sto.com.stocourier.fileprovider"</span>,apkFil);</span><br><span class="line">  intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span><br><span class="line">  intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  apk=Uri.fromFile(apkFil);<span class="comment">//低于7.0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">intent.setDataAndType(apk, <span class="string">"application/vnd.android.package-archive"</span>);</span><br><span class="line">startActivity(intent);</span><br></pre></td></tr></table></figure>
         
-          <a class="article-more-a" href="/2016/09/26/Sublime快捷键/#more">更多 >></a>
+          <a class="article-more-a" href="/2017/10/11/Android自动更新APK/#more">更多 >></a>
         
       
 
@@ -184,7 +186,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">经验</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
         		</li>
       		
 		</ul>
@@ -194,7 +196,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2016/09/26/Sublime快捷键/">展开全文 >></a>
+          <a class="article-more-a" href="/2017/10/11/Android自动更新APK/">展开全文 >></a>
         </p>
       
 
@@ -343,7 +345,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">经验</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Git</a>
         		</li>
       		
 		</ul>
@@ -560,15 +562,15 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Git</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Python</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">经验</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Git</a>
               </li>
             
             <div class="clearfix"></div>

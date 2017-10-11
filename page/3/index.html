@@ -148,85 +148,6 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-Python实现的高效网络爬虫" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/31/Python实现的高效网络爬虫/">Python实现的高效网络爬虫</a>
-    </h1>
-  
-
-        
-        <a href="/2016/07/31/Python实现的高效网络爬虫/" class="archive-article-date">
-  	<time datetime="2016-07-31T13:51:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-07-31</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>转载自  <a href="http://aosabook.org/en/500L/a-web-crawler-with-asyncio-coroutines.html">500 Lines or Less</a></strong><br>title: A Web Crawler With asyncio Coroutines<br>author: A. Jesse Jiryu Davis and Guido van Rossum</p>
-<markdown><br><em>A. Jesse Jiryu Davis is a staff engineer at MongoDB in New York. He wrote Motor, the async MongoDB Python driver, and he is the lead developer of the MongoDB C Driver and a member of the PyMongo team. He contributes to asyncio and Tornado. He writes at <a href="http://emptysqua.re">http://emptysqua.re</a>.</em><br><br><em>Guido van Rossum is the creator of Python, one of the major programming languages on and off the web. The Python community refers to him as the BDFL (Benevolent Dictator For Life), a title straight from a Monty Python skit.  Guido’s home on the web is <a href="http://www.python.org/~guido/">http://www.python.org/~guido/</a>.</em><br></markdown>
-
-<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Classical computer science emphasizes efficient algorithms that complete computations as quickly as possible. But many networked programs spend their time not computing, but holding open many connections that are slow, or have infrequent events. These programs present a very different challenge: to wait for a huge number of network events efficiently. A contemporary approach to this problem is asynchronous I/O, or “async”.</p>
-        
-          <a class="article-more-a" href="/2016/07/31/Python实现的高效网络爬虫/#more">更多 >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/07/31/Python实现的高效网络爬虫/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-Java的回调机制" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -380,19 +301,19 @@
 
 
   
-    <article id="post-Espresso" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Expresso自动化测试框架" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/24/Espresso/">Expresso自动化测试框架</a>
+      <a class="article-title" href="/2016/07/24/Expresso自动化测试框架/">Expresso自动化测试框架</a>
     </h1>
   
 
         
-        <a href="/2016/07/24/Espresso/" class="archive-article-date">
+        <a href="/2016/07/24/Expresso自动化测试框架/" class="archive-article-date">
   	<time datetime="2016-07-24T14:54:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-07-24</time>
 </a>
         
@@ -404,7 +325,7 @@
 <h3 id="2-Espresso自动化测试流程"><a href="#2-Espresso自动化测试流程" class="headerlink" title="2.Espresso自动化测试流程"></a>2.Espresso自动化测试流程</h3><h4 id="基本流程"><a href="#基本流程" class="headerlink" title="基本流程"></a>基本流程</h4><p>基于Expresso的一个测试demo：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith</span>(AndroidJUnit4.class)       <span class="comment">//JUnit 4风格</span></span><br><span class="line"><span class="meta">@LargeTest</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorldEspressoTest</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Rule</span></span><br><span class="line">    <span class="keyword">public</span> ActivityTestRule&lt;MainActivity&gt; mActivityRule</span><br><span class="line">                    = <span class="keyword">new</span> ActivityTestRule(MainActivity.class);</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">listGoesOverTheFold</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        onView(withText(<span class="string">"Hello world!"</span>)).check(matches(isDisplayed()));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p><strong>@Rule</strong> 为固定写法，针对你要测试的Activity即可。<br><strong>@Test</strong> 为测试用例的注解<br>
         
-          <a class="article-more-a" href="/2016/07/24/Espresso/#more">更多 >></a>
+          <a class="article-more-a" href="/2016/07/24/Expresso自动化测试框架/#more">更多 >></a>
         
       
 
@@ -428,7 +349,91 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2016/07/24/Espresso/">展开全文 >></a>
+          <a class="article-more-a" href="/2016/07/24/Expresso自动化测试框架/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Android通知栏消息" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/22/Android通知栏消息/">Android通知栏消息</a>
+    </h1>
+  
+
+        
+        <a href="/2016/07/22/Android通知栏消息/" class="archive-article-date">
+  	<time datetime="2016-07-21T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-07-22</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>状态栏通知Notification是看不见的程序组件（Broadcast Receiver、Service和不活跃的Activity）警示用户需要注意事情发生的最好途径。</p>
+<h3 id="1-创建通知栏消息的步骤"><a href="#1-创建通知栏消息的步骤" class="headerlink" title="1.创建通知栏消息的步骤"></a>1.创建通知栏消息的步骤</h3><ul>
+<li>通过getSystemService()方法得到NotificationManager对象；</li>
+<li>创建Notificationt.Builder的实例，通过builer的一些方法设置通知的一些属性，如内容、图标、标题，对相应的Notification的动作进行处理等；</li>
+<li>通过NotificationManager对象的notify()方法执行Notification的通知；</li>
+<li>通过NotificationManager对象的cancel()方法取消Notification的通知。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mNotiManger=(NotificationManager)getSystemService(NOTIFICATION_SERVICE);</span><br><span class="line">Notificationt.Builder builder = <span class="keyword">new</span> Notificationt.Builder(MainActivity.<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">builder.setSmallIcon(R.drawable.ic_launcher);</span><br><span class="line">builder.setContentTitle(<span class="string">"examle"</span>);</span><br><span class="line">builder.setContentText(<span class="string">"Hello There"</span>);</span><br><span class="line">builder.setTicker(<span class="string">"Hello There"</span>);</span><br><span class="line"><span class="comment">//builder.setOngoing(true);//使通知不可被删除</span></span><br><span class="line">mNotiManger.notify(NOTIFICATION_FLAG,builder.build());</span><br></pre></td></tr></table></figure>
+<p>其中<code>NOTIFICATION_FLAG</code>唯一标识了这个通知。以上就简单创建了一个通知消息。<br>
+        
+          <a class="article-more-a" href="/2016/07/22/Android通知栏消息/#more">更多 >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/07/22/Android通知栏消息/">展开全文 >></a>
         </p>
       
 
@@ -559,15 +564,15 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Git</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Python</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">经验</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Git</a>
               </li>
             
             <div class="clearfix"></div>

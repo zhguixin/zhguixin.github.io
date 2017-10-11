@@ -226,92 +226,6 @@
 
 
   
-    <article id="post-Python2.x和Python3.x的区别" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/15/Python2.x和Python3.x的区别/">Python2.x和Python3.x的区别</a>
-    </h1>
-  
-
-        
-        <a href="/2016/08/15/Python2.x和Python3.x的区别/" class="archive-article-date">
-  	<time datetime="2016-08-14T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-08-15</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>资料整理自网上，在此记录一下，以备以后查找方便。</strong></p>
-<h3 id="1-性能"><a href="#1-性能" class="headerlink" title="1.性能"></a>1.性能</h3><p>Py3.0运行 pystone benchmark的速度比Py2.5慢30%。Guido认为Py3.0有极大的优化空间，在字符串和整形操作上可以取得很好的优化结果。<br>Py3.1性能比Py2.5慢15%，还有很大的提升空间。 </p>
-<h3 id="2-编码"><a href="#2-编码" class="headerlink" title="2.编码"></a>2.编码</h3><p>Py3.X源码文件默认使用utf-8编码，这就使得以下代码是合法的：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>中国 = <span class="string">'china'</span> </span><br><span class="line">&gt;&gt;&gt;print(中国) </span><br><span class="line">china</span><br></pre></td></tr></table></figure></p>
-<h3 id="3-语法"><a href="#3-语法" class="headerlink" title="3. 语法"></a>3. 语法</h3><ul>
-<li>1）去除了&lt;&gt;，全部改用!= </li>
-<li>2）去除``，全部改用repr() </li>
-<li>3）关键词加入as 和with，还有True,False,None </li>
-<li>4）整型除法返回浮点数，要得到整型结果，请使用// </li>
-<li>5）加入nonlocal语句。使用noclocal x可以直接指派外围（非全局）变量 </li>
-<li>6）去除print语句，加入print()函数实现相同的功能。同样的还有 exec语句，已经改为exec()函数 </li>
-</ul>
-        
-          <a class="article-more-a" href="/2016/08/15/Python2.x和Python3.x的区别/#more">更多 >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/08/15/Python2.x和Python3.x的区别/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-git常用操作指令" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -319,7 +233,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/05/git常用操作指令/">Git常用的操作指令（一）</a>
+      <a class="article-title" href="/2016/08/05/git常用操作指令/">Git常用的操作指令</a>
     </h1>
   
 
@@ -469,6 +383,85 @@
 
 
   
+    <article id="post-Python实现的高效网络爬虫" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/31/Python实现的高效网络爬虫/">Python实现的高效网络爬虫</a>
+    </h1>
+  
+
+        
+        <a href="/2016/07/31/Python实现的高效网络爬虫/" class="archive-article-date">
+  	<time datetime="2016-07-31T13:51:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-07-31</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>转载自  <a href="http://aosabook.org/en/500L/a-web-crawler-with-asyncio-coroutines.html">500 Lines or Less</a></strong><br>title: A Web Crawler With asyncio Coroutines<br>author: A. Jesse Jiryu Davis and Guido van Rossum</p>
+<markdown><br><em>A. Jesse Jiryu Davis is a staff engineer at MongoDB in New York. He wrote Motor, the async MongoDB Python driver, and he is the lead developer of the MongoDB C Driver and a member of the PyMongo team. He contributes to asyncio and Tornado. He writes at <a href="http://emptysqua.re">http://emptysqua.re</a>.</em><br><br><em>Guido van Rossum is the creator of Python, one of the major programming languages on and off the web. The Python community refers to him as the BDFL (Benevolent Dictator For Life), a title straight from a Monty Python skit.  Guido’s home on the web is <a href="http://www.python.org/~guido/">http://www.python.org/~guido/</a>.</em><br></markdown>
+
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Classical computer science emphasizes efficient algorithms that complete computations as quickly as possible. But many networked programs spend their time not computing, but holding open many connections that are slow, or have infrequent events. These programs present a very different challenge: to wait for a huge number of network events efficiently. A contemporary approach to this problem is asynchronous I/O, or “async”.</p>
+        
+          <a class="article-more-a" href="/2016/07/31/Python实现的高效网络爬虫/#more">更多 >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Python</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/07/31/Python实现的高效网络爬虫/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
@@ -570,15 +563,15 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Git</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Python</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">经验</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Git</a>
               </li>
             
             <div class="clearfix"></div>
