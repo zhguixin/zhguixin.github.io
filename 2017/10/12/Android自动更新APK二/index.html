@@ -6,17 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2016/8 | Guixin&#39;s Blog</title>
+  <title>Android自动更新APK(二) | Guixin&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Android开发程序猿一枚，喜欢前端、Python。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Guixin's Blog">
-<meta property="og:url" content="http://yoursite.com/archives/2016/08/page/2/index.html">
+  <meta name="description" content="####断点下载、续传的实现
+上一节说到从服务器下载APK的过程，说OkHttp不支持断点下载，DownloadManager支持断点下载。通过配置OkHttpClient添加拦截器interptcor也是可以支持断点下载，再此之前，我们先看看DownloadManager的实现原理，看看DownloadManager怎么支持断点下载的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android自动更新APK(二)">
+<meta property="og:url" content="http://yoursite.com/2017/10/12/Android自动更新APK二/index.html">
 <meta property="og:site_name" content="Guixin's Blog">
-<meta property="og:description" content="Android开发程序猿一枚，喜欢前端、Python。">
+<meta property="og:description" content="####断点下载、续传的实现
+上一节说到从服务器下载APK的过程，说OkHttp不支持断点下载，DownloadManager支持断点下载。通过配置OkHttpClient添加拦截器interptcor也是可以支持断点下载，再此之前，我们先看看DownloadManager的实现原理，看看DownloadManager怎么支持断点下载的。">
+<meta property="og:updated_time" content="2017-10-12T15:21:09.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Guixin's Blog">
-<meta name="twitter:description" content="Android开发程序猿一枚，喜欢前端、Python。">
+<meta name="twitter:title" content="Android自动更新APK(二)">
+<meta name="twitter:description" content="####断点下载、续传的实现
+上一节说到从服务器下载APK的过程，说OkHttp不支持断点下载，DownloadManager支持断点下载。通过配置OkHttpClient添加拦截器interptcor也是可以支持断点下载，再此之前，我们先看看DownloadManager的实现原理，看看DownloadManager怎么支持断点下载的。">
   
     <link rel="alternative" href="/atom.xml" title="Guixin&#39;s Blog" type="application/atom+xml">
   
@@ -146,101 +150,166 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Android自动更新APK二" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/08/05/git常用操作指令/" class="archive-article-date">
-  	<time datetime="2016-08-04T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-08-05</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/08/05/git常用操作指令/">Git常用的操作指令</a>
+    <h1 class="article-title" itemprop="name">
+      Android自动更新APK(二)
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2017/10/12/Android自动更新APK二/" class="archive-article-date">
+  	<time datetime="2017-10-11T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-10-12</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>####断点下载、续传的实现</p>
+<p>上一节说到从服务器下载APK的过程，说OkHttp不支持断点下载，<code>DownloadManager</code>支持断点下载。通过配置OkHttpClient添加拦截器<code>interptcor</code>也是可以支持断点下载，再此之前，我们先看看<code>DownloadManager</code>的实现原理，看看<code>DownloadManager</code>怎么支持断点下载的。</p>
+<a id="more"></a>
+<h4 id="DownloadManager的实现原理分析"><a href="#DownloadManager的实现原理分析" class="headerlink" title="DownloadManager的实现原理分析"></a>DownloadManager的实现原理分析</h4><p>在上一节讲到构造一个Request交给DownloadManager，然后会自动下载：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">downloadManager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);</span><br><span class="line">downloadId = downloadManager.enqueue(request);</span><br></pre></td></tr></table></figure>
+<p>其中<code>enqueue</code>的源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// android/app/DownloadManager.java</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">enqueue</span><span class="params">(Request request)</span> </span>&#123;</span><br><span class="line">        ContentValues values = request.toContentValues(mPackageName);</span><br><span class="line">      	<span class="comment">// 直接调用到DownloadProvider中的insert方法</span></span><br><span class="line">        Uri downloadUri = mResolver.insert(Downloads.Impl.CONTENT_URI, values);</span><br><span class="line">        <span class="keyword">long</span> id = Long.parseLong(downloadUri.getLastPathSegment());</span><br><span class="line">        <span class="keyword">return</span> id;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>我们在Android源码中的<strong>providers</strong>目录下找到DownloadProvider.java中查看insert的主要代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="keyword">long</span> token = Binder.clearCallingIdentity();</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  <span class="comment">// 通过JobSchedule来启动DownloadJobService</span></span><br><span class="line">  Helpers.scheduleJob(getContext(), rowID);</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">  Binder.restoreCallingIdentity(token);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在DownloadJobService中启动DownloadThread，开启下载线程：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onStartJob</span><span class="params">(JobParameters params)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">final</span> <span class="keyword">int</span> id = params.getJobId();</span><br><span class="line"></span><br><span class="line">       <span class="comment">// Spin up thread to handle this download</span></span><br><span class="line">       <span class="keyword">final</span> DownloadInfo info = DownloadInfo.queryDownloadInfo(<span class="keyword">this</span>, id);</span><br><span class="line">       <span class="keyword">if</span> (info == <span class="keyword">null</span>) &#123;</span><br><span class="line">           Log.w(TAG, <span class="string">"Odd, no details found for download "</span> + id);</span><br><span class="line">           <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">final</span> DownloadThread thread;</span><br><span class="line">       <span class="keyword">synchronized</span> (mActiveThreads) &#123;</span><br><span class="line">           thread = <span class="keyword">new</span> DownloadThread(<span class="keyword">this</span>, params, info);</span><br><span class="line">           mActiveThreads.put(id, thread);</span><br><span class="line">       &#125;</span><br><span class="line">       thread.start();</span><br><span class="line"></span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>在DownloadThread中，开启网络连接，进行下载，直接看DownloadThread的run方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    mInfoDelta.mStatus = STATUS_RUNNING;</span><br><span class="line">    <span class="comment">// 向download.db中写入一些数据，包括下载状态，文件大小，已下载大小等</span></span><br><span class="line">    mInfoDelta.writeToDatabase(); </span><br><span class="line">    </span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    executeDownload();<span class="comment">// 网络连接实现真正下载的地方</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 异常捕获，失败重试等操作</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">executeDownload</span><span class="params">()</span> <span class="keyword">throws</span> StopRequestException </span>&#123;</span><br><span class="line">  <span class="comment">// 当前已下载的字节数不为0，在构造request的时候，传入已下载的字节数，告诉服务器下载</span></span><br><span class="line">  <span class="keyword">final</span> <span class="keyword">boolean</span> resuming = mInfoDelta.mCurrentBytes != <span class="number">0</span>;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 在重定向次数不超过5的时候，连接网络进行下载，通过HttpURLConnection连接</span></span><br><span class="line">  <span class="keyword">int</span> redirectionCount = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (redirectionCount++ &lt; Constants.MAX_REDIRECTS) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    </span><br><span class="line">    HttpURLConnection conn = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      checkConnectivity();</span><br><span class="line">      conn = (HttpURLConnection) mNetwork.openConnection(url);</span><br><span class="line">      conn.setInstanceFollowRedirects(<span class="keyword">false</span>);</span><br><span class="line">      conn.setConnectTimeout(DEFAULT_TIMEOUT);</span><br><span class="line">      conn.setReadTimeout(DEFAULT_TIMEOUT);</span><br><span class="line">      <span class="keyword">if</span> (conn <span class="keyword">instanceof</span> HttpsURLConnection) &#123;</span><br><span class="line">        ((HttpsURLConnection)conn).setSSLSocketFactory(appContext.getSocketFactory());</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// 构造请求头，设置代理，已下载大小等。</span></span><br><span class="line">addRequestHeaders(conn, resuming);</span><br><span class="line">      </span><br><span class="line">      <span class="keyword">final</span> <span class="keyword">int</span> responseCode = conn.getResponseCode();</span><br><span class="line">      <span class="keyword">switch</span> (responseCode) &#123;</span><br><span class="line">        <span class="keyword">case</span> HTTP_OK:</span><br><span class="line">          <span class="keyword">if</span> (resuming) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> StopRequestException(</span><br><span class="line">              STATUS_CANNOT_RESUME, <span class="string">"Expected partial, but received OK"</span>);</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="comment">// 根据response，写入文件</span></span><br><span class="line">           parseOkHeaders(conn);</span><br><span class="line">           <span class="comment">// 存储到数据库</span></span><br><span class="line">           transferData(conn);</span><br><span class="line">           <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">           <span class="keyword">case</span> HTTP_PARTIAL:</span><br><span class="line">             <span class="keyword">if</span> (!resuming) &#123;</span><br><span class="line">               <span class="keyword">throw</span> <span class="keyword">new</span> StopRequestException(</span><br><span class="line">                                STATUS_CANNOT_RESUME, <span class="string">"Expected OK, but received partial"</span>);</span><br><span class="line">              &#125;</span><br><span class="line">             transferData(conn);</span><br><span class="line">             <span class="keyword">return</span>;</span><br><span class="line">                <span class="comment">// 其他的状态处理</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上代码只是截取了重要的一部分，在函数<code>addRequestHeaders(conn, resuming);</code>中构造请求头，有如下一句话：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (resuming) &#123;</span><br><span class="line">  <span class="keyword">if</span> (mInfoDelta.mETag != <span class="keyword">null</span>) &#123;</span><br><span class="line">    conn.addRequestProperty(<span class="string">"If-Match"</span>, mInfoDelta.mETag);</span><br><span class="line">  &#125;</span><br><span class="line">  conn.addRequestProperty(<span class="string">"Range"</span>, <span class="string">"bytes="</span> + mInfoDelta.mCurrentBytes + <span class="string">"-"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关于ETag的作用，就是标识资源是否已经被修改过了，ETag值的变更说明资源状态已经被修改，具体的操作由服务器来处理。详细可以查询相关资料。</p>
+<p>在方法<code>parseOkHeaders</code>中主要获取一些连接信息，包括：文件名、MimeType、文件总大小等，保存在<code>DownloadInfoDelta</code>（DownloadThread的内部类）中，然后写入数据库，这个函数很简单：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">parseOkHeaders</span><span class="params">(HttpURLConnection conn)</span> <span class="keyword">throws</span> StopRequestException </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mInfoDelta.mFileName == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">final</span> String contentDisposition = conn.getHeaderField(<span class="string">"Content-Disposition"</span>);</span><br><span class="line">        <span class="keyword">final</span> String contentLocation = conn.getHeaderField(<span class="string">"Content-Location"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            mInfoDelta.mFileName = Helpers.generateSaveFile(mContext, mInfoDelta.mUri,</span><br><span class="line">                    mInfo.mHint, contentDisposition, contentLocation, mInfoDelta.mMimeType,</span><br><span class="line">                    mInfo.mDestination);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> StopRequestException(</span><br><span class="line">                    Downloads.Impl.STATUS_FILE_ERROR, <span class="string">"Failed to generate filename: "</span> + e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (mInfoDelta.mMimeType == <span class="keyword">null</span>) &#123;</span><br><span class="line">        mInfoDelta.mMimeType = Intent.normalizeMimeType(conn.getContentType());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> String transferEncoding = conn.getHeaderField(<span class="string">"Transfer-Encoding"</span>);</span><br><span class="line">    <span class="keyword">if</span> (transferEncoding == <span class="keyword">null</span>) &#123;</span><br><span class="line">        mInfoDelta.mTotalBytes = getHeaderFieldLong(conn, <span class="string">"Content-Length"</span>, -<span class="number">1</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        mInfoDelta.mTotalBytes = -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mInfoDelta.mETag = conn.getHeaderField(<span class="string">"ETag"</span>);</span><br><span class="line"></span><br><span class="line">    mInfoDelta.writeToDatabaseOrThrow();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Check connectivity again now that we know the total size</span></span><br><span class="line">    checkConnectivity();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在transferData函数中，为了方便查看，省略了大部分异常处理、DRM处理的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">transferData</span><span class="params">(HttpURLConnection conn)</span> <span class="keyword">throws</span> StopRequestException </span>&#123;</span><br><span class="line">  </span><br><span class="line">  ParcelFileDescriptor outPfd = <span class="keyword">null</span>;</span><br><span class="line">  FileDescriptor outFd = <span class="keyword">null</span>;</span><br><span class="line">  InputStream in = <span class="keyword">null</span>;</span><br><span class="line">  OutputStream out = <span class="keyword">null</span>;</span><br><span class="line">  </span><br><span class="line">  in = conn.getInputStream();</span><br><span class="line">  outPfd = mContext.getContentResolver()</span><br><span class="line">    .openFileDescriptor(mInfo.getAllDownloadsUri(), <span class="string">"rw"</span>);</span><br><span class="line">  outFd = outPfd.getFileDescriptor();</span><br><span class="line">  </span><br><span class="line">  out = <span class="keyword">new</span> ParcelFileDescriptor.AutoCloseOutputStream(outPfd);</span><br><span class="line">  <span class="comment">// 把指针指向已下载字节数的后面，方便继续写入</span></span><br><span class="line">  Os.lseek(outFd, mInfoDelta.mCurrentBytes, OsConstants.SEEK_SET);</span><br><span class="line">  </span><br><span class="line">  transferData(in, out, outFd);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在<code>transferData(in, out, outFd)</code>函数中（省略了磁盘空间检查等部分的代码）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">transferData</span><span class="params">(InputStream in, OutputStream out, FileDescriptor outFd)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="keyword">byte</span> buffer[] = <span class="keyword">new</span> <span class="keyword">byte</span>[Constants.BUFFER_SIZE];</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">while</span>（<span class="keyword">true</span>) &#123;</span><br><span class="line">    len = in.read(buffer);</span><br><span class="line">    <span class="keyword">if</span> (len == -<span class="number">1</span>) &#123;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    out.write(buffer, <span class="number">0</span>, len);</span><br><span class="line">    </span><br><span class="line">    mInfoDelta.mCurrentBytes += len;<span class="comment">// 更新当前下载的字节数</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Git</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2017/10/12/Android自动更新APK二/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/08/01/Eclipse中使用FindBugs检查代码/" class="archive-article-date">
-  	<time datetime="2016-08-01T15:11:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-08-01</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2017/10/11/Android自动更新APK/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Android自动更新APK</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/08/01/Eclipse中使用FindBugs检查代码/">FindBugs在Eclipse中安装与使用</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/2016/08/">&laquo; Prev</a><a class="page-number" href="/archives/2016/08/">1</a><span class="page-number current">2</span>
-    </nav>
+  
+
   
 
 
@@ -264,8 +333,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
