@@ -148,6 +148,165 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-git log使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/27/git log使用/">git log查看提交记录</a>
+    </h1>
+  
+
+        
+        <a href="/2016/08/27/git log使用/" class="archive-article-date">
+  	<time datetime="2016-08-26T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-08-27</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="git-log-查看提交记录，参数："><a href="#git-log-查看提交记录，参数：" class="headerlink" title="git log 查看提交记录，参数："></a>git log 查看提交记录，参数：</h3><p>-n (n是一个正整数)，查看最近n次的提交信息<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">log</span> -2 <span class="comment">#查看最近2次的提交历史记录</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="查看具体提交信息"><a href="#查看具体提交信息" class="headerlink" title="查看具体提交信息"></a>查看具体提交信息</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">log</span> file <span class="comment">#查看file文件的提交记录</span></span><br><span class="line">git <span class="built_in">log</span> file1 file2 <span class="comment">#查看file1和file2文件的提交记录</span></span><br><span class="line">git <span class="built_in">log</span> file_dir\ <span class="comment">#查看file_dir下所有文件的提交记录</span></span><br><span class="line">git <span class="built_in">log</span> --author=zhguixin <span class="comment">#查看某一作者的提交记录</span></span><br></pre></td></tr></table></figure>
+<h3 id="git-blame"><a href="#git-blame" class="headerlink" title="git blame"></a>git blame</h3><p>如果你要查看文件的每个部分是谁修改的, 那么 git blame 就是不二选择. 只要运行’git blame [filename]’,你就会得到整个文件的每一行的详细修改信息:包括SHA串,日期和作者.</p>
+<h3 id="重命名本地分支"><a href="#重命名本地分支" class="headerlink" title="重命名本地分支"></a>重命名本地分支</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git br -m devel develop</span><br></pre></td></tr></table></figure>
+<p>当前用户的Git配置文件放在用户主目录下的一个隐藏文件<code>.gitconfig</code>中<br>git 配置别名：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global alias.co checkout</span><br><span class="line">$ git config --global alias.ci commit</span><br><span class="line">$ git config --global alias.br branch</span><br><span class="line">$ git config --global alias.lg <span class="string">"log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit"</span></span><br></pre></td></tr></table></figure></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Git</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/08/27/git log使用/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-git_diff使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/26/git_diff使用/">git diff的使用</a>
+    </h1>
+  
+
+        
+        <a href="/2016/08/26/git_diff使用/" class="archive-article-date">
+  	<time datetime="2016-08-25T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-08-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在工作中可以通过命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">log</span> --author zhguixin</span><br></pre></td></tr></table></figure></p>
+<p>查看某一作者的提交记录，进一步的话可以通过<code>git diff</code>来比较不同提交记录时各个版本的差异。具体解释如下：<br><code>git diff --cached</code> 显示索引区与git仓库之间的差异<br><code>git diff HEAD</code> 显示当前工作目录与git仓库之间的差异<br><code>git diff HEAD^</code> 比较上次提交<br><code>git diff HEAD~2</code> 比较上2次提交</p>
+<p><code>--diff-filter=[ACDMRTUXB*]</code><br>        显示指定状态的文件：Added (A), Copied (C), Deleted (D), Modified (M), Renamed (R), changed (T), are Unmerged (U), are Unknown (X)</p>
+<p><code>git diff --stat</code> 列出文件</p>
+<p><code>git diff -- filename</code>    只对比给定的文件</p>
+<p>历史提交对比：<br><code>$ git diff commit</code>       将所指定的某次提交与当前工作目录进行对比。</p>
+<p><code>$ git diff commit1 commit2</code> 将2次提交的内容进行对比<br>等价于<br><code>$ git diff commit1..commit2</code> 如果省略任意一个commit，默认将使用HEAD代替</p>
+<p>commit可以是简写的commit哈希值，也可是是HEAD。其中HEAD代表最后一次提交，HEAD^代表最后一次提交的父提交，HEAD~1等价于HEAD^,HEAD~2为倒数第二次提交，以此类推。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Git</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/08/26/git_diff使用/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Android内容提供器" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -302,166 +461,9 @@
 
 
   
-    <article id="post-git常用操作指令" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/05/git常用操作指令/">Git常用的操作指令</a>
-    </h1>
-  
-
-        
-        <a href="/2016/08/05/git常用操作指令/" class="archive-article-date">
-  	<time datetime="2016-08-04T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-08-05</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="修改最后一次提交"><a href="#修改最后一次提交" class="headerlink" title="修改最后一次提交"></a>修改最后一次提交</h3><p>有时候我们提交完了才发现漏掉了几个文件没有加，或者提交信息写错了。想要撤消刚才的提交操作，可以使用<code>--amend</code> 选项重新提交：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git commit --amend -m<span class="string">"修改 提交 说明"</span></span><br></pre></td></tr></table></figure></p>
-<p>此命令将使用当前的暂存区域快照提交。如果刚才提交完没有作任何改动，直接运行此命令的话，相当于有机会 重新编辑提交说明，但将要提交的文件快照和之前的一样。</p>
-<p>启动文本编辑器后，会看到上次提交时的说明，编辑它确认没问题后保存退出，就会使用新的提交说明覆盖刚才失误的提交。</p>
-<p>如果刚才提交时忘了暂存某些修改，可以先补上暂存操作，然后再运行 <code>--amend</code> 提交：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git commit -m <span class="string">'initial commit'</span></span><br><span class="line">$ git add forgotten_file</span><br><span class="line">$ git commit --amend</span><br></pre></td></tr></table></figure></p>
-<p>上面的三条命令最终只是产生一个提交，第二个提交命令修正了第一个的提交内容。</p>
-        
-          <a class="article-more-a" href="/2016/08/05/git常用操作指令/#more">更多 >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Git</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/08/05/git常用操作指令/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Eclipse中使用FindBugs检查代码" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/01/Eclipse中使用FindBugs检查代码/">FindBugs在Eclipse中安装与使用</a>
-    </h1>
-  
-
-        
-        <a href="/2016/08/01/Eclipse中使用FindBugs检查代码/" class="archive-article-date">
-  	<time datetime="2016-08-01T15:11:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-08-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="1-什么是FindBugs"><a href="#1-什么是FindBugs" class="headerlink" title="1.什么是FindBugs"></a>1.什么是FindBugs</h3><p>FindBugs 是一个静态分析工具，它检查类或者 JAR 文件，将字节码与一组缺陷模式进行对比以发现可能的问题。有了静态分析工具，就可以在不实际运行程序的情况对软件进行分析。</p>
-<h3 id="2-如何安装FindBugs"><a href="#2-如何安装FindBugs" class="headerlink" title="2.如何安装FindBugs"></a>2.如何安装FindBugs</h3><p>FindBugs在Eclipse中的安装同其它形式的插件的安装一样，主要有两种：<br>
-        
-          <a class="article-more-a" href="/2016/08/01/Eclipse中使用FindBugs检查代码/#more">更多 >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/08/01/Eclipse中使用FindBugs检查代码/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
   
 
@@ -556,15 +558,19 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Android HTTP</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Java</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Python</a>
+                <a href="javascript:void(0)" class="js-tag color4">Git</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Git</a>
+                <a href="javascript:void(0)" class="js-tag color2">Python</a>
               </li>
              
               <li class="article-tag-list-item">

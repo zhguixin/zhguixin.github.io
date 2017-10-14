@@ -6,17 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Guixin&#39;s Blog</title>
+  <title>Android自动更新APK(三) | Guixin&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Android开发程序猿一枚，喜欢前端、Python。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Guixin's Blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="上一小节讲到DownloadManager的实现原理，整理梳理了DownloadManager的下载流程。这一小节通过OkHttp向服务器发送请求，观察是否有新版本，返回下载链接，然后交给自己写的下载管理器。
+通过OkHttp向服务器发送post请求发送post请求，通过OkHttp主要是构造一个含有RequestBody的Request，通过建造者模式构建Request：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android自动更新APK(三)">
+<meta property="og:url" content="http://yoursite.com/2017/10/13/Android自动更新APK（3）/index.html">
 <meta property="og:site_name" content="Guixin's Blog">
-<meta property="og:description" content="Android开发程序猿一枚，喜欢前端、Python。">
+<meta property="og:description" content="上一小节讲到DownloadManager的实现原理，整理梳理了DownloadManager的下载流程。这一小节通过OkHttp向服务器发送请求，观察是否有新版本，返回下载链接，然后交给自己写的下载管理器。
+通过OkHttp向服务器发送post请求发送post请求，通过OkHttp主要是构造一个含有RequestBody的Request，通过建造者模式构建Request：">
+<meta property="og:updated_time" content="2017-10-14T11:44:52.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Guixin's Blog">
-<meta name="twitter:description" content="Android开发程序猿一枚，喜欢前端、Python。">
+<meta name="twitter:title" content="Android自动更新APK(三)">
+<meta name="twitter:description" content="上一小节讲到DownloadManager的实现原理，整理梳理了DownloadManager的下载流程。这一小节通过OkHttp向服务器发送请求，观察是否有新版本，返回下载链接，然后交给自己写的下载管理器。
+通过OkHttp向服务器发送post请求发送post请求，通过OkHttp主要是构造一个含有RequestBody的Request，通过建造者模式构建Request：">
   
     <link rel="alternative" href="/atom.xml" title="Guixin&#39;s Blog" type="application/atom+xml">
   
@@ -146,101 +150,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-Android自动更新APK（4）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-Android自动更新APK（3）" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/14/Android自动更新APK（4）/">Android自动更新APK(四)</a>
-    </h1>
-  
-
-        
-        <a href="/2017/10/14/Android自动更新APK（4）/" class="archive-article-date">
-  	<time datetime="2017-10-13T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-10-14</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>这一节研究一下断点续传的原理和实现。</p>
-<h4 id="Http断点续传原理"><a href="#Http断点续传原理" class="headerlink" title="Http断点续传原理"></a>Http断点续传原理</h4><p>关于断点续传，关键点主要有两个：</p>
-<ul>
-<li>1、客户端知道当前的文件和上一次加载的文件是不是内容发生了变化，如果有变化，需要重新从offset 0 的位置开始下载；</li>
-<li>2、客户端记录好上次成功下载到的offset，告诉服务器，服务器支持从特定的offset 开始传输数据。</li>
-</ul>
-<p><strong>通常情况下，Web服务器(如Apache)会默认开启对断点续传的支持。验证服务器是否支持断点续传，通过Http分析工具，查看服务器的响应header中是否包含“Accept-Ranges: bytes”（按字节下载）或者查看响应码：</strong></p>
-<blockquote>
-<p>HTTP/1.1 200 Ok（不使用断点续传方式）<br>HTTP/1.1 206 Partial Content（使用断点续传方式）</p>
-</blockquote>
-        
-          <a class="article-more-a" href="/2017/10/14/Android自动更新APK（4）/#more">更多 >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android HTTP</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/10/14/Android自动更新APK（4）/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Android自动更新APK（3）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/13/Android自动更新APK（3）/">Android自动更新APK(三)</a>
+    <h1 class="article-title" itemprop="name">
+      Android自动更新APK(三)
     </h1>
   
 
@@ -255,9 +172,16 @@
       
         <p>上一小节讲到DownloadManager的实现原理，整理梳理了DownloadManager的下载流程。这一小节通过OkHttp向服务器发送请求，观察是否有新版本，返回下载链接，然后交给自己写的下载管理器。</p>
 <h4 id="通过OkHttp向服务器发送post请求"><a href="#通过OkHttp向服务器发送post请求" class="headerlink" title="通过OkHttp向服务器发送post请求"></a>通过OkHttp向服务器发送post请求</h4><p>发送post请求，通过OkHttp主要是构造一个含有RequestBody的Request，通过建造者模式构建Request：</p>
-        
-          <a class="article-more-a" href="/2017/10/13/Android自动更新APK（3）/#more">更多 >></a>
-        
+<a id="more"></a>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> Request request = <span class="keyword">new</span> Request.Builder()</span><br><span class="line">  .url(mUrl)</span><br><span class="line">  .header(<span class="string">"Content-type"</span>, <span class="string">"application/json"</span>) <span class="comment">// 添加一些必要的header信息</span></span><br><span class="line">   <span class="comment">// entityData为构造json串的byte数组，以bytes数组的长度作为Content-Length</span></span><br><span class="line">  .header(<span class="string">"Content-Length"</span>,  String.valueOf(entityData.length))</span><br><span class="line">  .header(UpdateConstant.HEAD_ATTR_IMSI, mInstanceUtils.getIMSIString())</span><br><span class="line">  .header(UpdateConstant.HEAD_ATTR_IMEI, mInstanceUtils.getIMEIString())</span><br><span class="line">  .header(UpdateConstant.HEAD_ATTR_SYS_VERSION, mInstanceUtils.getSysVersion())</span><br><span class="line">  .header(UpdateConstant.HEAD_ATTR_DEV_NAME, mInstanceUtils.getDeviceName())</span><br><span class="line">  .header(UpdateConstant.HEAD_ATTR_EXTERNAL_DEV_NAME, mInstanceUtils.getExternalDevName())</span><br><span class="line">  .header(UpdateConstant.HEAD_ATTR_DPI, mInstanceUtils.getDevDpi())</span><br><span class="line">  .header(UpdateConstant.HEAD_ATTR_LOCALE, mInstanceUtils.getClentLocale())</span><br><span class="line">  .header(UpdateConstant.HEAD_ATTR_VERSION, mInstanceUtils.getHeadVersion())</span><br><span class="line">  .header(UpdateConstant.HEAD_ATTR_VERSIONCODE, mInstanceUtils.getHeadVersionCode())</span><br><span class="line">  .header(UpdateConstant.HEAD_ATTR_TIMESTAMP, timeStamp)</span><br><span class="line">  .header(UpdateConstant.HEAD_ATTR_TOKEN, mInstanceUtils.getRequestToken(timeStamp))</span><br><span class="line">  <span class="comment">// 调用RequestBody的静态函数 create 传入MediaType，传入byte[]</span></span><br><span class="line">  .post(RequestBody.create(mMediaType, entityData))</span><br><span class="line">  .build();</span><br></pre></td></tr></table></figure>
+<p>在构造json字符串时，使用了Google开源的Gson库：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Gson mGson = <span class="keyword">new</span> Gson();</span><br><span class="line"><span class="keyword">byte</span>[] entityData;</span><br><span class="line"></span><br><span class="line">List&lt;AppInfo&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">list.add(<span class="keyword">new</span> AppInfo(<span class="keyword">this</span>));</span><br><span class="line"></span><br><span class="line">entityData = mGson.toJson(list).getBytes(<span class="string">"utf-8"</span>);</span><br></pre></td></tr></table></figure>
+<p>其中AppInfo定义如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AppInfo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String appName;</span><br><span class="line">    <span class="keyword">private</span> String pkgName;</span><br><span class="line">    <span class="keyword">private</span> String version;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> versionCode;</span><br><span class="line">    <span class="keyword">private</span> String country;</span><br><span class="line">    <span class="keyword">private</span> String device;</span><br><span class="line">    <span class="keyword">private</span> String aliveUpdateChannel;</span><br><span class="line">    <span class="keyword">private</span> String extraAttributes;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AppInfo</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">        UpdateUtils instanceUtils = UpdateUtils.getInstance(context);</span><br><span class="line">        <span class="keyword">this</span>.versionCode = <span class="number">92001</span>;</span><br><span class="line">        <span class="keyword">this</span>.appName = instanceUtils.getAppName();</span><br><span class="line">        <span class="keyword">this</span>.pkgName = instanceUtils.getPackageName();</span><br><span class="line">        <span class="keyword">this</span>.version = instanceUtils.getVersionName();</span><br><span class="line">        <span class="keyword">this</span>.country = instanceUtils.getCountryStr();</span><br><span class="line">        <span class="keyword">this</span>.device = instanceUtils.getDeviceName();</span><br><span class="line">        <span class="keyword">this</span>.aliveUpdateChannel = instanceUtils.getAliveUpdateChannel();</span><br><span class="line">        <span class="keyword">this</span>.extraAttributes = <span class="string">""</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>构造好Request后，向服务器发送，通过OkHttp的<code>onResonse</code>回调解析服务器返回来的数据（一般都是json串），得到下载地址。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mOkHttpClient.newCall(request).enqueue(<span class="keyword">new</span> Callback() &#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFailure</span><span class="params">(Call call, IOException e)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// failed, do something...</span></span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onResponse</span><span class="params">(Call call, Response response)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 解析json串，得到download url</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>发送请求的操作主要是要和服务器协商好的，包括header信息和post到服务器的requestbody信息。</p>
+
       
 
       
@@ -279,16 +203,84 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/10/13/Android自动更新APK（3）/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2017/10/13/Android自动更新APK（3）/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2017/10/14/Android自动更新APK（4）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Android自动更新APK(四)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/12/Android自动更新APK（2）/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Android自动更新APK(二)</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -308,168 +300,14 @@
 
 
 
-
-  
-    <article id="post-Android自动更新APK（2）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/12/Android自动更新APK（2）/">Android自动更新APK(二)</a>
-    </h1>
-  
-
-        
-        <a href="/2017/10/12/Android自动更新APK（2）/" class="archive-article-date">
-  	<time datetime="2017-10-11T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-10-12</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>上一节说到从服务器下载APK的过程，说OkHttp不支持断点下载，<code>DownloadManager</code>支持断点下载。通过配置OkHttpClient添加拦截器<code>interptcor</code>也是可以支持断点下载，再此之前，我们先看看<code>DownloadManager</code>的实现原理，看看<code>DownloadManager</code>怎么支持断点下载的。</p>
-<h4 id="DownloadManager的实现原理分析"><a href="#DownloadManager的实现原理分析" class="headerlink" title="DownloadManager的实现原理分析"></a>DownloadManager的实现原理分析</h4><p>在上一节讲到构造一个Request交给DownloadManager，然后会自动下载：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">downloadManager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);</span><br><span class="line">downloadId = downloadManager.enqueue(request);</span><br></pre></td></tr></table></figure>
-        
-          <a class="article-more-a" href="/2017/10/12/Android自动更新APK（2）/#more">更多 >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/10/12/Android自动更新APK（2）/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Android自动更新APK" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/11/Android自动更新APK/">Android自动更新APK</a>
-    </h1>
-  
-
-        
-        <a href="/2017/10/11/Android自动更新APK/" class="archive-article-date">
-  	<time datetime="2017-10-10T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-10-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>通过Service的方式（推荐使用<strong>JobService</strong>），在后台获取服务器的APK信息，然后下载到本地，通过调用系统安装程序，来安装最新的APK。</p>
-<p>其中，调用系统安装程序的主要代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">File apkFil = <span class="keyword">new</span> File(mContext.getExternalCacheDir(),<span class="string">"MFVKeyguard.apk"</span>);<span class="comment">//APK存储路径</span></span><br><span class="line">Intent intent = <span class="keyword">new</span> Intent(Intent.ACTION_VIEW);</span><br><span class="line">Uri apk;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Android N之后的版本通过FileProvider的方式获得Uri</span></span><br><span class="line"><span class="keyword">if</span>(Build.VERSION.SDK_INT&gt;=<span class="number">24</span>) &#123;</span><br><span class="line">  apk= FileProvider.getUriForFile(<span class="keyword">this</span>,<span class="string">"sto.com.stocourier.fileprovider"</span>,apkFil);</span><br><span class="line">  intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span><br><span class="line">  intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  apk=Uri.fromFile(apkFil);<span class="comment">//低于7.0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">intent.setDataAndType(apk, <span class="string">"application/vnd.android.package-archive"</span>);</span><br><span class="line">startActivity(intent);</span><br></pre></td></tr></table></figure>
-        
-          <a class="article-more-a" href="/2017/10/11/Android自动更新APK/#more">更多 >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/10/11/Android自动更新APK/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
   
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
-    </nav>
+  
+
+  
+
+  
+
   
 
 
@@ -492,8 +330,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
