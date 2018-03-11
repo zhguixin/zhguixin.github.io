@@ -68,10 +68,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-git常用操作指令" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Retrofit框架使用和解读" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/08/05/git常用操作指令/" class="article-date">
-  <time datetime="2016-08-04T16:00:00.000Z" itemprop="datePublished">2016-08-05</time>
+    <a href="/2017/09/14/Retrofit框架使用和解读/" class="article-date">
+  <time datetime="2017-09-13T16:00:44.000Z" itemprop="datePublished">2017-09-14</time>
 </a>
     
   </div>
@@ -82,7 +82,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/05/git常用操作指令/">Git常用的操作指令</a>
+      <a class="article-title" href="/2017/09/14/Retrofit框架使用和解读/">Retrofit框架使用和解读</a>
     </h1>
   
 
@@ -90,23 +90,26 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="修改最后一次提交"><a href="#修改最后一次提交" class="headerlink" title="修改最后一次提交"></a>修改最后一次提交</h3><p>有时候我们提交完了才发现漏掉了几个文件没有加，或者提交信息写错了。想要撤消刚才的提交操作，可以使用<code>--amend</code> 选项重新提交：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git commit --amend -m<span class="string">"修改 提交 说明"</span></span><br></pre></td></tr></table></figure></p>
-<p>此命令将使用当前的暂存区域快照提交。如果刚才提交完没有作任何改动，直接运行此命令的话，相当于有机会 重新编辑提交说明，但将要提交的文件快照和之前的一样。</p>
-<p>启动文本编辑器后，会看到上次提交时的说明，编辑它确认没问题后保存退出，就会使用新的提交说明覆盖刚才失误的提交。</p>
-<p>如果刚才提交时忘了暂存某些修改，可以先补上暂存操作，然后再运行 <code>--amend</code> 提交：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git commit -m <span class="string">'initial commit'</span></span><br><span class="line">$ git add forgotten_file</span><br><span class="line">$ git commit --amend</span><br></pre></td></tr></table></figure></p>
-<p>上面的三条命令最终只是产生一个提交，第二个提交命令修正了第一个的提交内容。</p>
-        
-          <p class="article-more-link">
-            <a href="/2016/08/05/git常用操作指令/#more">Read More</a>
-          </p>
-        
+        <h4 id="1、Retrofit的使用和解读"><a href="#1、Retrofit的使用和解读" class="headerlink" title="1、Retrofit的使用和解读"></a>1、Retrofit的使用和解读</h4><p>Retrofit是一个RESTful的Http网络请求框架的封装。其实它并不是一个网络请求框架，因为网络请求的工作并不是Retrofit来完成的。Retrofit 2.0开始内置OkHttp，真正实现网络请求的是OkHttp，而Retrofit专注于接口的封装，二者分工协作。</p>
+<p>Retrofit提供不同的Converter实现（也可以自定义），同时提供RxJava支持(返回Observable对象)，配合Gson和RxJava，你可以用很少的代码就实现请求、返回数据解析和操作等功能。</p>
+<p>Retrofit实现了网络请求等操作的解耦，用户可根据需求进行自定义的配置。</p>
+<p>1、通过注解来配置请求参数；</p>
+<p>2、通过工厂来生成CallAdapter，Converter。</p>
+<ul>
+<li>你可以使用不同的请求适配器(CallAdapter)，比如RxJava；</li>
+<li>你可以使用不同的反序列化工具(Converter)，比如Gson、protobuff等。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Retrofit retrofit = <span class="keyword">new</span> Retrofit.Builder()</span><br><span class="line">  .baseUrl(<span class="string">"http://www.baidu.com/"</span>)</span><br><span class="line">  .addConverterFactory(GsonConverterFactory.create())</span><br><span class="line">  .addCallAdapterFactory(RxJavaCallAdapterFactory.create())</span><br><span class="line">  .build();</span><br></pre></td></tr></table></figure>
+<p>Retrofit底层实现用到了<strong>动态代理</strong>的技术。</p>
+<p>关于动态代理技术，在Java web的Spring框架中应用的比较多，以实现AOP编程。一个简单的介绍动态代理的例子，详见：<a href="https://www.zhihu.com/question/20794107/answer/23330381" target="_blank" rel="external">Java 动态代理作用是什么？ - 雨夜偷牛的人的回答 - 知乎</a></p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/05/git常用操作指令/" data-id="cjdvdrzoj000vq53q3v3mat0r" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/14/Retrofit框架使用和解读/" data-id="cjemqkgm30019xn9kes0dkj8z" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Git/">Git</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-开源框架/">Android 开源框架</a></li></ul>
 
     </footer>
   </div>
@@ -115,10 +118,10 @@
 
 
   
-    <article id="post-Eclipse中使用FindBugs检查代码" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-并发集合框架" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/08/01/Eclipse中使用FindBugs检查代码/" class="article-date">
-  <time datetime="2016-08-01T15:11:44.000Z" itemprop="datePublished">2016-08-01</time>
+    <a href="/2017/09/10/并发集合框架/" class="article-date">
+  <time datetime="2017-09-10T14:47:44.000Z" itemprop="datePublished">2017-09-10</time>
 </a>
     
   </div>
@@ -129,7 +132,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/01/Eclipse中使用FindBugs检查代码/">FindBugs在Eclipse中安装与使用</a>
+      <a class="article-title" href="/2017/09/10/并发集合框架/">Java并发集合框架分析</a>
     </h1>
   
 
@@ -137,20 +140,26 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="1-什么是FindBugs"><a href="#1-什么是FindBugs" class="headerlink" title="1.什么是FindBugs"></a>1.什么是FindBugs</h3><p>FindBugs 是一个静态分析工具，它检查类或者 JAR 文件，将字节码与一组缺陷模式进行对比以发现可能的问题。有了静态分析工具，就可以在不实际运行程序的情况对软件进行分析。</p>
-<h3 id="2-如何安装FindBugs"><a href="#2-如何安装FindBugs" class="headerlink" title="2.如何安装FindBugs"></a>2.如何安装FindBugs</h3><p>FindBugs在Eclipse中的安装同其它形式的插件的安装一样，主要有两种：<br>
-        
-          <p class="article-more-link">
-            <a href="/2016/08/01/Eclipse中使用FindBugs检查代码/#more">Read More</a>
-          </p>
-        
+        <p>[TOC]</p>
+<h4 id="1、CopyOnWriteArrayList"><a href="#1、CopyOnWriteArrayList" class="headerlink" title="1、CopyOnWriteArrayList"></a>1、CopyOnWriteArrayList</h4><p>该集合框架使用了一种叫<strong>写时复制</strong>的方法，当有新元素添加到<code>CopyOnWriteArrayList</code>时，先从原有的数组中拷贝一份出来，然后在新的数组做写操作，写完之后，再将原来的数组引用指向到新数组。</p>
+<p><code>CopyOnWriteArrayList</code>的整个add操作都是在<strong>锁</strong>的保护下进行的。源码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E e)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//1、先加锁</span></span><br><span class="line">    <span class="keyword">final</span> ReentrantLock lock = <span class="keyword">this</span>.lock;</span><br><span class="line">    lock.lock();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Object[] elements = getArray();</span><br><span class="line">        <span class="keyword">int</span> len = elements.length;</span><br><span class="line">        <span class="comment">//2、拷贝数组</span></span><br><span class="line">        Object[] newElements = Arrays.copyOf(elements, len + <span class="number">1</span>);</span><br><span class="line">        <span class="comment">//3、将元素加入到新数组中</span></span><br><span class="line">        newElements[len] = e;</span><br><span class="line">        <span class="comment">//4、将array引用指向到新数组</span></span><br><span class="line">        setArray(newElements);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">       <span class="comment">//5、解锁</span></span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>读的时候不需要加锁，如果读的时候有多个线程正在向CopyOnWriteArrayList添加数据，但是：如果写操作未完成；或者写操作完成，但是引用还未指向新数组，那么也是读取原数组数据，因为读的时候不会加锁的。（遵循Happen-before原则）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> E <span class="title">get</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> get(getArray(), index);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>CopyOnWriteArrayList</code>不会出现fast-fail，也就是在通过iterator（或者for-each）操作时是不会抛出ConcurrentModificationException异常的。</p>
+<blockquote>
+<p>ConcurrentModificationException产生的原因是在对于集合进行iterator（或者for-each）操作时，通过集合的一些对本身产生修改的方法(比如ArrayList的remove方法)修改集合，导致modCount != expectedModCount。</p>
+</blockquote>
+<p><strong>CopyOnWrite并发容器用于读多写少的并发场景。</strong></p>
+<h4 id="2、ConcurrentHashMap"><a href="#2、ConcurrentHashMap" class="headerlink" title="2、ConcurrentHashMap"></a>2、ConcurrentHashMap</h4><p>该集合框架是相比于HashTable，<code>ConcurrentHashMap</code>采用了粒度更小的加锁机制——分段加锁来实现对HashMap的并发访问。</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/01/Eclipse中使用FindBugs检查代码/" data-id="cjdvdrzno000dq53qdbyu8hrv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/10/并发集合框架/" data-id="cjemqkgmp001mxn9kvpp38z9a" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java-集合框架/">Java 集合框架</a></li></ul>
 
     </footer>
   </div>
@@ -159,10 +168,10 @@
 
 
   
-    <article id="post-Python实现的高效网络爬虫" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-深入理解ActivityManagerService" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/07/31/Python实现的高效网络爬虫/" class="article-date">
-  <time datetime="2016-07-31T13:51:39.000Z" itemprop="datePublished">2016-07-31</time>
+    <a href="/2017/09/02/深入理解ActivityManagerService/" class="article-date">
+  <time datetime="2017-09-02T07:47:44.000Z" itemprop="datePublished">2017-09-02</time>
 </a>
     
   </div>
@@ -173,7 +182,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/31/Python实现的高效网络爬虫/">Python实现的高效网络爬虫</a>
+      <a class="article-title" href="/2017/09/02/深入理解ActivityManagerService/">深入理解ActivityManagerService</a>
     </h1>
   
 
@@ -181,22 +190,63 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><strong>转载自  <a href="http://aosabook.org/en/500L/a-web-crawler-with-asyncio-coroutines.html">500 Lines or Less</a></strong><br>title: A Web Crawler With asyncio Coroutines<br>author: A. Jesse Jiryu Davis and Guido van Rossum</p>
-<markdown><br><em>A. Jesse Jiryu Davis is a staff engineer at MongoDB in New York. He wrote Motor, the async MongoDB Python driver, and he is the lead developer of the MongoDB C Driver and a member of the PyMongo team. He contributes to asyncio and Tornado. He writes at <a href="http://emptysqua.re">http://emptysqua.re</a>.</em><br><br><em>Guido van Rossum is the creator of Python, one of the major programming languages on and off the web. The Python community refers to him as the BDFL (Benevolent Dictator For Life), a title straight from a Monty Python skit.  Guido’s home on the web is <a href="http://www.python.org/~guido/">http://www.python.org/~guido/</a>.</em><br></markdown>
+        <p>[TOC]</p>
+<h4 id="AMS的启动过程"><a href="#AMS的启动过程" class="headerlink" title="AMS的启动过程"></a>AMS的启动过程</h4><p>AMS的启动入口，在SystemServer的run方法中，看一下代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment">/**</span><br><span class="line">    * The main entry point from zygote.</span><br><span class="line">    */</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">new</span> SystemServer().run();</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">SystemServer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="comment">// Check for factory test mode.</span></span><br><span class="line">       mFactoryTestMode = FactoryTest.getMode();</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">     <span class="comment">//一些手机本地化、虚拟机的设置</span></span><br><span class="line">     </span><br><span class="line">     <span class="comment">// Initialize native services.</span></span><br><span class="line">     System.loadLibrary(<span class="string">"android_servers"</span>);</span><br><span class="line">     </span><br><span class="line">     <span class="comment">// Initialize the system context.</span></span><br><span class="line">     createSystemContext();</span><br><span class="line">     </span><br><span class="line">     <span class="comment">// Create the system service manager.</span></span><br><span class="line">     mSystemServiceManager = <span class="keyword">new</span> SystemServiceManager(mSystemContext);</span><br><span class="line">     LocalServices.addService(SystemServiceManager.class, mSystemServiceManager);</span><br><span class="line">     </span><br><span class="line">     <span class="comment">// Start services.</span></span><br><span class="line">     startBootstrapServices();</span><br><span class="line">     startCoreServices();</span><br><span class="line">     startOtherServices();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>先重点看一下createSystemContext方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">createSystemContext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ActivityThread activityThread = ActivityThread.systemMain();</span><br><span class="line">    mSystemContext = activityThread.getSystemContext();</span><br><span class="line">    mSystemContext.setTheme(DEFAULT_SYSTEM_THEME);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在该方法内通过调用ActivityThread的systemMain()，启动运行在系统进程的ActivityThread代表系统进程的主线程，systemMain函数保证了系统进程(即system_server进程)和普通进程(直接调用ActivityThread的main函数)一样拥有一个完备的Android运行环境。</p>
+<p>在<code>startBootstrapServices</code>方法中启动了AMS：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Activity manager runs the show.</span></span><br><span class="line">mActivityManagerService = mSystemServiceManager.startService(</span><br><span class="line">        ActivityManagerService.Lifecycle.class).getService();</span><br></pre></td></tr></table></figure>
+<p>通过调用SystemServiceManager的startService方法来启动AMS。具体的就是通过Lifecycle的类名(Lifecyle为AMS的静态内部类)反射调用，执行Lifecycle的构造函数拿到Lifecycle的实例，然后调用Lifecycle的onStart方法启动AMS，最后调用Lifecycle的getService方法返回AMS。Lifecycle的代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Lifecycle</span> <span class="keyword">extends</span> <span class="title">SystemService</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ActivityManagerService mService;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Lifecycle</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context);</span><br><span class="line">        mService = <span class="keyword">new</span> ActivityManagerService(context);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onStart</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        mService.start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ActivityManagerService <span class="title">getService</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> mService;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>AMS在启动过程中，先执行构造函数完成初始化，再执行start方法完成启动。</p>
+<p>接着看，根据SystemServer的执行顺序，看看AMS还干了些什么事：(选取了一部分)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">// Now that the power manager has been started, let the activity manager</span></span><br><span class="line"> <span class="comment">// initialize power management features.</span></span><br><span class="line"> mActivityManagerService.initPowerManagement();</span><br><span class="line"></span><br><span class="line"> <span class="comment">// Set up the Application instance for the system process and get started.</span></span><br><span class="line"> mActivityManagerService.setSystemProcess();</span><br><span class="line"> </span><br><span class="line"> mActivityManagerService.installSystemProviders();</span><br><span class="line"> </span><br><span class="line"> mActivityManagerService.setWindowManager(wm);</span><br><span class="line"></span><br><span class="line"><span class="comment">// We now tell the activity manager it is okay to run third party</span></span><br><span class="line"><span class="comment">// code.  It will call back into us once it has gotten to the state</span></span><br><span class="line"><span class="comment">// where third party code can really run (but before it has actually</span></span><br><span class="line"><span class="comment">// started launching the initial applications), for us to complete our</span></span><br><span class="line"><span class="comment">// initialization.</span></span><br><span class="line"><span class="comment">//最后执行AMS的systemReady方法，传入了一个回调的实现方法</span></span><br><span class="line">mActivityManagerService.systemReady(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">	mActivityManagerService.startObservingNativeCrashes();</span><br><span class="line">  </span><br><span class="line">  startSystemUi(context);<span class="comment">//启动SystemUI，contextImpl启动SystemUIService</span></span><br><span class="line">  ....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="AMS内部执行流程"><a href="#AMS内部执行流程" class="headerlink" title="AMS内部执行流程"></a>AMS内部执行流程</h4><p>先看一下，AMS的setSystemProcess方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSystemProcess</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;   </span><br><span class="line">      		<span class="comment">//添加一些服务到ServiceManager</span></span><br><span class="line">ServiceManager.addService(Context.ACTIVITY_SERVICE, <span class="keyword">this</span>, <span class="keyword">true</span>);</span><br><span class="line">        	ServiceManager.addService(ProcessStats.SERVICE_NAME, mProcessStats);</span><br><span class="line">      	</span><br><span class="line">      		<span class="comment">//通过ActivityThread安装系统应用，ActivityThread由系统进程启动运行在系统进程中</span></span><br><span class="line">            ApplicationInfo info = mContext.getPackageManager().getApplicationInfo(</span><br><span class="line">                <span class="string">"android"</span>, STOCK_PM_FLAGS | MATCH_SYSTEM_ONLY);</span><br><span class="line">        	mSystemThread.installSystemApplicationInfo(info, getClass().getClassLoader());</span><br><span class="line">      		</span><br><span class="line">      		<span class="comment">//保证AMS实现进程管理，该ProcessRecord代表system_server</span></span><br><span class="line">      		ProcessRecord app = newProcessRecordLocked(info, info.processName, <span class="keyword">false</span>, <span class="number">0</span>);</span><br><span class="line">      </span><br><span class="line">    &#125; <span class="keyword">catch</span> (PackageManager.NameNotFoundException e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(</span><br><span class="line">                <span class="string">"Unable to find android system package"</span>, e);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>AMS的installSystemProviders方法，主要是启动SettingProvider。</p>
+<p>AMS的systemReady方法，完成系统就绪的必要工作，然后会启动Launcher、在回调中又会启动SystemUI。在该方法中，先判断AMS中的成员变量mSystemReady的值，如果为true，执行callback的run方法后，就直接返回了。</p>
+<h4 id="AMS中对Activity的管理"><a href="#AMS中对Activity的管理" class="headerlink" title="AMS中对Activity的管理"></a>AMS中对Activity的管理</h4><p>AMS从名字上就能看出来是对Activity的管理，AMS提供了几个重要的类(或数据结构)来管理Activity。</p>
+<ul>
+<li>ActivityRecord，记录一个Activity</li>
+<li>TaskRecord，用来表示Task</li>
+<li>ActivityStack，用来管理一系列Task</li>
+<li>ActivityStackSupervisor，该类是在4.4版本之后引入的，用来组织管理ActivityStack</li>
+</ul>
+<p><img src="./img/ActivityTask.png" alt=""></p>
+<p><em>RecentApp以TaskRecord为单位来进行管理。</em></p>
+<p>Activity的四种LaunchMode：</p>
+<ul>
+<li><p>standard模式，设置了该启动模式的Activity在被启动时，会创建一个新的实例，即使在栈顶，也会重复创建新的实例。被启动的Activity与主Activity的TaskId保持一致。</p>
+</li>
+<li><p>singleTop模式，设置了该启动模式的Activity在被启动时，顾名思义如果位于栈顶则不会重复创建，即onCreate、onStart方法不会被调用，此时onNetIntent方法会被调用。</p>
+<p>现在考虑这样一种情况：如果栈中有该被启动的Activity实例，但是该实例不在栈顶情况又如何呢？答案是，还会重新创建一个新的Activity实例。</p>
+</li>
+<li><p>singleTask模式，设置了该启动模式的Activity在被启动时，如果栈中存在这个Activity的实例就会复用这个Activity，不管它是否位于栈顶，复用时，会将它上面的Activity全部出栈，并且会回调该实例的onNewIntent方法。</p>
+<p>我之前的理解的singleTask就是这样的，但其实忽略掉了一个很重要的问题。在AndroidManifest中配置Activity时有个属性值叫taskAffinity，该值的作用是指定任务栈(不同的任务栈有不同的TaskId， 不指定的话就是默认包名)。启动指定singleTask模式的Activity的过程还存在一个任务栈的匹配，启动时，会在自己需要的任务栈中寻找实例，这个任务栈就是通过taskAffinity属性指定。如果这个任务栈不存在，则会创建这个任务栈，创建新的Activity实例入栈到新创建的Task中去。 不指定的话就是默认包名。</p>
+<p>我们可以将两个不同App中的Activity设置为相同的taskAffinity，这样虽然在不同的应用中，但是Activity会被分配到同一个Task中去</p>
+<p><strong>taskAffinity属性不对standard和singleTop模式有任何影响，即时你指定了该属性为其他不同的值，这两种启动模式下也不会创建新的task</strong></p>
+</li>
+<li><p>singleInstance模式，该模式具备singleTask模式的所有特性外，与它的区别就是，这种模式下的Activity会单独占用一个Task栈，具有全局唯一性，即整个系统中就这么一个实例，由于栈内复用的特性，后续的请求均不会创建新的Activity实例，直接调用onNewIntent方法，除非这个特殊的任务栈被销毁了。这个模式的典型应用场景时，在手机某个APP(如短信)点击链接跳转到浏览器。</p>
+</li>
+</ul>
+<p>除了上述几种启动模式，接着了解下面这几个Intent标签的用法：</p>
+<ul>
+<li>FLAG_ACTIVITY_NEW_TASK</li>
+<li>FLAG_ACTIVITY_CLEAR_TOP</li>
+<li>FLAG_ACTIVITY_SINGLE_TOP</li>
+</ul>
+<p>参考资料：<a href="http://blog.csdn.net/mynameishuangshuai/article/details/51491074" target="_blank" rel="external">彻底弄懂Activity四大启动模式</a>、<a href="https://developer.android.com/guide/components/tasks-and-back-stack.html" target="_blank" rel="external">Tasks and Back Stack</a></p>
+<h4 id="AMS启动Activity的流程分析"><a href="#AMS启动Activity的流程分析" class="headerlink" title="AMS启动Activity的流程分析"></a>AMS启动Activity的流程分析</h4><p>直接从AMS的startActivity开始分析，在该方法内部拿到IApplicationThread、TaskRecord的实例后又调用到ActivityStarter中的startActivityMayWait函数。</p>
 
-<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Classical computer science emphasizes efficient algorithms that complete computations as quickly as possible. But many networked programs spend their time not computing, but holding open many connections that are slow, or have infrequent events. These programs present a very different challenge: to wait for a huge number of network events efficiently. A contemporary approach to this problem is asynchronous I/O, or “async”.</p>
-        
-          <p class="article-more-link">
-            <a href="/2016/07/31/Python实现的高效网络爬虫/#more">Read More</a>
-          </p>
-        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/07/31/Python实现的高效网络爬虫/" data-id="cjdvdrzos000zq53qfow40qwu" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/02/深入理解ActivityManagerService/" data-id="cjemqkgmr001oxn9kv8zeylh2" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-源码分析/">Android 源码分析</a></li></ul>
 
     </footer>
   </div>
@@ -205,10 +255,10 @@
 
 
   
-    <article id="post-Java的回调机制" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Android学习笔记二" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/07/29/Java的回调机制/" class="article-date">
-  <time datetime="2016-07-29T06:54:39.000Z" itemprop="datePublished">2016-07-29</time>
+    <a href="/2017/08/23/Android学习笔记二/" class="article-date">
+  <time datetime="2017-08-23T15:00:44.000Z" itemprop="datePublished">2017-08-23</time>
 </a>
     
   </div>
@@ -219,7 +269,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/29/Java的回调机制/">Java的回调机制</a>
+      <a class="article-title" href="/2017/08/23/Android学习笔记二/">Android学习笔记二</a>
     </h1>
   
 
@@ -227,21 +277,46 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Java的回调机制可以使得在执行一个任务完毕的时候，能执行一个callback函数。<br>现在模拟实现如下一个场景：定义三个类。分别是主函数Main、业务处理类BusinessPro以及回调接口BusinessCallback。使得在业务处理类中，处理完业务后，执行一个callback函数。</p>
-<p>Main.java<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> zh</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">		<span class="keyword">new</span> BusinessProc().compute(<span class="number">100</span>,<span class="keyword">new</span> BusinessCallback()&#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onBusinessProcEnd</span><span class="params">()</span></span>&#123;</span><br><span class="line">				System.out.println(<span class="string">"this is end"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>主函数中新建了一个BusinessPro的实例，入参为一整型和一个匿名的内部接口类并实现了其方法<code>onBusinessProcEnd()</code>。<br>
-        
-          <p class="article-more-link">
-            <a href="/2016/07/29/Java的回调机制/#more">Read More</a>
-          </p>
-        
+        <p>[TOC]</p>
+<p>####1、序列化操作</p>
+<p>两种方式：实现Serializable接口和Parcelable接口。</p>
+<blockquote>
+<p>Serializalbe会使用反射，序列化和反序列化过程需要大量I/O操作，Parcelable自已实现封送和解封（marshalled &amp;unmarshalled）操作不需要用反射，数据也存放在Native内存中，效率要快很多。但是实现Parcelable比较复杂。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyParcelable</span> <span class="keyword">implements</span> <span class="title">Parcelable</span> </span>&#123;</span><br><span class="line">     <span class="keyword">private</span> <span class="keyword">int</span> mData;</span><br><span class="line"></span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">describeContents</span><span class="params">()</span> </span>&#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">writeToParcel</span><span class="params">(Parcel out, <span class="keyword">int</span> flags)</span> </span>&#123;</span><br><span class="line">         out.writeInt(mData);</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Parcelable.Creator&lt;MyParcelable&gt; CREATOR</span><br><span class="line">             = <span class="keyword">new</span> Parcelable.Creator&lt;MyParcelable&gt;() &#123;</span><br><span class="line">         <span class="function"><span class="keyword">public</span> MyParcelable <span class="title">createFromParcel</span><span class="params">(Parcel in)</span> </span>&#123;</span><br><span class="line">             <span class="keyword">return</span> <span class="keyword">new</span> MyParcelable(in);</span><br><span class="line">         &#125;</span><br><span class="line"></span><br><span class="line">         <span class="keyword">public</span> MyParcelable[] newArray(<span class="keyword">int</span> size) &#123;</span><br><span class="line">             <span class="keyword">return</span> <span class="keyword">new</span> MyParcelable[size];</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;;</span><br><span class="line"></span><br><span class="line">     <span class="function"><span class="keyword">private</span> <span class="title">MyParcelable</span><span class="params">(Parcel in)</span> </span>&#123;</span><br><span class="line">         mData = in.readInt();</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意：通过Intent传递序列化数据时，尤其像ArrayList、HashMap等一系列的数据时，要注意容量大小。因为Intent中的Bundle是在使用Binder机制进行数据传递的，能使用的Binder的缓冲区是有大小限制的（有些手机是2M），而一个进程默认有16个binder线程，所以一个线程能占用的缓冲区就更小了（大约一个线程可以占用128KB）。所以当你看到“The Binder transaction failed because it was too large.”这类TransactionTooLargeException异常时，就是传递的数据超过Binder缓存冲的容量了。</p>
+<p>####2、理解Android Context</p>
+<p><img src="./res/context.png" alt="img"></p>
+<p>一个进程中context个数：<strong>1+N个activity+M个service </strong>。其中<code>ContextIml</code>类中的<code>mPackageInfo</code>成员变量是一个<code>LoadedApk</code>对象。</p>
+<h4 id="3、理解ListView"><a href="#3、理解ListView" class="headerlink" title="3、理解ListView"></a>3、理解ListView</h4><p>ListView的ItemView有一个复用机制，简单看如下图所示，ListView中有一个RecycleBin类复负回收不可见且可能被再次使用的ItemView，由ScrapView存储。</p>
+<p><img src="./res/ListView.png" alt="img"></p>
+<p>在使用ListView时，为了保证不卡顿，就要减少getView所消耗的时间。主要有几个方面来优化：</p>
+<ol>
+<li>重用ConvertView;</li>
+<li>使用View Holder模式；</li>
+<li>使用异步线程加载图片（一般都是直接使用图片库加载，如Glide, Picasso）；</li>
+</ol>
+<p>其他的优化点，还包括：</p>
+<ol>
+<li>在adapter的getView方法中尽可能的减少逻辑判断，特别是耗时的判断；</li>
+<li>避免GC（可以从LOGCAT查看有无GC的LOG）；</li>
+<li>在快速滑动时不要加载图片；</li>
+<li>将ListView的scrollingCache和animateCache这两个属性设置为false（默认是true）;</li>
+<li>尽可能减少List Item的Layout层次；</li>
+</ol>
+<p>#####ListView源码分析</p>
+<p>ListView并不会直接和数据源打交道，而是会借助Adapter这个桥梁来去访问真正的数据源。Adapter是一个接口，它的实现类有<code>ArrayAdapter</code>由于数组和List类型的数据源，<code>SimpleCursorAdapter</code>用于实现访问数据库游标类型的数据源。在Adapter中的getView需要去重写。</p>
+<p>重点的几个函数：<code>AbsListView</code>中的<code>onLayout</code>和<code>onTouchEvent</code>。<code>ListView</code>中的<code>childLayout</code>。</p>
+<h4 id="4、语言和国际化"><a href="#4、语言和国际化" class="headerlink" title="4、语言和国际化"></a>4、语言和国际化</h4><p>手机当前的环境比如语言、时区、语言等，是根据Resource中的Configuration.Locale这项的值来决定的。如果有不需要不根据Android系统的Locale配置就改变应用语言的业务场景，可以使用<code>updateConfiguration</code>方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">changeSystemLanguage</span><span class="params">(Context context, String language)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (context == <span class="keyword">null</span> || TextUtils.isEmpty(language)) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Resources resources = context.getResources();</span><br><span class="line">        Configuration config = resources.getConfiguration();</span><br><span class="line">        <span class="keyword">if</span> (Locale.SIMPLIFIED_CHINESE.getLanguage().equals(language)) &#123;</span><br><span class="line">            config.locale = Locale.SIMPLIFIED_CHINESE;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            config.locale = <span class="keyword">new</span> Locale(language);</span><br><span class="line">        &#125;</span><br><span class="line">        resources.updateConfiguration(config, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/07/29/Java的回调机制/" data-id="cjdvdrzny000mq53qa3vy164w" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/08/23/Android学习笔记二/" data-id="cjemqkgkq0009xn9k7oklfakp" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android总结/">Android总结</a></li></ul>
 
     </footer>
   </div>
@@ -253,7 +328,7 @@
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/page/2/">&laquo; __('prev')</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/">__('next') &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/2/">&laquo; __('prev')</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/4/">__('next') &raquo;</a>
   </nav>
 </section>
         
@@ -266,7 +341,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-HTTP/">Android HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/经验/">经验</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-HTTP/">Android HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-开源框架/">Android 开源框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-源码分析/">Android 源码分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android总结/">Android总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-多线程/">Java 多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-集合框架/">Java 集合框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/经验/">经验</a></li></ul>
     </div>
   </div>
 
@@ -276,7 +351,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Android-HTTP/" style="font-size: 10px;">Android HTTP</a> <a href="/tags/Git/" style="font-size: 16.67px;">Git</a> <a href="/tags/Java/" style="font-size: 13.33px;">Java</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/经验/" style="font-size: 10px;">经验</a>
+      <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Android-HTTP/" style="font-size: 10px;">Android HTTP</a> <a href="/tags/Android-开源框架/" style="font-size: 10px;">Android 开源框架</a> <a href="/tags/Android-源码分析/" style="font-size: 10px;">Android 源码分析</a> <a href="/tags/Android总结/" style="font-size: 15px;">Android总结</a> <a href="/tags/Git/" style="font-size: 17.5px;">Git</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/Java-多线程/" style="font-size: 15px;">Java 多线程</a> <a href="/tags/Java-集合框架/" style="font-size: 12.5px;">Java 集合框架</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/经验/" style="font-size: 10px;">经验</a>
     </div>
   </div>
 
@@ -285,7 +360,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li></ul>
     </div>
   </div>
 
@@ -298,6 +373,14 @@
       <ul>
         
           <li>
+            <a href="/2017/12/21/Android线程组件生命周期感知/">AAndroid线程组件生命周期感知</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/16/Java线程池/">Java线程池</a>
+          </li>
+        
+          <li>
             <a href="/2017/10/14/Android自动更新APK（4）/">Android自动更新APK(四)</a>
           </li>
         
@@ -307,14 +390,6 @@
         
           <li>
             <a href="/2017/10/12/Android自动更新APK（2）/">Android自动更新APK(二)</a>
-          </li>
-        
-          <li>
-            <a href="/2017/10/11/Android自动更新APK/">Android自动更新APK</a>
-          </li>
-        
-          <li>
-            <a href="/2016/08/27/git log使用/">git log查看提交记录</a>
           </li>
         
       </ul>

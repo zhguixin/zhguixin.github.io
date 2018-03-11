@@ -68,6 +68,117 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Android线程组件生命周期感知" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/21/Android线程组件生命周期感知/" class="article-date">
+  <time datetime="2017-12-21T12:05:44.000Z" itemprop="datePublished">2017-12-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/21/Android线程组件生命周期感知/">AAndroid线程组件生命周期感知</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Android中开启的线程生命周期直到<code>run</code>函数体执行完成，或者<code>run</code>函数有异常抛出。如果在Activity中开启了后台线程，执行完成更新UI界面，但此时手机配置发生改变导致原来的Activity退出了（比如旋转了手机屏幕），但是线程还在后台执行。执行完成后更新UI界面时，Activity已经退出了，工作线程的执行结果就被丢弃了。所以很有必要对线程进行保留，对组件的生命周期进行感知。</p>
+<p>使用场景：从本地图库添加图片到【本地添加】列表中，用户一次性添加30张图片。</p>
+<p>我们可以把一个线程保存在一个没有UI界面的Fragment中，在onCreate方法中调用<code>setRetainInstance(true)</code>。即使配置发生变化导致Activity被销毁时，在Activity中被表示保持的Fragment也不会被销毁。我们可以在该Fragment中保存大量数据。</p>
+<p>在Activity中创建持有工作线程的Fragment：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadRetainWithFragmentActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> ThreadFragment mThreadFragment;</span><br><span class="line">    <span class="keyword">private</span> TextView mTextView;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        setContentView(R.layout.activity_retain_thread);</span><br><span class="line">        mTextView = (TextView) findViewById(R.id.text_retain);</span><br><span class="line">        FragmentManager manager = getFragmentManager();</span><br><span class="line">        mThreadFragment = (ThreadFragment) </span><br><span class="line">          manager.findFragmentByTag(<span class="string">"threadfragment"</span>);</span><br><span class="line">        <span class="keyword">if</span> (mThreadFragment == <span class="keyword">null</span>) &#123;</span><br><span class="line">            FragmentTransaction transaction = manager.beginTransaction();</span><br><span class="line">            mThreadFragment = <span class="keyword">new</span> ThreadFragment();</span><br><span class="line">            transaction.add(mThreadFragment, <span class="string">"threadfragment"</span>);</span><br><span class="line">            transaction.commit();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 需要的地方开启线程，真正的执行在Fragment中</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onStartThread</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">        mThreadFragment.execute();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setText</span><span class="params">(<span class="keyword">final</span> String text)</span> </span>&#123;</span><br><span class="line">        runOnUiThread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                mTextView.setText(text);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>线程放在Fragment中，ThreadFragment持有Activity的引用，以便更新UI界面：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadFragment</span> <span class="keyword">extends</span> <span class="title">Fragment</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> ThreadRetainWithFragmentActivity mActivity;</span><br><span class="line">    <span class="keyword">private</span> MyThread t;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">final</span> String text = getTextFromNetwork();</span><br><span class="line">            mActivity.setText(text);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Long operation</span></span><br><span class="line">        <span class="function"><span class="keyword">private</span> String <span class="title">getTextFromNetwork</span><span class="params">()</span> </span>&#123; <span class="comment">// Simulate network operation </span></span><br><span class="line">          SystemClock.sleep(<span class="number">5000</span>);</span><br><span class="line">          <span class="keyword">return</span> <span class="string">"Text from network"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setRetainInstance(<span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAttach</span><span class="params">(Activity activity)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onAttach(activity);</span><br><span class="line">        mActivity = (ThreadRetainWithFragmentActivity) activity;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDetach</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onDetach();</span><br><span class="line">        mActivity = <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        t = <span class="keyword">new</span> MyThread();</span><br><span class="line">        t.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/12/21/Android线程组件生命周期感知/" data-id="cjemqkgkn0007xn9kltxefvbi" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Java线程池" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/10/16/Java线程池/" class="article-date">
+  <time datetime="2017-10-16T14:47:44.000Z" itemprop="datePublished">2017-10-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/16/Java线程池/">Java线程池</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>[TOC]</p>
+<h4 id="1、简介"><a href="#1、简介" class="headerlink" title="1、简介"></a>1、简介</h4><p>线程池的使用可以避免重复创建线程和销毁线程带来的CPU开销，线程池可以重复利用线程池中的线程。</p>
+<p>基本使用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">ExecutorService cachedThreadPool = Executors.newCachedThreadPool();</span><br><span class="line"></span><br><span class="line"><span class="comment">//调用execute方法</span></span><br><span class="line">cachedThreadPool.execute(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    System.out.println(<span class="string">"running task via execute"</span>);  </span><br><span class="line">  &#125;  </span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//调用submit方法</span></span><br><span class="line">cachedThreadPool.submit(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    System.out.println(<span class="string">"running task via submit"</span>);  </span><br><span class="line">  &#125;  </span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h4 id="2、原理分析"><a href="#2、原理分析" class="headerlink" title="2、原理分析"></a>2、原理分析</h4><p>接口：Executor、ExecutorService；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Executor</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">execute</span><span class="params">(Runnable command)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//定义了操作线程池的一些常用方法</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ExecutorService</span> <span class="keyword">extends</span> <span class="title">Executor</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">shutdown</span><span class="params">()</span></span>;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  &lt;T&gt; <span class="function">Future&lt;T&gt; <span class="title">submit</span><span class="params">(Callable&lt;T&gt; task)</span></span>;</span><br><span class="line">  &lt;T&gt; <span class="function">Future&lt;T&gt; <span class="title">submit</span><span class="params">(Runnable task, T result)</span></span>;</span><br><span class="line">  Future&lt;?&gt; submit(Runnable task);</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  &lt;T&gt; List&lt;Future&lt;T&gt;&gt; invokeAll(Collection&lt;? extends Callable&lt;T&gt;&gt; tasks)</span><br><span class="line">        <span class="keyword">throws</span> InterruptedException;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>类：AbstractExecutorService、ThreadPoolExecutor</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//实现了一些方法</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractExecutorService</span> <span class="keyword">implements</span> <span class="title">ExecutorService</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//线程池的真正实现类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadPoolExecutor</span> <span class="keyword">extends</span> <span class="title">AbstractExecutorService</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  	<span class="comment">//任务队列，BlockingQueue 接口的某个实现（常使用 ArrayBlockingQueue 和 LinkedBlockingQueue），由TheadPoolExecutor构造函数传入，线程池从该队列中获取要执行的任务(调用getTask方法)</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> BlockingQueue&lt;Runnable&gt; workQueue;</span><br><span class="line">	<span class="comment">//保存线程池中的Worker，一个Worker对应会开启一个线程，也就是会记录线程池中的线程数</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> HashSet&lt;Worker&gt; workers = <span class="keyword">new</span> HashSet&lt;Worker&gt;();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>工厂类：Executors，提供已定义好的一些线程池（直接调用相关静态方法），内部通过调用ThreadPoolExecutor实现；</p>
+<p>辅助类：FutureTask，通过submit交给线程池的任务都会包装成此类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义获取异步执行结果的方法</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Future</span>&lt;<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">boolean</span> <span class="title">isCancelled</span><span class="params">()</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">boolean</span> <span class="title">isDone</span><span class="params">()</span></span>;</span><br><span class="line">  <span class="function">V <span class="title">get</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException, ExecutionException</span>;</span><br><span class="line">  <span class="function">V <span class="title">get</span><span class="params">(<span class="keyword">long</span> timeout, TimeUnit unit)</span></span><br><span class="line">        <span class="keyword">throws</span> InterruptedException, ExecutionException, TimeoutException</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//接口RunnableFuture，继承了Runnable和Future接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">RunnableFuture</span>&lt;<span class="title">V</span>&gt; <span class="keyword">extends</span> <span class="title">Runnable</span>, <span class="title">Future</span>&lt;<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//实现了Runnable和Future接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FutureTask</span>&lt;<span class="title">V</span>&gt; <span class="keyword">implements</span> <span class="title">RunnableFuture</span>&lt;<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们调用ThreadPoolExecutor的execute方法，执行过程如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">(Runnable command)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (command == <span class="keyword">null</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</span><br><span class="line">    <span class="comment">/*</span><br><span class="line">     1.当前线程数小于corePoolSize时，直接添加一个 worker 来执行任务，调用addWorker方法；</span><br><span class="line">     2.如果线程池处于 RUNNING 状态，把这个任务添加到任务队列 workQueue 中；</span><br><span class="line">     3.如果 workQueue 队列满了，以 maximumPoolSize 为界创建新的 worker。</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">int</span> c = ctl.get();</span><br><span class="line">    <span class="keyword">if</span> (workerCountOf(c) &lt; corePoolSize) &#123;</span><br><span class="line">        <span class="keyword">if</span> (addWorker(command, <span class="keyword">true</span>))</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        c = ctl.get();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (isRunning(c) &amp;&amp; workQueue.offer(command)) &#123;</span><br><span class="line">        <span class="keyword">int</span> recheck = ctl.get();</span><br><span class="line">        <span class="keyword">if</span> (! isRunning(recheck) &amp;&amp; remove(command))</span><br><span class="line">            reject(command);</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (workerCountOf(recheck) == <span class="number">0</span>)</span><br><span class="line">            addWorker(<span class="keyword">null</span>, <span class="keyword">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (!addWorker(command, <span class="keyword">false</span>))</span><br><span class="line">        reject(command);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在addWorker方法中，真正创建线程是在Worker（ThreadPoolExecutor的内部类）的构造方法中调用 ThreadFactory 来创建一个新的线程，把command包装为Worker之后，加入到workers队列中。待创建的线程start之后，调用到Worker类的run方法，该法直接调用了ThreadPoolExecutor的runWorker方法。在runWorker方法中，就直接调用commad的run方法了，这个run方法就已经运行在刚才创建的线程里了。</p>
+<p>如果我么调用线程的submit方法，直接调用到的是<code>AbstractExecutorService</code>的submit方法，执行过程如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">public</span> Future&lt;?&gt; submit(Runnable task) &#123;</span><br><span class="line">       <span class="keyword">if</span> (task == <span class="keyword">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</span><br><span class="line">       RunnableFuture&lt;Void&gt; ftask = newTaskFor(task, <span class="keyword">null</span>);</span><br><span class="line">       execute(ftask);<span class="comment">//包装成FutureTask后，调用ThreadPoolExecutor的execute方法</span></span><br><span class="line">       <span class="keyword">return</span> ftask;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//newTaskFor的定义如下</span></span><br><span class="line">   <span class="keyword">protected</span> &lt;T&gt; <span class="function">RunnableFuture&lt;T&gt; <span class="title">newTaskFor</span><span class="params">(Runnable runnable, T value)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">new</span> FutureTask&lt;T&gt;(runnable, value);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>submit的几个重载方法定义如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment">//如果想要获得，异步线程的执行结果，传入result参数，执行结果将放在这个变量中</span></span><br><span class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">Future&lt;T&gt; <span class="title">submit</span><span class="params">(Runnable task, T result)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (task == <span class="keyword">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</span><br><span class="line">       RunnableFuture&lt;T&gt; ftask = newTaskFor(task, result);</span><br><span class="line">       execute(ftask);</span><br><span class="line">       <span class="keyword">return</span> ftask;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//submit还可以传入Callable的接口，</span></span><br><span class="line">   <span class="keyword">public</span> &lt;T&gt; <span class="function">Future&lt;T&gt; <span class="title">submit</span><span class="params">(Callable&lt;T&gt; task)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (task == <span class="keyword">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</span><br><span class="line">       RunnableFuture&lt;T&gt; ftask = newTaskFor(task);</span><br><span class="line">       execute(ftask);</span><br><span class="line">       <span class="keyword">return</span> ftask;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Callable的接口定义如下：</span></span><br><span class="line">   <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Callable</span>&lt;<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">//它和 Runnable 的区别在于 run() 没有返回值，而 Callable 的 call() 方法有返回值，同时，如果运行出现异常，call() 方法会抛出异常。</span></span><br><span class="line">     <span class="function">V <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>虽然submit可以接受不同的传入参数，但是对于ThreadPoolExecutor来说，并没有区别，最终都包装成了FutureTask。</p>
+<h5 id="关于executor和submit的区别："><a href="#关于executor和submit的区别：" class="headerlink" title="关于executor和submit的区别："></a>关于executor和submit的区别：</h5><ul>
+<li><p>接收的参数不一样，executor只能接收Runnable；</p>
+</li>
+<li><p>submit有返回值（submit接收Runnable的任务也没有返回值），而execute没有；</p>
+</li>
+<li><p>submit方便Exception处理，如果在task里会抛出checked或者unchecked exception</p>
+<p>调用者可以通过future.get()进行捕获。</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/10/16/Java线程池/" data-id="cjemqkglw0012xn9kcq66zf9c" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java-多线程/">Java 多线程</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Android自动更新APK（4）" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/10/14/Android自动更新APK（4）/" class="article-date">
@@ -108,7 +219,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/14/Android自动更新APK（4）/" data-id="cjdvdrznb0006q53q0jhwthp9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/10/14/Android自动更新APK（4）/" data-id="cjemqkgl6000ixn9k9cc89a8t" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-HTTP/">Android HTTP</a></li></ul>
@@ -152,97 +263,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/13/Android自动更新APK（3）/" data-id="cjdvdrzn80005q53qdpdv35gt" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Android自动更新APK（2）" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/10/12/Android自动更新APK（2）/" class="article-date">
-  <time datetime="2017-10-11T16:00:00.000Z" itemprop="datePublished">2017-10-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/12/Android自动更新APK（2）/">Android自动更新APK(二)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>上一节说到从服务器下载APK的过程，说OkHttp不支持断点下载，<code>DownloadManager</code>支持断点下载。通过配置OkHttpClient添加拦截器<code>interptcor</code>也是可以支持断点下载，再此之前，我们先看看<code>DownloadManager</code>的实现原理，看看<code>DownloadManager</code>怎么支持断点下载的。</p>
-<h4 id="DownloadManager的实现原理分析"><a href="#DownloadManager的实现原理分析" class="headerlink" title="DownloadManager的实现原理分析"></a>DownloadManager的实现原理分析</h4><p>在上一节讲到构造一个Request交给DownloadManager，然后会自动下载：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">downloadManager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);</span><br><span class="line">downloadId = downloadManager.enqueue(request);</span><br></pre></td></tr></table></figure>
-        
-          <p class="article-more-link">
-            <a href="/2017/10/12/Android自动更新APK（2）/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/12/Android自动更新APK（2）/" data-id="cjdvdrzmt0000q53quhg632qv" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Android自动更新APK" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/10/11/Android自动更新APK/" class="article-date">
-  <time datetime="2017-10-10T16:00:00.000Z" itemprop="datePublished">2017-10-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/11/Android自动更新APK/">Android自动更新APK</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>通过Service的方式（推荐使用<strong>JobService</strong>），在后台获取服务器的APK信息，然后下载到本地，通过调用系统安装程序，来安装最新的APK。</p>
-<p>其中，调用系统安装程序的主要代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">File apkFil = <span class="keyword">new</span> File(mContext.getExternalCacheDir(),<span class="string">"MFVKeyguard.apk"</span>);<span class="comment">//APK存储路径</span></span><br><span class="line">Intent intent = <span class="keyword">new</span> Intent(Intent.ACTION_VIEW);</span><br><span class="line">Uri apk;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Android N之后的版本通过FileProvider的方式获得Uri</span></span><br><span class="line"><span class="keyword">if</span>(Build.VERSION.SDK_INT&gt;=<span class="number">24</span>) &#123;</span><br><span class="line">  apk= FileProvider.getUriForFile(<span class="keyword">this</span>,<span class="string">"sto.com.stocourier.fileprovider"</span>,apkFil);</span><br><span class="line">  intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span><br><span class="line">  intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  apk=Uri.fromFile(apkFil);<span class="comment">//低于7.0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">intent.setDataAndType(apk, <span class="string">"application/vnd.android.package-archive"</span>);</span><br><span class="line">startActivity(intent);</span><br></pre></td></tr></table></figure>
-        
-          <p class="article-more-link">
-            <a href="/2017/10/11/Android自动更新APK/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/11/Android自动更新APK/" data-id="cjdvdrzne0008q53q1um5vrr1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/10/13/Android自动更新APK（3）/" data-id="cjemqkgky000dxn9k6lt3162u" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
@@ -257,7 +278,7 @@
 
 
   <nav id="page-nav">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">__('next') &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/">__('next') &raquo;</a>
   </nav>
 </section>
         
@@ -270,7 +291,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-HTTP/">Android HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/经验/">经验</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-HTTP/">Android HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-开源框架/">Android 开源框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-源码分析/">Android 源码分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android总结/">Android总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-多线程/">Java 多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-集合框架/">Java 集合框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/经验/">经验</a></li></ul>
     </div>
   </div>
 
@@ -280,7 +301,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Android-HTTP/" style="font-size: 10px;">Android HTTP</a> <a href="/tags/Git/" style="font-size: 16.67px;">Git</a> <a href="/tags/Java/" style="font-size: 13.33px;">Java</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/经验/" style="font-size: 10px;">经验</a>
+      <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Android-HTTP/" style="font-size: 10px;">Android HTTP</a> <a href="/tags/Android-开源框架/" style="font-size: 10px;">Android 开源框架</a> <a href="/tags/Android-源码分析/" style="font-size: 10px;">Android 源码分析</a> <a href="/tags/Android总结/" style="font-size: 15px;">Android总结</a> <a href="/tags/Git/" style="font-size: 17.5px;">Git</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/Java-多线程/" style="font-size: 15px;">Java 多线程</a> <a href="/tags/Java-集合框架/" style="font-size: 12.5px;">Java 集合框架</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/经验/" style="font-size: 10px;">经验</a>
     </div>
   </div>
 
@@ -289,7 +310,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li></ul>
     </div>
   </div>
 
@@ -302,6 +323,14 @@
       <ul>
         
           <li>
+            <a href="/2017/12/21/Android线程组件生命周期感知/">AAndroid线程组件生命周期感知</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/16/Java线程池/">Java线程池</a>
+          </li>
+        
+          <li>
             <a href="/2017/10/14/Android自动更新APK（4）/">Android自动更新APK(四)</a>
           </li>
         
@@ -311,14 +340,6 @@
         
           <li>
             <a href="/2017/10/12/Android自动更新APK（2）/">Android自动更新APK(二)</a>
-          </li>
-        
-          <li>
-            <a href="/2017/10/11/Android自动更新APK/">Android自动更新APK</a>
-          </li>
-        
-          <li>
-            <a href="/2016/08/27/git log使用/">git log查看提交记录</a>
           </li>
         
       </ul>

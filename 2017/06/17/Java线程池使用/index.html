@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Java线程池使用 | Guixin&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="[TOC]
+我们不可能把事情都放在主线程上执行，这样会造成严重卡顿（ANR），那么这些事情应该交给子线程去做，但对于一个系统而言，创建、销毁、调度线程的过程是需要开销的，所以我们并不能无限量地开启线程，那么对线程的了解就变得尤为重要了。首先了解下Java中的多线程编程。
+一、Java中的多线程编程JDK1.4之前，线程的创建还是依靠Thread、Runnable和Callable（新加入）对象的实">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java线程池使用">
+<meta property="og:url" content="http://yoursite.com/2017/06/17/Java线程池使用/index.html">
+<meta property="og:site_name" content="Guixin's Blog">
+<meta property="og:description" content="[TOC]
+我们不可能把事情都放在主线程上执行，这样会造成严重卡顿（ANR），那么这些事情应该交给子线程去做，但对于一个系统而言，创建、销毁、调度线程的过程是需要开销的，所以我们并不能无限量地开启线程，那么对线程的了解就变得尤为重要了。首先了解下Java中的多线程编程。
+一、Java中的多线程编程JDK1.4之前，线程的创建还是依靠Thread、Runnable和Callable（新加入）对象的实">
+<meta property="og:updated_time" content="2018-03-11T11:47:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java线程池使用">
+<meta name="twitter:description" content="[TOC]
+我们不可能把事情都放在主线程上执行，这样会造成严重卡顿（ANR），那么这些事情应该交给子线程去做，但对于一个系统而言，创建、销毁、调度线程的过程是需要开销的，所以我们并不能无限量地开启线程，那么对线程的了解就变得尤为重要了。首先了解下Java中的多线程编程。
+一、Java中的多线程编程JDK1.4之前，线程的创建还是依靠Thread、Runnable和Callable（新加入）对象的实">
+  
+    <link rel="alternate" href="/atom.xml" title="Guixin&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Guixin&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">书山有路勤为径，学海无涯苦作舟</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Java线程池使用" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/06/17/Java线程池使用/" class="article-date">
+  <time datetime="2017-06-17T15:42:44.000Z" itemprop="datePublished">2017-06-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java线程池使用
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>[TOC]</p>
+<p>我们不可能把事情都放在主线程上执行，这样会造成严重卡顿（ANR），那么这些事情应该交给子线程去做，但对于一个系统而言，创建、销毁、调度线程的过程是需要开销的，所以我们并不能无限量地开启线程，那么对线程的了解就变得尤为重要了。首先了解下Java中的多线程编程。</p>
+<h4 id="一、Java中的多线程编程"><a href="#一、Java中的多线程编程" class="headerlink" title="一、Java中的多线程编程"></a>一、Java中的多线程编程</h4><p>JDK1.4之前，线程的创建还是依靠Thread、Runnable和Callable（新加入）对象的实例化；Concurrency包出现之后，线程的执行则靠Executor、ExecutorService的对象执行execute()方法或submit()方法；线程的调度则被固化为几个具体的线程池类，如ThreadPoolExecutor、ScheduledThreadPoolExecutor、ExecutorCompletionService等等。这样表面上增加了复杂度，而实际上成功将线程的<strong>创建、执行和调度</strong>的业务逻辑分离，使程序员能够将精力集中在线程中业务逻辑的编写，大大提高了编码效率，降低了出错的概率，而且大大提高了性能。</p>
+<h4 id="1、线程的执行者"><a href="#1、线程的执行者" class="headerlink" title="1、线程的执行者"></a>1、线程的执行者</h4><p>这个功能主要由三个接口和类提供，分别是： </p>
+<ul>
+<li>Executor：执行者接口，所有执行者的父类，只包含一个方法：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void execute(Runnable command);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>ExecutorService：执行者服务接口，继承自Executor接口，具体的执行者类都继承自此接口：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractExecutorService</span> <span class="keyword">implements</span> <span class="title">ExecutorService</span></span><br><span class="line"></span><br><span class="line"><span class="title">public</span> <span class="title">class</span> <span class="title">ThreadPoolExecutor</span> <span class="keyword">extends</span> <span class="title">AbstractExecutorService</span></span><br><span class="line">//<span class="title">ThreadPoolExecutor</span>的构造函数</span><br><span class="line"><span class="title">public</span> <span class="title">ThreadPoolExecutor</span>(<span class="title">int</span> <span class="title">corePoolSize</span>,</span><br><span class="line">                          <span class="title">int</span> <span class="title">maximumPoolSize</span>,</span><br><span class="line">                          <span class="title">long</span> <span class="title">keepAliveTime</span>,</span><br><span class="line">                          <span class="title">TimeUnit</span> <span class="title">unit</span>,</span><br><span class="line">                          <span class="title">BlockingQueue</span>&lt;<span class="title">Runnable</span>&gt; <span class="title">workQueue</span>)</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>Executors：执行者工厂方法类，大部分执行者的实例以及线程池都由它的工厂方法创建。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ExecutorService service = Executors.newCachedThreadPool();</span><br><span class="line">service.execute(<span class="keyword">new</span> Task1());<span class="comment">//Task1是Runnable接口的实现类</span></span><br><span class="line">service.shutdown();<span class="comment">//阻止继续提交其他线程，并等待执行中的线程结束</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Task1</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        System.out.println(<span class="string">"task1"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="2、开启线程的方式"><a href="#2、开启线程的方式" class="headerlink" title="2、开启线程的方式"></a>2、开启线程的方式</h5><ul>
+<li>继承Thread类，实现run方法；</li>
+<li>实现Runnable接口</li>
+<li>实现Callable接口，可以得到异步线程的执行结果</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">在Java Concurrency中，得到异步结果有了一套固定的机制，即通过Callable接口、Future接口和ExecutorService的submit方法来得到异步执行的结果</span><br><span class="line">Callable：泛型接口，与Runnable接口类似，它的实例可以被另一个线程执行，内部有一个call方法，返回一个泛型变量V;</span><br><span class="line">Future：泛型接口，代表依次异步执行的结果值，调用其get方法可以得到一次异步执行的结果，如果运算未完成，则阻塞直到完成；调用其cancel方法可以取消一次异步执行；</span><br><span class="line">**/</span></span><br><span class="line">     ExecutorService service = Executors.newCachedThreadPool();</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        Future&lt;Integer&gt; future = service.submit(<span class="keyword">new</span> Callable&lt;Integer&gt;() &#123;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> Integer <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">                <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">                <span class="keyword">return</span> <span class="number">11</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        service.shutdown();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//获取异步执行的结果，并捕获异常</span></span><br><span class="line">            System.out.println(<span class="string">"the value is="</span> + future.get());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            <span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ExecutionException e) &#123;</span><br><span class="line">            <span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>关于<code>ExecutorService</code>的<code>submit</code>和<code>execute</code>的区别：</p>
+<ul>
+<li><code>submit</code>可以接收更多的参数，<code>execute</code>只能接收Runnable的实例</li>
+<li><code>submit</code>有返回值，而<code>execute</code>没有</li>
+<li><code>submit</code>方便Exception处理</li>
+</ul>
+<p>####3、线程的执行控制</p>
+<p>开发过程中会有队线程，延期执行或重复执行的需求。这个时候Java Concurrency包中的ScheduledExecutorService就派上了用场。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">ScheduledExecutorService：可以将提交的任务延期执行，也可以将提交的任务反复执行。 </span><br><span class="line">ScheduledFuture：与Future接口类似，代表一个被调度执行的异步任务的返回值。 </span><br><span class="line">**/</span></span><br><span class="line">ScheduledExecutorService service2 = <span class="keyword">new</span> ScheduledThreadPoolExecutor(<span class="number">2</span>);</span><br><span class="line">ScheduledFuture&lt;?&gt; future2 = service2.scheduleAtFixedRate(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">           System.out.println(<span class="string">"test"</span>);</span><br><span class="line">       &#125;&#125;, <span class="number">1</span>, <span class="number">1</span>, TimeUnit.SECONDS);<span class="comment">//延迟1秒执行，然后每隔1秒打印一次”test”</span></span><br><span class="line">        </span><br><span class="line">    service2.schedule(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">"cancel task"</span>);</span><br><span class="line">            future2.cancel(<span class="keyword">true</span>);</span><br><span class="line">            service2.shutdown();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, <span class="number">10</span>, TimeUnit.SECONDS);<span class="comment">//延迟10秒执行，取消打印任务</span></span><br></pre></td></tr></table></figure>
+<p>其中，<code>ScheduledThreadPoolExecutor</code>类继承关系如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ScheduledThreadPoolExecutor</span></span><br><span class="line">        <span class="keyword">extends</span> <span class="title">ThreadPoolExecutor</span></span><br><span class="line">        <span class="keyword">implements</span> <span class="title">ScheduledExecutorService</span></span><br><span class="line">        </span><br><span class="line"><span class="title">public</span> <span class="title">interface</span> <span class="title">ScheduledExecutorService</span> <span class="keyword">extends</span> <span class="title">ExecutorService</span></span><br><span class="line"></span><br><span class="line"><span class="title">public</span> <span class="title">interface</span> <span class="title">ScheduledFuture</span>&lt;<span class="title">V</span>&gt; <span class="keyword">extends</span> <span class="title">Delayed</span>, <span class="title">Future</span>&lt;<span class="title">V</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="4、Fork-Join框架"><a href="#4、Fork-Join框架" class="headerlink" title="4、Fork-Join框架"></a>4、Fork-Join框架</h4><p>在JDK1.7引入了一种新的并行编程模式“fork-join”，它是实现了“分而治之”思想的Java并发编程框架。</p>
+<p>Object类中提供的有关线程同步的方法：</p>
+<ul>
+<li><p>wait()的作用是让当前线程进入等待状态，同时，wait()也会让当前线程释放它所持有的锁；</p>
+</li>
+<li><p>notify()和notifyAll()的作用，则是唤醒当前对象上的等待线程；notify()是唤醒单个线程，而notifyAll()是唤醒所有的线程。</p>
+<blockquote>
+<p>被唤醒的线程也需要获取到锁才可以得到执行</p>
+</blockquote>
+</li>
+</ul>
+<p>Thread类提供有关线程同步的方法：</p>
+<ul>
+<li>sleep()持有线程锁，进入阻塞状态？Thread类的静态方法；</li>
+</ul>
+<ul>
+<li><p>yield()是让线程由“运行状态”进入到“就绪状态”，从而让其它具有相同优先级的等待线程获取执行权；但是注意：并不能保证在当前线程调用yield()之后，其它具有相同优先级的线程就一定能获得执行权。</p>
+<blockquote>
+<p>yield 是告诉操作系统的调度器：我的cpu可以先让给其他线程。注意，调度器可以不理会这个信息。这个方法几乎没用。</p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li><p>join()把指定的线程加入到当前线程，可以将两个交替执行的线程合并为顺序执行的线程。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">t.join();      <span class="comment">//调用jon方法，等待线程t执行完毕</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>interrupt()，如果在线程t2上调用线程t1的interrupt，线程t1的中断状态被设置为true，会影响如下操作:</p>
+<blockquote>
+<p>1.如果线程t1阻塞在wait(), wait(long), wait(long, int), join(), join(long), join(long, int), sleep(long), sleep(long, int)，线程t1被中断后，马上从这些方法中返回，并且会抛出InterruptedException异常；</p>
+<p>2.如果线程阻塞在 InterruptibleChannel 类的 IO 操作中，那么这个 channel 会被关闭；</p>
+<p>3.如果线程阻塞在一个 Selector 中，那么 select 方法会立即返回。</p>
+</blockquote>
+</li>
+</ul>
+<p>多线程控制实例——消费者和生产者模型</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zgx.test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.LinkedList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Storage</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> MAX = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">private</span> LinkedList list = <span class="keyword">new</span> LinkedList&lt;Object&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">produce</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (list) &#123;</span><br><span class="line">            <span class="keyword">while</span>(list.size() &gt; MAX) &#123;</span><br><span class="line">                System.out.println(<span class="string">"the list is full"</span>);</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    list.wait();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    <span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            list.add(<span class="keyword">new</span> Object());</span><br><span class="line">            System.out.println(<span class="string">"this list is not empty"</span>);</span><br><span class="line">            list.notifyAll();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">consume</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (list) &#123;</span><br><span class="line">            <span class="keyword">while</span>(list.isEmpty()) &#123;</span><br><span class="line">                System.out.println(<span class="string">"the list is empty"</span>);</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    list.wait();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    <span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            list.remove();</span><br><span class="line">            System.out.println(<span class="string">"this list is not full"</span>);</span><br><span class="line">            list.notifyAll();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过Conditon的await和signal来同步线程，实现生产者和消费者模型：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.Condition;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.Lock;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.ReentrantLock;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BoundedBuffer</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> Lock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">    <span class="comment">// condition 依赖于 lock 来产生</span></span><br><span class="line">    <span class="keyword">final</span> Condition notFull = lock.newCondition();</span><br><span class="line">    <span class="keyword">final</span> Condition notEmpty = lock.newCondition();</span><br><span class="line">    <span class="keyword">final</span> Object[] items = <span class="keyword">new</span> Object[<span class="number">100</span>];</span><br><span class="line">    <span class="keyword">int</span> putptr, takeptr, count;</span><br><span class="line">    <span class="comment">// 生产者</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(Object x)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (count == items.length)</span><br><span class="line">                notFull.await();  <span class="comment">// 队列已满，等待，直到 not full 才能继续生产</span></span><br><span class="line">            items[putptr] = x;</span><br><span class="line">            <span class="keyword">if</span> (++putptr == items.length) putptr = <span class="number">0</span>;</span><br><span class="line">            ++count;</span><br><span class="line">            notEmpty.signal(); <span class="comment">// 生产成功，队列已经 not empty 了，发个通知出去</span></span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 消费者</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">take</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (count == <span class="number">0</span>)</span><br><span class="line">                notEmpty.await(); <span class="comment">// 队列为空，等待，直到队列 not empty，才能继续消费</span></span><br><span class="line">            Object x = items[takeptr];</span><br><span class="line">            <span class="keyword">if</span> (++takeptr == items.length) takeptr = <span class="number">0</span>;</span><br><span class="line">            --count;</span><br><span class="line">            notFull.signal(); <span class="comment">// 被我消费掉一个，队列 not full 了，发个通知出去</span></span><br><span class="line">            <span class="keyword">return</span> x;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>1.condition 是依赖于 ReentrantLock 的，不管是调用 await 进入等待还是 signal 唤醒，都必须获取到锁才能进行操作；</p>
+<p>2.一个 ReentrantLock 实例可以通过多次调用 newCondition() 来产生多个 Condition 实例，上面的例子对应于notFull、notEmpty；</p>
+<p>3.每个 condition 有一个关联的<strong>条件队列</strong>，如线程 1 调用 condition1.await() 方法即可将当前线程 1 包装成 Node 后加入到条件队列中，然后阻塞在这里，不继续往下执行，条件队列是一个单向链表；</p>
+<p>4.调用 condition1.signal() 会将condition1 对应的<strong>条件队列</strong>移到<strong>阻塞队列</strong>的队尾，等待获取锁，获取锁后 await 方法返回，继续往下执行。</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/06/17/Java线程池使用/" data-id="cjemqkglz0015xn9khmuyatfh" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java-多线程/">Java 多线程</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/08/13/HashMap和LinkedHashMap源码分析/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          HashMap和LinkedHashMap源码分析
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/05/27/Android学习笔记/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Android学习笔记</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-HTTP/">Android HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-开源框架/">Android 开源框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-源码分析/">Android 源码分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android总结/">Android总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-多线程/">Java 多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-集合框架/">Java 集合框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/经验/">经验</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Android-HTTP/" style="font-size: 10px;">Android HTTP</a> <a href="/tags/Android-开源框架/" style="font-size: 10px;">Android 开源框架</a> <a href="/tags/Android-源码分析/" style="font-size: 10px;">Android 源码分析</a> <a href="/tags/Android总结/" style="font-size: 15px;">Android总结</a> <a href="/tags/Git/" style="font-size: 17.5px;">Git</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/Java-多线程/" style="font-size: 15px;">Java 多线程</a> <a href="/tags/Java-集合框架/" style="font-size: 12.5px;">Java 集合框架</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/经验/" style="font-size: 10px;">经验</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/12/21/Android线程组件生命周期感知/">AAndroid线程组件生命周期感知</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/16/Java线程池/">Java线程池</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/14/Android自动更新APK（4）/">Android自动更新APK(四)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/13/Android自动更新APK（3）/">Android自动更新APK(三)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/12/Android自动更新APK（2）/">Android自动更新APK(二)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Zhguixin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

@@ -68,10 +68,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-Java基础" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-git_diff使用" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/05/14/Java基础/" class="article-date">
-  <time datetime="2016-05-14T06:54:39.000Z" itemprop="datePublished">2016-05-14</time>
+    <a href="/2016/08/26/git_diff使用/" class="article-date">
+  <time datetime="2016-08-25T16:00:00.000Z" itemprop="datePublished">2016-08-26</time>
 </a>
     
   </div>
@@ -82,7 +82,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/14/Java基础/">Java基础</a>
+      <a class="article-title" href="/2016/08/26/git_diff使用/">git diff的使用</a>
     </h1>
   
 
@@ -90,20 +90,22 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h3><p>Java相对于C++来说是纯面向对象语言，入口函数都放在类中。入口函数，也就是main函数所在的类名要与该文件名保持一致。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hello</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args )</span></span><br><span class="line">  </span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"hello world"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>保存该类的的文件名应为<code>Hello.java</code>，在命令行中通过<code>javac Hello.java</code>生成.class文件，再通过<code>java Hello</code>运行。具体原理后面详细讲解。<br>
-        
-          <p class="article-more-link">
-            <a href="/2016/05/14/Java基础/#more">Read More</a>
-          </p>
-        
+        <p>在工作中可以通过命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">log</span> --author zhguixin</span><br></pre></td></tr></table></figure></p>
+<p>查看某一作者的提交记录，进一步的话可以通过<code>git diff</code>来比较不同提交记录时各个版本的差异。具体解释如下：<br><code>git diff --cached</code> 显示索引区与git仓库之间的差异<br><code>git diff HEAD</code> 显示当前工作目录与git仓库之间的差异<br><code>git diff HEAD^</code> 比较上次提交<br><code>git diff HEAD~2</code> 比较上2次提交</p>
+<p><code>--diff-filter=[ACDMRTUXB*]</code><br>        显示指定状态的文件：Added (A), Copied (C), Deleted (D), Modified (M), Renamed (R), changed (T), are Unmerged (U), are Unknown (X)</p>
+<p><code>git diff --stat</code> 列出文件</p>
+<p><code>git diff -- filename</code>    只对比给定的文件</p>
+<p>历史提交对比：<br><code>$ git diff commit</code>       将所指定的某次提交与当前工作目录进行对比。</p>
+<p><code>$ git diff commit1 commit2</code> 将2次提交的内容进行对比<br>等价于<br><code>$ git diff commit1..commit2</code> 如果省略任意一个commit，默认将使用HEAD代替</p>
+<p>commit可以是简写的commit哈希值，也可是是HEAD。其中HEAD代表最后一次提交，HEAD^代表最后一次提交的父提交，HEAD~1等价于HEAD^,HEAD~2为倒数第二次提交，以此类推。</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/05/14/Java基础/" data-id="cjdvdrznr000fq53qnng4a2d6" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/08/26/git_diff使用/" data-id="cjemqkgm9001exn9k8whc72l2" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Git/">Git</a></li></ul>
 
     </footer>
   </div>
@@ -112,10 +114,10 @@
 
 
   
-    <article id="post-博客搭建总结" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Android内容提供器" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/05/10/博客搭建总结/" class="article-date">
-  <time datetime="2016-05-10T14:54:39.000Z" itemprop="datePublished">2016-05-10</time>
+    <a href="/2016/08/20/Android内容提供器/" class="article-date">
+  <time datetime="2016-08-19T16:00:00.000Z" itemprop="datePublished">2016-08-20</time>
 </a>
     
   </div>
@@ -126,7 +128,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/10/博客搭建总结/">博客搭建总结</a>
+      <a class="article-title" href="/2016/08/20/Android内容提供器/">Android的内容提供器</a>
     </h1>
   
 
@@ -134,22 +136,128 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="1-安装Hexo"><a href="#1-安装Hexo" class="headerlink" title="1.安装Hexo"></a>1.安装Hexo</h2><p>nodejs和git安装完成后，打开<code>git bash</code>安装hexo：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure></p>
-<p>然后新建一个文件夹(如E:\Hexo)，在此文件夹中执行命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo init</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure></p>
-<p>本地查看:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo server //hexo s</span><br></pre></td></tr></table></figure></p>
-<p>然后在浏览器中输入 <a href="http://localhost:4000/">http://localhost:4000/</a><br>
+        <h4 id="什么是内容提供器"><a href="#什么是内容提供器" class="headerlink" title="什么是内容提供器"></a>什么是内容提供器</h4><p>内容提供器<strong>ContentProvider</strong>用于在不同的应用程序之间实现数据的共享功能，允许一个程序访问另一个程序中的数据，同时还能保证被访问数据的安全性。</p>
+<p>Setting里面的一些设置也是通过数据库来保存的，通过数据库来保存就会有Provider了，所以就会有SettingsProvider了。数据库的路径就是：/data/data/com.android.providers.settings.<br>但我们平常获取这里面的数据不是直接通过ContentResolve而是android已经封装了一层，通过Settings这个类来获取，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Settings.System.getInt(mContext.getContentResolver(),</span><br><span class="line">                Settings.System.AIRPLANE_MODE_ON, <span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="设计意图"><a href="#设计意图" class="headerlink" title="设计意图"></a>设计意图</h4><p>Android设计该ContentProvider组件的意义：</p>
+<blockquote>
+<ol>
+<li>封装。对数据进行封装，提供统一的接口，使用者完全不必关心这些数据是在DB，XML、Preferences或者网络请求来的。当项目需求要改变数据来源时，使用我们的地方完全不需要修改。</li>
+<li>提供一种跨进程数据共享的方式。</li>
+</ol>
+</blockquote>
+<p>还可以实现数据更新通知机制：通过ContentResolver接口的notifyChange函数来通知那些注册了监控特定URI的ContentObserver对象，使得它们可以相应地执行一些处理。</p>
+<h4 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h4><p>在AndroidManifest中注册该组件时，有些属性需要了解：</p>
+<ul>
+<li>android:exported，这个属性用于指示该服务是否能够被其他应用程序组件调用或跟它交互。如果设置为true，则能够被调用或交互，否则不能。设置为false时，只有同一个应用程序的组件或带有相同用户ID的应用程序才能启动或绑定该服务。</li>
+<li>android:multiprocess，该属性的默认值是false，表示ContentProvider是单例的，无论哪个客户端应用的访问都将是同一个ContentProvider对象；如果设为true，系统会为每一个访问该ContentProvider的进程创建一个实例。</li>
+</ul>
+<p>调用getContentResolver().query/insert/update/delete时，如果是在同一个进程是和调用者在同一个线程；如果是其他进程调用，则是运行在对应进程的binder线程。<strong>在未返回结果时，都会阻塞调用线程</strong></p>
+<p>ContentResolver虽然是通过Binder进程间通信机制打通了应用程序之间共享数据的通道，但Content Provider组件在不同应用程序之间传输数据是基于匿名共享内存机制来实现的。</p>
+<p><strong>ContentProvider的onCreate方法要比Application的onCreate方法执行的要早。</strong></p>
+<p>关于数据库的操作，如果一次性插入很多条记录，可以重用SQLiteStatement，使用SQLiteDatabase的beginTransaction()方法开启一个事务。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">        sqLiteDatabase.beginTransaction();</span><br><span class="line">        SQLiteStatement stat = sqLiteDatabase.compileStatement(insertSQL);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 插入10000次</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10000</span>; i++) &#123;</span><br><span class="line">            stat.bindLong(<span class="number">1</span>, <span class="number">123456</span>);</span><br><span class="line">            stat.bindString(<span class="number">2</span>, <span class="string">"test"</span>);</span><br><span class="line">            stat.executeInsert();</span><br><span class="line">        &#125;</span><br><span class="line">        sqLiteDatabase.setTransactionSuccessful();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="comment">// 结束</span></span><br><span class="line">        sqLiteDatabase.endTransaction();</span><br><span class="line">        sqLiteDatabase.close();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p><em>参考代码：<a href="http://www.jianshu.com/p/2398aad3bd61" target="_blank" rel="external">Android面试一天一题之SQLite数据库</a></em></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/20/Android内容提供器/" data-id="cjemqkgk70000xn9kv8e4skgs" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-git分支管理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/20/git分支管理/" class="article-date">
+  <time datetime="2016-08-19T16:00:00.000Z" itemprop="datePublished">2016-08-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/20/git分支管理/">Git分支管理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="创建分支"><a href="#创建分支" class="headerlink" title="创建分支"></a>创建分支</h3><p>开发者user1 基于当前HEAD创建分支mydev：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch mydev</span><br></pre></td></tr></table></figure></p>
+<p>此时创建了分支并不会自动切换到刚刚创建的分支上，用<code>git branch</code>命令查看当前所在的分之：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch</span><br></pre></td></tr></table></figure></p>
+<p>执行git checkout 命令切换到新分支上:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout mydev</span><br></pre></td></tr></table></figure></p>
         
           <p class="article-more-link">
-            <a href="/2016/05/10/博客搭建总结/#more">Read More</a>
+            <a href="/2016/08/20/git分支管理/#more">Read More</a>
           </p>
         
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/05/10/博客搭建总结/" data-id="cjdvdrzon000xq53qp8jka9jp" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/08/20/git分支管理/" data-id="cjemqkgmo001lxn9k2dfw1242" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/经验/">经验</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Git/">Git</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-git常用操作指令" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/05/git常用操作指令/" class="article-date">
+  <time datetime="2016-08-04T16:00:00.000Z" itemprop="datePublished">2016-08-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/05/git常用操作指令/">Git常用的操作指令</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="修改最后一次提交"><a href="#修改最后一次提交" class="headerlink" title="修改最后一次提交"></a>修改最后一次提交</h3><p>有时候我们提交完了才发现漏掉了几个文件没有加，或者提交信息写错了。想要撤消刚才的提交操作，可以使用<code>--amend</code> 选项重新提交：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git commit --amend -m<span class="string">"修改 提交 说明"</span></span><br></pre></td></tr></table></figure></p>
+<p>此命令将使用当前的暂存区域快照提交。如果刚才提交完没有作任何改动，直接运行此命令的话，相当于有机会 重新编辑提交说明，但将要提交的文件快照和之前的一样。</p>
+<p>启动文本编辑器后，会看到上次提交时的说明，编辑它确认没问题后保存退出，就会使用新的提交说明覆盖刚才失误的提交。</p>
+<p>如果刚才提交时忘了暂存某些修改，可以先补上暂存操作，然后再运行 <code>--amend</code> 提交：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git commit -m <span class="string">'initial commit'</span></span><br><span class="line">$ git add forgotten_file</span><br><span class="line">$ git commit --amend</span><br></pre></td></tr></table></figure></p>
+<p>上面的三条命令最终只是产生一个提交，第二个提交命令修正了第一个的提交内容。</p>
+        
+          <p class="article-more-link">
+            <a href="/2016/08/05/git常用操作指令/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/05/git常用操作指令/" data-id="cjemqkgmg001ixn9ktl0s6e8z" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Git/">Git</a></li></ul>
 
     </footer>
   </div>
@@ -161,7 +269,7 @@
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/page/4/">&laquo; __('prev')</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span>
+    <a class="extend prev" rel="prev" href="/page/4/">&laquo; __('prev')</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/6/">__('next') &raquo;</a>
   </nav>
 </section>
         
@@ -174,7 +282,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-HTTP/">Android HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/经验/">经验</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-HTTP/">Android HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-开源框架/">Android 开源框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-源码分析/">Android 源码分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android总结/">Android总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-多线程/">Java 多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-集合框架/">Java 集合框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/经验/">经验</a></li></ul>
     </div>
   </div>
 
@@ -184,7 +292,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Android-HTTP/" style="font-size: 10px;">Android HTTP</a> <a href="/tags/Git/" style="font-size: 16.67px;">Git</a> <a href="/tags/Java/" style="font-size: 13.33px;">Java</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/经验/" style="font-size: 10px;">经验</a>
+      <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Android-HTTP/" style="font-size: 10px;">Android HTTP</a> <a href="/tags/Android-开源框架/" style="font-size: 10px;">Android 开源框架</a> <a href="/tags/Android-源码分析/" style="font-size: 10px;">Android 源码分析</a> <a href="/tags/Android总结/" style="font-size: 15px;">Android总结</a> <a href="/tags/Git/" style="font-size: 17.5px;">Git</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/Java-多线程/" style="font-size: 15px;">Java 多线程</a> <a href="/tags/Java-集合框架/" style="font-size: 12.5px;">Java 集合框架</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/经验/" style="font-size: 10px;">经验</a>
     </div>
   </div>
 
@@ -193,7 +301,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li></ul>
     </div>
   </div>
 
@@ -206,6 +314,14 @@
       <ul>
         
           <li>
+            <a href="/2017/12/21/Android线程组件生命周期感知/">AAndroid线程组件生命周期感知</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/16/Java线程池/">Java线程池</a>
+          </li>
+        
+          <li>
             <a href="/2017/10/14/Android自动更新APK（4）/">Android自动更新APK(四)</a>
           </li>
         
@@ -215,14 +331,6 @@
         
           <li>
             <a href="/2017/10/12/Android自动更新APK（2）/">Android自动更新APK(二)</a>
-          </li>
-        
-          <li>
-            <a href="/2017/10/11/Android自动更新APK/">Android自动更新APK</a>
-          </li>
-        
-          <li>
-            <a href="/2016/08/27/git log使用/">git log查看提交记录</a>
           </li>
         
       </ul>

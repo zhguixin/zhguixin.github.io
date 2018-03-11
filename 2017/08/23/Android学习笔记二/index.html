@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Android学习笔记二 | Guixin&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="[TOC]
+####1、序列化操作
+两种方式：实现Serializable接口和Parcelable接口。
+
+Serializalbe会使用反射，序列化和反序列化过程需要大量I/O操作，Parcelable自已实现封送和解封（marshalled &amp;amp;unmarshalled）操作不需要用反射，数据也存放在Native内存中，效率要快很多。但是实现Parcelable比较复杂。
+
+12345">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android学习笔记二">
+<meta property="og:url" content="http://yoursite.com/2017/08/23/Android学习笔记二/index.html">
+<meta property="og:site_name" content="Guixin's Blog">
+<meta property="og:description" content="[TOC]
+####1、序列化操作
+两种方式：实现Serializable接口和Parcelable接口。
+
+Serializalbe会使用反射，序列化和反序列化过程需要大量I/O操作，Parcelable自已实现封送和解封（marshalled &amp;amp;unmarshalled）操作不需要用反射，数据也存放在Native内存中，效率要快很多。但是实现Parcelable比较复杂。
+
+12345">
+<meta property="og:image" content="http://yoursite.com/./res/context.png">
+<meta property="og:image" content="http://yoursite.com/./res/ListView.png">
+<meta property="og:updated_time" content="2018-03-11T11:12:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android学习笔记二">
+<meta name="twitter:description" content="[TOC]
+####1、序列化操作
+两种方式：实现Serializable接口和Parcelable接口。
+
+Serializalbe会使用反射，序列化和反序列化过程需要大量I/O操作，Parcelable自已实现封送和解封（marshalled &amp;amp;unmarshalled）操作不需要用反射，数据也存放在Native内存中，效率要快很多。但是实现Parcelable比较复杂。
+
+12345">
+<meta name="twitter:image" content="http://yoursite.com/./res/context.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Guixin&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Guixin&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">书山有路勤为径，学海无涯苦作舟</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Android学习笔记二" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/08/23/Android学习笔记二/" class="article-date">
+  <time datetime="2017-08-23T15:00:44.000Z" itemprop="datePublished">2017-08-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Android学习笔记二
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>[TOC]</p>
+<p>####1、序列化操作</p>
+<p>两种方式：实现Serializable接口和Parcelable接口。</p>
+<blockquote>
+<p>Serializalbe会使用反射，序列化和反序列化过程需要大量I/O操作，Parcelable自已实现封送和解封（marshalled &amp;unmarshalled）操作不需要用反射，数据也存放在Native内存中，效率要快很多。但是实现Parcelable比较复杂。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyParcelable</span> <span class="keyword">implements</span> <span class="title">Parcelable</span> </span>&#123;</span><br><span class="line">     <span class="keyword">private</span> <span class="keyword">int</span> mData;</span><br><span class="line"></span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">describeContents</span><span class="params">()</span> </span>&#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">writeToParcel</span><span class="params">(Parcel out, <span class="keyword">int</span> flags)</span> </span>&#123;</span><br><span class="line">         out.writeInt(mData);</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Parcelable.Creator&lt;MyParcelable&gt; CREATOR</span><br><span class="line">             = <span class="keyword">new</span> Parcelable.Creator&lt;MyParcelable&gt;() &#123;</span><br><span class="line">         <span class="function"><span class="keyword">public</span> MyParcelable <span class="title">createFromParcel</span><span class="params">(Parcel in)</span> </span>&#123;</span><br><span class="line">             <span class="keyword">return</span> <span class="keyword">new</span> MyParcelable(in);</span><br><span class="line">         &#125;</span><br><span class="line"></span><br><span class="line">         <span class="keyword">public</span> MyParcelable[] newArray(<span class="keyword">int</span> size) &#123;</span><br><span class="line">             <span class="keyword">return</span> <span class="keyword">new</span> MyParcelable[size];</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;;</span><br><span class="line"></span><br><span class="line">     <span class="function"><span class="keyword">private</span> <span class="title">MyParcelable</span><span class="params">(Parcel in)</span> </span>&#123;</span><br><span class="line">         mData = in.readInt();</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意：通过Intent传递序列化数据时，尤其像ArrayList、HashMap等一系列的数据时，要注意容量大小。因为Intent中的Bundle是在使用Binder机制进行数据传递的，能使用的Binder的缓冲区是有大小限制的（有些手机是2M），而一个进程默认有16个binder线程，所以一个线程能占用的缓冲区就更小了（大约一个线程可以占用128KB）。所以当你看到“The Binder transaction failed because it was too large.”这类TransactionTooLargeException异常时，就是传递的数据超过Binder缓存冲的容量了。</p>
+<p>####2、理解Android Context</p>
+<p><img src="./res/context.png" alt="img"></p>
+<p>一个进程中context个数：<strong>1+N个activity+M个service </strong>。其中<code>ContextIml</code>类中的<code>mPackageInfo</code>成员变量是一个<code>LoadedApk</code>对象。</p>
+<h4 id="3、理解ListView"><a href="#3、理解ListView" class="headerlink" title="3、理解ListView"></a>3、理解ListView</h4><p>ListView的ItemView有一个复用机制，简单看如下图所示，ListView中有一个RecycleBin类复负回收不可见且可能被再次使用的ItemView，由ScrapView存储。</p>
+<p><img src="./res/ListView.png" alt="img"></p>
+<p>在使用ListView时，为了保证不卡顿，就要减少getView所消耗的时间。主要有几个方面来优化：</p>
+<ol>
+<li>重用ConvertView;</li>
+<li>使用View Holder模式；</li>
+<li>使用异步线程加载图片（一般都是直接使用图片库加载，如Glide, Picasso）；</li>
+</ol>
+<p>其他的优化点，还包括：</p>
+<ol>
+<li>在adapter的getView方法中尽可能的减少逻辑判断，特别是耗时的判断；</li>
+<li>避免GC（可以从LOGCAT查看有无GC的LOG）；</li>
+<li>在快速滑动时不要加载图片；</li>
+<li>将ListView的scrollingCache和animateCache这两个属性设置为false（默认是true）;</li>
+<li>尽可能减少List Item的Layout层次；</li>
+</ol>
+<p>#####ListView源码分析</p>
+<p>ListView并不会直接和数据源打交道，而是会借助Adapter这个桥梁来去访问真正的数据源。Adapter是一个接口，它的实现类有<code>ArrayAdapter</code>由于数组和List类型的数据源，<code>SimpleCursorAdapter</code>用于实现访问数据库游标类型的数据源。在Adapter中的getView需要去重写。</p>
+<p>重点的几个函数：<code>AbsListView</code>中的<code>onLayout</code>和<code>onTouchEvent</code>。<code>ListView</code>中的<code>childLayout</code>。</p>
+<h4 id="4、语言和国际化"><a href="#4、语言和国际化" class="headerlink" title="4、语言和国际化"></a>4、语言和国际化</h4><p>手机当前的环境比如语言、时区、语言等，是根据Resource中的Configuration.Locale这项的值来决定的。如果有不需要不根据Android系统的Locale配置就改变应用语言的业务场景，可以使用<code>updateConfiguration</code>方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">changeSystemLanguage</span><span class="params">(Context context, String language)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (context == <span class="keyword">null</span> || TextUtils.isEmpty(language)) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Resources resources = context.getResources();</span><br><span class="line">        Configuration config = resources.getConfiguration();</span><br><span class="line">        <span class="keyword">if</span> (Locale.SIMPLIFIED_CHINESE.getLanguage().equals(language)) &#123;</span><br><span class="line">            config.locale = Locale.SIMPLIFIED_CHINESE;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            config.locale = <span class="keyword">new</span> Locale(language);</span><br><span class="line">        &#125;</span><br><span class="line">        resources.updateConfiguration(config, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/08/23/Android学习笔记二/" data-id="cjemqkgkq0009xn9k7oklfakp" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android总结/">Android总结</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/09/02/深入理解ActivityManagerService/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          深入理解ActivityManagerService
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/08/13/HashMap和LinkedHashMap源码分析/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">HashMap和LinkedHashMap源码分析</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-HTTP/">Android HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-开源框架/">Android 开源框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-源码分析/">Android 源码分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android总结/">Android总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-多线程/">Java 多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-集合框架/">Java 集合框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/经验/">经验</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Android-HTTP/" style="font-size: 10px;">Android HTTP</a> <a href="/tags/Android-开源框架/" style="font-size: 10px;">Android 开源框架</a> <a href="/tags/Android-源码分析/" style="font-size: 10px;">Android 源码分析</a> <a href="/tags/Android总结/" style="font-size: 15px;">Android总结</a> <a href="/tags/Git/" style="font-size: 17.5px;">Git</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/Java-多线程/" style="font-size: 15px;">Java 多线程</a> <a href="/tags/Java-集合框架/" style="font-size: 12.5px;">Java 集合框架</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/经验/" style="font-size: 10px;">经验</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/12/21/Android线程组件生命周期感知/">AAndroid线程组件生命周期感知</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/16/Java线程池/">Java线程池</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/14/Android自动更新APK（4）/">Android自动更新APK(四)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/13/Android自动更新APK（3）/">Android自动更新APK(三)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/12/Android自动更新APK（2）/">Android自动更新APK(二)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Zhguixin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
